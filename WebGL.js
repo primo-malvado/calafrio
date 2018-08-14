@@ -301,6 +301,15 @@ class Parser {
 		var a = this.readBytes(2);
 			return (a[1] << 8)+(a[0]);
 	}
+	uint8_t(){
+		var a = this.readByte();
+		return a;
+	}
+
+	int8_t(){
+		var a = this.readByte();
+		return a;
+	}
 
 	array(count, parserFunction){
 
@@ -404,39 +413,71 @@ struct tr_room_portal  // 32 bytes
 	}
 
 
+
+	tr_room_sector ()
+	{
+ /*
+struct tr_room_sector // 8 bytes
+{
+    uint16_t FDindex;    // Index into FloorData[]
+    uint16_t BoxIndex;   // Index into Boxes[] (-1 if none)
+    uint8_t  RoomBelow;  // 255 is none
+    int8_t   Floor;      // Absolute height of floor
+    uint8_t  RoomAbove;  // 255 if none
+    int8_t   Ceiling;    // Absolute height of ceiling
+};
+ */
+		return {
+
+		    FDindex: this.uint16_t(true),
+		    BoxIndex: this.uint16_t(true),
+		    RoomBelow: this.uint8_t(true),
+		    Floor: this.int8_t(true),
+		    RoomAbove: this.uint8_t(true),
+		    Ceiling: this.int8_t(true),
+     	}
+
+	}
+
+	tr2_room_light ()
+	{
+ /*
+ struct tr2_room_light   // 24 bytes
+{
+     int32_t x, y, z;       // Position of light, in world coordinates
+    uint16_t Intensity1;    // Light intensity
+    uint16_t Intensity2;    // Only in TR2
+    uint32_t Fade1;         // Falloff value
+    uint32_t Fade2;         // Only in TR2
+};
+ */
+		return {
+
+		    x: this.int32_t(true),
+		    y: this.int32_t(true),
+		    z: this.int32_t(true),
+		    Intensity1: this.uint16_t(true),
+		    Intensity2: this.uint16_t(true),
+		    Fade1: this.uint32_t(true),
+		    Fade2: this.uint32_t(true),
+     	}
+
+	}
+
+
 	tr2_room ()
 	{
-		/*
-virtual struct tr2_room  // (variable length)
-{
-    tr_room_info info;           // Where the room exists, in world coordinates
 
-    uint32_t NumDataWords;       // Number of data words (uint16_t's)
-    uint16_t Data[NumDataWords]; // The raw data from which the rest of this is derived
+//tr_room_info info;           // Where the room exists, in world coordinates
 
-    tr_room_data RoomData;       // The room mesh
+//uint32_t NumDataWords;       // Number of data words (uint16_t's)
+//uint16_t Data[NumDataWords]; // The raw data from which the rest of this is derived
 
-    uint16_t NumPortals;                 // Number of visibility portals to other rooms
-    tr_room_portal Portals[NumPortals];  // List of visibility portals
+//tr_room_data RoomData;       // The room mesh
 
-    uint16_t NumZsectors;                                  // ``Width'' of sector list
-    uint16_t NumXsectors;                                  // ``Height'' of sector list
-    tr_room_sector SectorList[NumXsectors * NumZsectors];  // List of sectors in this room
+//uint16_t NumPortals;                 // Number of visibility portals to other rooms
+//tr_room_portal Portals[NumPortals];  // List of visibility portals
 
-    int16_t AmbientIntensity;
-    int16_t AmbientIntensity2;  // Usually the same as AmbientIntensity
-    int16_t LightMode;
-
-    uint16_t NumLights;                 // Number of point lights in this room
-    tr_room_light Lights[NumLights];    // List of point lights
-
-    uint16_t NumStaticMeshes;                            // Number of static meshes
-    tr_room_staticmesh StaticMeshes[NumStaticMeshes];   // List of static meshes
-
-    int16_t AlternateRoom;
-    int16_t Flags;
-};
-		*/
 
 		var room =  {};
 		
@@ -448,8 +489,43 @@ virtual struct tr2_room  // (variable length)
 		room.NumPortals = this.uint16_t(true);
 		room.Portals = this.array(room.NumPortals , "tr_room_portal");
 
+		//uint16_t NumZsectors;                                  // ``Width'' of sector list
 		room.NumZsectors = this.uint16_t(true);
+		
+		//uint16_t NumXsectors;                                  // ``Height'' of sector list
 		room.NumXsectors = this.uint16_t(true);
+
+		//tr_room_sector SectorList[NumXsectors * NumZsectors];  // List of sectors in this room
+		room.SectorList = this.array(room.NumZsectors* room.NumXsectors, "tr_room_sector");
+
+		//int16_t AmbientIntensity;
+		room.AmbientIntensity = this.int16_t(true);
+
+		//int16_t AmbientIntensity2;  // Usually the same as AmbientIntensity
+		room.AmbientIntensity2 = this.int16_t(true);
+
+		//int16_t LightMode;
+		room.LightMode = this.int16_t(true);
+
+		//uint16_t NumLights;                 // Number of point lights in this room
+		room.NumLights = this.uint16_t(true);
+
+
+		
+		//tr_room_light Lights[NumLights];    // List of point lights
+		room.Lights = this.array(room.NumLights, "tr2_room_light");
+
+		//uint16_t NumStaticMeshes;                            // Number of static meshes
+		room.NumStaticMeshes = this.uint16_t(true);
+
+		//tr_room_staticmesh StaticMeshes[NumStaticMeshes];   // List of static meshes
+		room.StaticMeshes = this.array(room.NumStaticMeshes, "tr_room_staticmesh");
+
+		//int16_t AlternateRoom;
+		room.AlternateRoom = this.int16_t(true);
+		//int16_t Flags;
+		room.Flags = this.int16_t(true);
+
 		return room;
 	}
 
