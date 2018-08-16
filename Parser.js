@@ -26,7 +26,7 @@ class Parser {
     }
 
 
-    tr2_room_staticmesh() {
+    tr2_room_staticmesh() { //20
         /*
         struct tr2_room_staticmesh  // 20 bytes
         {
@@ -52,27 +52,59 @@ class Parser {
 
     }
 
-    uint32_t() {
+    uint32_t() { //4
         var a = this.readBytes(4);
 
-        return (a[3] << 24) + (a[2] << 14) + (a[1] << 8) + (a[0])
+        return a[3] * 256 *256 *256 + a[2] * 256 *256 + a[1] * 256 + a[0] 
 
     }
 
-    int32_t() {
+    int32_t() { //4
         var a = this.readBytes(4);
 
-        return (a[3] << 24) + (a[2] << 14) + (a[1] << 8) + (a[0])
+        var v =  a[3] * 256 *256 *256 + a[2] * 256 *256 + a[1] * 256 + a[0] 
+
+
+        if(a[3] >= 128){
+
+            var bin = (+v).toString(2);
+            //console.log(bin)
+
+
+            
+            bin = bin.replace(new RegExp("1", 'g'), "t");
+            bin = bin.replace(new RegExp("0", 'g'), "1");
+            bin = bin.replace(new RegExp("t", 'g'), "0");
+            return -parseInt(bin, 2);
+        }
+
+        return v;
+
+
 
     }
-    int16_t() {
+    int16_t() { //2
         var a = this.readBytes(2);
-        return (a[1] << 8) + (a[0])
+        var v =  a[1] * 256 + a[0] 
+        if(a[1] >= 128){
+
+            var bin = (+v).toString(2);
+            //console.log(bin)
+
+
+            
+            bin = bin.replace(new RegExp("1", 'g'), "t");
+            bin = bin.replace(new RegExp("0", 'g'), "1");
+            bin = bin.replace(new RegExp("t", 'g'), "0");
+            return -parseInt(bin, 2);
+        }
+        return v;
+
     }
 
     uint16_t() {
         var a = this.readBytes(2);
-        return (a[1] << 8) + (a[0]);
+        return a[1] * 256 + a[0] 
     }
     uint8_t() {
         var a = this.readByte();
@@ -80,7 +112,26 @@ class Parser {
     }
 
     int8_t() {
-        var a = this.readByte();
+        var v = this.readByte();
+
+  
+        if(v >= 128){
+
+            var bin = (+v).toString(2);
+            //console.log(bin)
+
+
+            
+            bin = bin.replace(new RegExp("1", 'g'), "t");
+            bin = bin.replace(new RegExp("0", 'g'), "1");
+            bin = bin.replace(new RegExp("t", 'g'), "0");
+            return -parseInt(bin, 2);
+        }
+        return v;
+
+
+
+
         return a;
     }
 
@@ -92,12 +143,15 @@ class Parser {
             l.push(this[parserFunction]());
         }
 
+
+ 
+
         return l;
     }
 
 
 
-    tr_colour() {
+    tr_colour() { //3
         return {
             Red: this.readByte(),
             Green: this.readByte(),
@@ -105,7 +159,7 @@ class Parser {
         }
     }
 
-    tr_colour4() {
+    tr_colour4() { //4
         return {
             Red: this.readByte(),
             Green: this.readByte(),
@@ -170,13 +224,104 @@ struct tr_room_portal  // 32 bytes
     tr_vertex Vertices[4];
 };
  */
-        return {
+
+        var start = this.pos; 
+
+
+        var portal =  {
 
             AdjoiningRoom: this.uint16_t(true),
             Normal: this.tr_vertex(),
             Vertices: this.array(4, "tr_vertex")
         }
 
+        if( (this.pos - start ) % 4 != 0)
+        {
+            console.error("tr_room_portal");
+        }
+
+        return portal;
+
+    }
+
+    tr_mesh() {
+        /*
+virtual struct tr_mesh // (variable length)
+{
+    tr_vertex Centre;
+      int32_t CollRadius;
+
+      int16_t NumVertices;           // Number of vertices in this mesh
+    tr_vertex Vertices[NumVertices]; // List of vertices (relative coordinates)
+
+      int16_t NumNormals;
+
+  if(NumNormals > 0)
+    tr_vertex Normals[NumNormals];
+  else
+      int16_t Lights[abs(NumNormals)];
+
+     int16_t NumTexturedRectangles; // number of textured rectangles in this mesh
+    tr_face4 TexturedRectangles[NumTexturedRectangles]; // list of textured rectangles
+
+     int16_t NumTexturedTriangles;  // number of textured triangles in this mesh
+    tr_face3 TexturedTriangles[NumTexturedTriangles]; // list of textured triangles
+
+     int16_t NumColouredRectangles; // number of coloured rectangles in this mesh
+    tr_face4 ColouredRectangles[NumColouredRectangles]; // list of coloured rectangles
+
+     int16_t NumColouredTriangles; // number of coloured triangles in this mesh
+    tr_face3 ColouredTriangles[NumColouredTriangles]; // list of coloured triangles
+};
+ */
+
+
+    var start = parser.pos;
+
+
+
+
+
+
+        var mesh =  { };
+
+        mesh.Centre = this.tr_vertex(true);
+        mesh.CollRadius = this.int32_t(true);
+        mesh.NumVertices = this.int16_t(true);
+
+        mesh.Vertices  = this.array(mesh.NumVertices, "tr_vertex");
+        mesh.NumNormals  = this.int16_t();
+
+        if(mesh.NumNormals > 0){
+            mesh.Normals  = this.array(mesh.NumNormals, "tr_vertex");
+        }else{
+            mesh.Lights  = this.array(-mesh.NumNormals, "int16_t");
+        }
+
+        mesh.NumTexturedRectangles  = this.int16_t();
+        mesh.TexturedRectangles  = this.array(mesh.NumTexturedRectangles, "tr_face4");
+
+        mesh.NumTexturedTriangles  = this.int16_t();
+        mesh.TexturedTriangles  = this.array(mesh.NumTexturedTriangles, "tr_face3");
+
+        mesh.NumColouredRectangles  = this.int16_t();
+        mesh.ColouredRectangles  = this.array(mesh.NumColouredRectangles, "tr_face4");
+
+        mesh.NumColouredTriangles  = this.int16_t();
+        mesh.ColouredTriangles  = this.array(mesh.NumColouredTriangles, "tr_face3");
+
+
+
+
+        var diff = (parser.pos - start) % 4;
+        if(diff > 0){
+            //debugger;
+            parser.readBytes(4-diff)
+        }
+
+
+
+        return mesh;
     }
 
 
@@ -245,6 +390,59 @@ struct tr2_room_vertex  // 12 bytes
             Attributes: this.uint16_t(true),
             Lighting2: this.int16_t(true),
         }
+
+    } 
+
+   tr_animation() {
+        /*
+struct tr_animation // 32 bytes
+{
+    uint32_t  FrameOffset; // Byte offset into Frames[] (divide by 2 for Frames[i])
+     uint8_t  FrameRate;   // Engine ticks per frame
+     uint8_t  FrameSize;   // Number of int16_t's in Frames[] used by this animation
+
+    uint16_t  State_ID;
+
+       fixed  Speed;
+       fixed  Accel;
+
+    uint16_t  FrameStart;  // First frame in this animation
+    uint16_t  FrameEnd;    // Last frame in this animation
+    uint16_t  NextAnimation;
+    uint16_t  NextFrame;
+
+    uint16_t  NumStateChanges;
+    uint16_t  StateChangeOffset; // Offset into StateChanges[]
+
+    uint16_t  NumAnimCommands;   // How many of them to use.
+    uint16_t  AnimCommand;       // Offset into AnimCommand[]
+};
+ */
+
+
+        var anim =  {
+
+            FrameOffset: this.uint32_t(true),
+            FrameRate: this.uint8_t(true),
+            FrameSize: this.uint8_t(true),
+            State_ID: this.uint16_t(true),
+        }
+        anim.Speed =  this.int16_t(true);
+anim.Accel= this.int16_t(true);
+anim.FrameStart= this.uint16_t(true);
+anim.FrameEnd= this.uint16_t(true);
+anim.NextAnimation= this.uint16_t(true);
+anim.NextFrame= this.uint16_t(true);
+
+anim.NumStateChanges= this.uint16_t(true);
+anim.StateChangeOffset= this.uint16_t(true);
+
+anim.NumAnimCommands= this.uint16_t(true);
+anim.AnimCommand= this.uint16_t(true);
+
+
+ 
+        return anim;
 
     }
     tr_face4() {
@@ -316,9 +514,24 @@ virtual struct tr_room_data    // (variable length)
     }
 
 
+    tr_anim_command() {
+        /*
+struct tr_anim_command // 2 bytes
+{
+    int16_t Value;
+};
+ */
+        var tr_anim_command = {};
+        tr_anim_command.Value = this.int16_t(true); 
+
+
+        return tr_anim_command;
+    }
+
+
 
     tr2_room() {
-
+ 
         var room = {};
 
         //tr_room_info info;           // Where the room exists, in world coordinates
@@ -384,6 +597,10 @@ virtual struct tr_room_data    // (variable length)
         //int16_t Flags;
         room.Flags = this.int16_t(true);
 
+
+ 
+
+
         return room;
     }
 
@@ -401,18 +618,17 @@ function loadLevel(buffer) {
     parser = new Parser(data);
 
 
-    var schema = {
-        //uint32_t Version; // version (4 bytes)
-        Version: parser.uint32_t(true),
-        //tr_colour Palette[256]; // 8-bit palette (768 bytes)
-        Palette: parser.array(256, "tr_colour"),
-        //tr_colour4 Palette16[256]; //  (1024 bytes)
-        Palette16: parser.array(256, "tr_colour4"),
-        //uint32_t NumTextiles; // number of texture tiles (4 bytes)
-        NumTextiles: parser.uint32_t(true),
+    var schema = { };
+    //uint32_t Version; // version (4 bytes)
+    schema.Version = parser.uint32_t(true);
+    //tr_colour Palette[256]; // 8-bit palette (768 bytes)
+    schema.Palette = parser.array(256, "tr_colour");
+    //tr_colour4 Palette16[256]; //  (1024 bytes)
+    schema.Palette16 = parser.array(256, "tr_colour4");
+    //uint32_t NumTextiles; // number of texture tiles (4 bytes)
+    schema.NumTextiles = parser.uint32_t(true);
 
-    };
-
+    
     //tr_textile8 Textile8[NumTextiles]; // 8-bit (palettized) textiles (NumTextiles * 65536 bytes)
     schema.Textile8 = parser.array(schema.NumTextiles, "tr_textile8");
 
@@ -430,21 +646,80 @@ function loadLevel(buffer) {
     //tr2_room Rooms[NumRooms]; // room list (variable length)
     schema.Rooms = parser.array(schema.NumRooms, "tr2_room");
 
+    
+    debugger;
+
     //uint32_t NumFloorData; // number of floor data uint16_t's to follow (4 bytes)
+    schema.NumFloorData = parser.uint32_t(true);
+
     //uint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
+    schema.FloorData = parser.array(schema.NumFloorData, "uint16_t");
+
+ 
+
     //uint32_t NumMeshData; // number of uint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
+    schema.NumMeshData = parser.uint32_t(true);
+    var start = parser.pos;
+    var end = parser.pos + 2 * schema.NumMeshData;
     //tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
+
+
+    schema.Meshes = [];
+    while (parser.pos < end) {
+
+        schema.Meshes.push(parser.tr_mesh());
+    }
+    /*
+    */
+
+    //tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
+   // schema.Meshes = parser.array(schema.NumMeshData, "uint16_t");
+
+
     //uint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
+    schema.NumMeshPointers = parser.uint32_t(true);
+
+
+
+
+
     //uint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
+    schema.MeshPointers = parser.array(schema.NumMeshPointers, "uint32_t");
+
+
+    
     //uint32_t NumAnimations; // number of animations to follow (4 bytes)
+    schema.NumAnimations = parser.uint32_t(true);
+
     //tr_animation Animations[NumAnimations]; // animation list (NumAnimations * 32 bytes)
+    schema.Animations = parser.array(schema.NumAnimations, "tr_animation");
+
     //uint32_t NumStateChanges; // number of state changes to follow (4 bytes)
+    schema.NumStateChanges = parser.uint32_t(true);
+
     //tr_state_change StateChanges[NumStateChanges]; // state-change list (NumStructures * 6 bytes)
+    schema.StateChanges = parser.array(schema.NumStateChanges, "tr_state_change");
+    
     //uint32_t NumAnimDispatches; // number of animation dispatches to follow (4 bytes)
+    schema.NumAnimDispatches = parser.uint32_t(true);
+
     //tr_anim_dispatch AnimDispatches[NumAnimDispatches]; // animation-dispatch list list (NumAnimDispatches * 8 bytes)
+    schema.AnimDispatches = parser.array(schema.NumAnimDispatches, "tr_anim_dispatch");
+    
+
     //uint32_t NumAnimCommands; // number of animation commands to follow (4 bytes)
+    schema.NumAnimCommands = parser.uint32_t(true);
+
     //tr_anim_command AnimCommands[NumAnimCommands]; // animation-command list (NumAnimCommands * 2 bytes)
+    schema.AnimCommands = parser.array(schema.NumAnimCommands, "tr_anim_command");
+
+
+
     //uint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
+    schema.NumMeshTrees = parser.uint32_t(true);
+
+
+
     //tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
     //uint32_t NumFrames; // number of words of frame data to follow (4 bytes)
     //uint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)

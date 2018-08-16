@@ -125,8 +125,16 @@ class WebGL{
         //Bind it as The Current Buffer
         this.GL.bindBuffer(this.GL.ARRAY_BUFFER, VertexBuffer);
 
+        var vertices = level.Rooms[0].RoomData[0].Vertices.reduce(function(accumulator, currentValue){
+            accumulator.push(currentValue.Vertex.x);
+            accumulator.push(currentValue.Vertex.y);
+            accumulator.push(currentValue.Vertex.z);
+            return accumulator;
+        }, []);
+
+
         // Fill it With the Data
-        this.GL.bufferData(this.GL.ARRAY_BUFFER, new Float32Array(Object.Vertices), this.GL.STATIC_DRAW);
+        this.GL.bufferData(this.GL.ARRAY_BUFFER, new Float32Array(vertices), this.GL.STATIC_DRAW);
 
         //Connect Buffer To Shader's attribute
         this.GL.vertexAttribPointer(this.VertexPosition, 3, this.GL.FLOAT, false, 0, 0);
@@ -144,13 +152,16 @@ class WebGL{
         this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, TriangleBuffer);
 
 
+
+
+
         this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(Object.Triangles), this.GL.STATIC_DRAW);
 
 
 
 
         //Generate The Perspective Matrix
-        var PerspectiveMatrix = MakePerspective(45, this.AspectRatio, 1, 10000.0);
+        var PerspectiveMatrix = MakePerspective(25, this.AspectRatio, 1, 100000.0);
 
         var TransformMatrix = MakeTransform(Object);
 
@@ -212,6 +223,10 @@ function MakePerspective(FOV, AspectRatio, Closest, Farest) {
 }
 
 function MakeTransform(Object) {
+	
+	console.log(Object.Rotation);
+
+
     var y = Object.Rotation * (Math.PI / 180.0);
     var A = Math.cos(y);
     var B = -1 * Math.sin(y);
@@ -239,7 +254,7 @@ var Texture;
 var TextureImage;
  
 
-
+var level;
 
 
 function Ready() {
@@ -256,13 +271,13 @@ fetch('WALL.TR2')
 	})
   .then(function(buffer) {
 		
-  		var level = loadLevel(buffer);
+  		level = loadLevel(buffer);
   		console.log(level)
 
  	
     GL = new WebGL("GLCanvas", "FragmentShader", "VertexShader");
     Texture = GL.LoadTexture();
-    setInterval(Update, 41.6666);
+    //setInterval(Update, 41.6666);
 
 
 	})
