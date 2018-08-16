@@ -1,67 +1,64 @@
 //https://opentomb.earvillage.net/TRosettaStone3/trosettastone.html#level_format_tr2
+class WebGL {
+    constructor(CID, FSID, VSID) {
+        var canvas = document.getElementById(CID);
+        if (!canvas.getContext("webgl") && !canvas.getContext("experimental-webgl"))
+            alert("Your Browser Doesn't Support WebGL");
+        else {
+            this.GL = (canvas.getContext("webgl")) ? canvas.getContext("webgl") : canvas.getContext("experimental-webgl");
 
-class WebGL{
-	constructor(CID, FSID, VSID) {
-	    var canvas = document.getElementById(CID);
-	    if (!canvas.getContext("webgl") && !canvas.getContext("experimental-webgl"))
-	        alert("Your Browser Doesn't Support WebGL");
-	    else {
-	        this.GL = (canvas.getContext("webgl")) ? canvas.getContext("webgl") : canvas.getContext("experimental-webgl");
+            this.GL.clearColor(1.0, 1.0, 1.0, 1.0); // this is the color 
+            this.GL.enable(this.GL.DEPTH_TEST); //Enable Depth Testing
+            this.GL.depthFunc(this.GL.LEQUAL); //Set Perspective View
+            this.AspectRatio = canvas.width / canvas.height;
 
-	        this.GL.clearColor(1.0, 1.0, 1.0, 1.0); // this is the color 
-	        this.GL.enable(this.GL.DEPTH_TEST); //Enable Depth Testing
-	        this.GL.depthFunc(this.GL.LEQUAL); //Set Perspective View
-	        this.AspectRatio = canvas.width / canvas.height;
+            var FShader = document.getElementById(FSID);
+            var VShader = document.getElementById(VSID);
 
-	        var FShader = document.getElementById(FSID);
-	        var VShader = document.getElementById(VSID);
+            if (!FShader || !VShader)
+                alert("Error, Could Not Find Shaders");
+            else {
+                //Load and Compile Fragment Shader
+                var Code = LoadShader(FShader);
+                FShader = this.GL.createShader(this.GL.FRAGMENT_SHADER);
+                this.GL.shaderSource(FShader, Code);
+                this.GL.compileShader(FShader);
 
-	        if (!FShader || !VShader)
-	            alert("Error, Could Not Find Shaders");
-	        else {
-	            //Load and Compile Fragment Shader
-	            var Code = LoadShader(FShader);
-	            FShader = this.GL.createShader(this.GL.FRAGMENT_SHADER);
-	            this.GL.shaderSource(FShader, Code);
-	            this.GL.compileShader(FShader);
+                //Load and Compile Vertex Shader
+                Code = LoadShader(VShader);
+                VShader = this.GL.createShader(this.GL.VERTEX_SHADER);
+                this.GL.shaderSource(VShader, Code);
+                this.GL.compileShader(VShader);
 
-	            //Load and Compile Vertex Shader
-	            Code = LoadShader(VShader);
-	            VShader = this.GL.createShader(this.GL.VERTEX_SHADER);
-	            this.GL.shaderSource(VShader, Code);
-	            this.GL.compileShader(VShader);
+                //Create The Shader Program
+                this.ShaderProgram = this.GL.createProgram();
+                this.GL.attachShader(this.ShaderProgram, FShader);
+                this.GL.attachShader(this.ShaderProgram, VShader);
+                this.GL.linkProgram(this.ShaderProgram);
+                this.GL.useProgram(this.ShaderProgram);
 
-	            //Create The Shader Program
-	            this.ShaderProgram = this.GL.createProgram();
-	            this.GL.attachShader(this.ShaderProgram, FShader);
-	            this.GL.attachShader(this.ShaderProgram, VShader);
-	            this.GL.linkProgram(this.ShaderProgram);
-	            this.GL.useProgram(this.ShaderProgram);
+                //Link Vertex Position Attribute from Shader
+                this.VertexPosition = this.GL.getAttribLocation(this.ShaderProgram, "VertexPosition");
+                this.GL.enableVertexAttribArray(this.VertexPosition);
 
-	            //Link Vertex Position Attribute from Shader
-	            this.VertexPosition = this.GL.getAttribLocation(this.ShaderProgram, "VertexPosition");
-	            this.GL.enableVertexAttribArray(this.VertexPosition);
-
-	            //Link Texture Coordinate Attribute from Shader
-	            this.VertexTexture = this.GL.getAttribLocation(this.ShaderProgram, "TextureCoord");
-	            this.GL.enableVertexAttribArray(this.VertexTexture);
-
-
-
-
-	        }
+                //Link Texture Coordinate Attribute from Shader
+                this.VertexTexture = this.GL.getAttribLocation(this.ShaderProgram, "TextureCoord");
+                this.GL.enableVertexAttribArray(this.VertexTexture);
 
 
 
 
-	    }
+            }
 
 
 
 
+        }
 
 
-	}
+
+
+    }
 
 
 
@@ -125,7 +122,7 @@ class WebGL{
         //Bind it as The Current Buffer
         this.GL.bindBuffer(this.GL.ARRAY_BUFFER, VertexBuffer);
 
-        var vertices = level.Rooms[0].RoomData[0].Vertices.reduce(function(accumulator, currentValue){
+        var vertices = level.Rooms[0].RoomData[0].Vertices.reduce(function(accumulator, currentValue) {
             accumulator.push(currentValue.Vertex.x);
             accumulator.push(currentValue.Vertex.y);
             accumulator.push(currentValue.Vertex.z);
@@ -148,14 +145,28 @@ class WebGL{
 
 
 
-        var TriangleBuffer = this.GL.createBuffer();
-        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, TriangleBuffer);
+        var RectangleBuffer = this.GL.createBuffer();
+        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, RectangleBuffer);
+
+
+        var rectangles =
+            level.Rooms[0].RoomData[0].Rectangles.reduce(function(accumulator, currentValue) {
+                accumulator.push(currentValue.Vertices[0]);
+                accumulator.push(currentValue.Vertices[1]);
+                accumulator.push(currentValue.Vertices[2]);
+
+                accumulator.push(currentValue.Vertices[1]);
+                accumulator.push(currentValue.Vertices[2]);
+                accumulator.push(currentValue.Vertices[3]);
 
 
 
+                //console.log(currentValue)
+                return accumulator;
+            }, []);
 
 
-        this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(Object.Triangles), this.GL.STATIC_DRAW);
+        this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(rectangles), this.GL.STATIC_DRAW);
 
 
 
@@ -174,6 +185,60 @@ class WebGL{
 
 
 
+        //Update The Texture Sampler in the fragment shader to use slot 0
+        this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
+
+        //Set The Perspective and Transformation Matrices
+        var pmatrix = this.GL.getUniformLocation(this.ShaderProgram, "PerspectiveMatrix");
+        this.GL.uniformMatrix4fv(pmatrix, false, new Float32Array(PerspectiveMatrix));
+
+        var tmatrix = this.GL.getUniformLocation(this.ShaderProgram, "TransformationMatrix");
+        this.GL.uniformMatrix4fv(tmatrix, false, new Float32Array(TransformMatrix));
+
+        //Draw The Triangles
+        this.GL.drawElements(this.GL.TRIANGLES, rectangles.length, this.GL.UNSIGNED_SHORT, 0);
+
+
+
+
+
+
+//////
+
+        var TriangleBuffer = this.GL.createBuffer();
+        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, TriangleBuffer);
+
+
+        var triangles =
+            level.Rooms[0].RoomData[0].Triangles.reduce(function(accumulator, currentValue) {
+                accumulator.push(currentValue.Vertices[0]);
+                accumulator.push(currentValue.Vertices[1]);
+                accumulator.push(currentValue.Vertices[2]);
+ 
+
+                //console.log(currentValue)
+                return accumulator;
+            }, []);
+
+
+        this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(triangles), this.GL.STATIC_DRAW);
+
+
+
+
+        //Generate The Perspective Matrix
+        var PerspectiveMatrix = MakePerspective(25, this.AspectRatio, 1, 100000.0);
+
+        var TransformMatrix = MakeTransform(Object);
+
+        //Set slot 0 as the active Texture
+        this.GL.activeTexture(this.GL.TEXTURE0);
+
+        //Load in the Texture To Memory
+        this.GL.bindTexture(this.GL.TEXTURE_2D, Texture);
+
+
+
 
         //Update The Texture Sampler in the fragment shader to use slot 0
         this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
@@ -186,7 +251,20 @@ class WebGL{
         this.GL.uniformMatrix4fv(tmatrix, false, new Float32Array(TransformMatrix));
 
         //Draw The Triangles
-        this.GL.drawElements(this.GL.TRIANGLES, Object.Triangles.length, this.GL.UNSIGNED_SHORT, 0);
+        this.GL.drawElements(this.GL.TRIANGLES, triangles.length, this.GL.UNSIGNED_SHORT, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -223,8 +301,8 @@ function MakePerspective(FOV, AspectRatio, Closest, Farest) {
 }
 
 function MakeTransform(Object) {
-	
-	console.log(Object.Rotation);
+
+    console.log(Object.Rotation);
 
 
     var y = Object.Rotation * (Math.PI / 180.0);
@@ -252,7 +330,7 @@ var Texture;
 
 //This will hold the textures image 
 var TextureImage;
- 
+
 
 var level;
 
@@ -262,33 +340,26 @@ function Ready() {
 
 
 
-
-fetch('WALL.TR2')
-  .then(function(response) {
-
-
-		return response.arrayBuffer()
-	})
-  .then(function(buffer) {
-		
-  		level = loadLevel(buffer);
-  		console.log(level)
-
- 	
-    GL = new WebGL("GLCanvas", "FragmentShader", "VertexShader");
-    Texture = GL.LoadTexture();
-    //setInterval(Update, 41.6666);
+    fetch('WALL.TR2')
+        .then(function(response) {
 
 
-	})
- 
-  ;
+            return response.arrayBuffer()
+        })
+        .then(function(buffer) {
 
- 
+            level = loadLevel(buffer);
+            console.log(level)
 
 
+            GL = new WebGL("GLCanvas", "FragmentShader", "VertexShader");
+            Texture = GL.LoadTexture();
+            //setInterval(Update, 41.6666);
 
 
+        })
+
+    ;
 
 
 

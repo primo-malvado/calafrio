@@ -647,7 +647,7 @@ function loadLevel(buffer) {
     schema.Rooms = parser.array(schema.NumRooms, "tr2_room");
 
     
-    debugger;
+     /*
 
     //uint32_t NumFloorData; // number of floor data uint16_t's to follow (4 bytes)
     schema.NumFloorData = parser.uint32_t(true);
@@ -669,8 +669,7 @@ function loadLevel(buffer) {
 
         schema.Meshes.push(parser.tr_mesh());
     }
-    /*
-    */
+ 
 
     //tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
    // schema.Meshes = parser.array(schema.NumMeshData, "uint16_t");
@@ -757,7 +756,7 @@ function loadLevel(buffer) {
     //uint32_t NumSampleIndices; // number of sample indices to follow (4 bytes)
     //uint32_t SampleIndices[NumSampleIndices]; // sample indices (NumSampleIndices * 4 bytes)
 
-
+*/
 
 
     return schema;
