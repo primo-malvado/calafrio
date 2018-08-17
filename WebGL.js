@@ -1,4 +1,16 @@
 //https://opentomb.earvillage.net/TRosettaStone3/trosettastone.html#level_format_tr2
+    // Compute the position of the first F
+    var fPosition = [8192, -1023, 1024];
+
+    var cameraPosition = [ 0,0,0];
+  function degToRad(d) {
+    return d * Math.PI / 180;
+  }
+
+
+  var cameraAngleRadians = degToRad(0);
+  var fieldOfViewRadians = degToRad(60);
+
 class WebGL {
     constructor(CID, FSID, VSID) {
         var canvas = document.getElementById(CID);
@@ -37,15 +49,17 @@ class WebGL {
                 this.GL.linkProgram(this.ShaderProgram);
                 this.GL.useProgram(this.ShaderProgram);
 
+
+
                 //Link Vertex Position Attribute from Shader
-                this.VertexPosition = this.GL.getAttribLocation(this.ShaderProgram, "VertexPosition");
+                this.VertexPosition = this.GL.getAttribLocation(this.ShaderProgram, "a_position");
                 this.GL.enableVertexAttribArray(this.VertexPosition);
 
                 //Link Texture Coordinate Attribute from Shader
                 this.VertexTexture = this.GL.getAttribLocation(this.ShaderProgram, "TextureCoord");
                 this.GL.enableVertexAttribArray(this.VertexTexture);
 
-
+                this.matrixLocation = this.GL.getUniformLocation(this.ShaderProgram, "u_matrix");
 
 
             }
@@ -115,6 +129,45 @@ class WebGL {
     }
 
 
+    getVertices(){
+        return level.Rooms[0].RoomData[0].Vertices.reduce(function(accumulator, currentValue) {
+            accumulator.push(currentValue.Vertex.x);
+            accumulator.push(currentValue.Vertex.y);
+            accumulator.push(currentValue.Vertex.z);
+            return accumulator;
+        }, []);
+    }
+
+    getTriangles(room){
+
+        return level.Rooms[room].RoomData[0].Triangles.reduce(function(accumulator, currentValue) {
+                accumulator.push(currentValue.Vertices[0]);
+                accumulator.push(currentValue.Vertices[1]);
+                accumulator.push(currentValue.Vertices[2]);
+ 
+
+                //console.log(currentValue)
+                return accumulator;
+            }, []);
+
+
+    }
+    getRectangles(room){
+        return level.Rooms[room].RoomData[0].Rectangles.reduce(function(accumulator, currentValue) {
+            accumulator.push(currentValue.Vertices[0]);
+            accumulator.push(currentValue.Vertices[1]);
+            accumulator.push(currentValue.Vertices[2]);
+
+            accumulator.push(currentValue.Vertices[0]);
+            accumulator.push(currentValue.Vertices[2]);
+            accumulator.push(currentValue.Vertices[3]);
+
+
+
+            //console.log(currentValue)
+            return accumulator;
+        }, []);
+    }
 
     Draw(Object, Texture) {
         var VertexBuffer = this.GL.createBuffer(); //Create a New Buffer
@@ -122,12 +175,7 @@ class WebGL {
         //Bind it as The Current Buffer
         this.GL.bindBuffer(this.GL.ARRAY_BUFFER, VertexBuffer);
 
-        var vertices = level.Rooms[0].RoomData[0].Vertices.reduce(function(accumulator, currentValue) {
-            accumulator.push(currentValue.Vertex.x);
-            accumulator.push(currentValue.Vertex.y);
-            accumulator.push(currentValue.Vertex.z);
-            return accumulator;
-        }, []);
+        var vertices = this.getVertices();
 
 
         // Fill it With the Data
@@ -145,113 +193,124 @@ class WebGL {
 
 
 
-        var RectangleBuffer = this.GL.createBuffer();
-        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, RectangleBuffer);
-
-
-        var rectangles =
-            level.Rooms[0].RoomData[0].Rectangles.reduce(function(accumulator, currentValue) {
-                accumulator.push(currentValue.Vertices[0]);
-                accumulator.push(currentValue.Vertices[1]);
-                accumulator.push(currentValue.Vertices[2]);
-
-                accumulator.push(currentValue.Vertices[1]);
-                accumulator.push(currentValue.Vertices[2]);
-                accumulator.push(currentValue.Vertices[3]);
-
-
-
-                //console.log(currentValue)
-                return accumulator;
-            }, []);
-
-
-        this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(rectangles), this.GL.STATIC_DRAW);
-
-
-
-
-        //Generate The Perspective Matrix
-        var PerspectiveMatrix = MakePerspective(25, this.AspectRatio, 1, 100000.0);
-
-        var TransformMatrix = MakeTransform(Object);
-
         //Set slot 0 as the active Texture
         this.GL.activeTexture(this.GL.TEXTURE0);
-
         //Load in the Texture To Memory
         this.GL.bindTexture(this.GL.TEXTURE_2D, Texture);
-
-
-
-
         //Update The Texture Sampler in the fragment shader to use slot 0
         this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
-
         //Set The Perspective and Transformation Matrices
+
+
+ /*
+
+        //Generate The Perspective Matrix
+        var PerspectiveMatrix = MakePerspective(90, this.AspectRatio, 1, 100000.0);
+        var TransformMatrix = MakeTransform(Object);
         var pmatrix = this.GL.getUniformLocation(this.ShaderProgram, "PerspectiveMatrix");
         this.GL.uniformMatrix4fv(pmatrix, false, new Float32Array(PerspectiveMatrix));
-
         var tmatrix = this.GL.getUniformLocation(this.ShaderProgram, "TransformationMatrix");
         this.GL.uniformMatrix4fv(tmatrix, false, new Float32Array(TransformMatrix));
-
-        //Draw The Triangles
-        this.GL.drawElements(this.GL.TRIANGLES, rectangles.length, this.GL.UNSIGNED_SHORT, 0);
-
-
-
-
-
-
-//////
-
-        var TriangleBuffer = this.GL.createBuffer();
-        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, TriangleBuffer);
-
-
-        var triangles =
-            level.Rooms[0].RoomData[0].Triangles.reduce(function(accumulator, currentValue) {
-                accumulator.push(currentValue.Vertices[0]);
-                accumulator.push(currentValue.Vertices[1]);
-                accumulator.push(currentValue.Vertices[2]);
+*/
  
+    var gl = this.GL;
 
-                //console.log(currentValue)
-                return accumulator;
-            }, []);
+    var numFs = 5;
+    var radius = 200;
+
+    // Compute the projection matrix
+    var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    var zNear = 1;
+    var zFar = 100000;
+    var projectionMatrix = m4.perspective(fieldOfViewRadians, this.AspectRatio, zNear, zFar);
+
+/*
+
+    // Use matrix math to compute a position on a circle where
+    // the camera is
+    var cameraMatrix = m4.yRotation(cameraAngleRadians);
+    cameraMatrix = m4.translate(cameraMatrix, 0, 0, radius * 1.5);
+
+    // Get the camera's postion from the matrix we computed
+    cameraPosition = [
+      cameraMatrix[12],
+      cameraMatrix[13],
+      cameraMatrix[14],
+    ];
+    cameraMatrix = m4.translate(cameraMatrix, 0, 0, radius * 1.5);
 
 
-        this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(triangles), this.GL.STATIC_DRAW);
+    var up = [0, 1, 0];
+
+    // Compute the camera's matrix using look at.
+    var cameraMatrix = m4.lookAt(cameraPosition, fPosition, up);
+*/
+
+
+    
+    var cameraMatrix = m4.yRotation(degToRad( Object.Rotation) );
+
+
+    // Make a view matrix from the camera matrix
+    var viewMatrix = m4.inverse(cameraMatrix);
+
+    // Compute a view projection matrix
+    var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
+
+    var ii = 0; 
+      var angle = ii * Math.PI * 2 / numFs;
+      var x = Math.cos(angle) * radius;
+      var y = Math.sin(angle) * radius
+
+      // starting with the view projection matrix
+      // compute a matrix for the F
+      var matrix = m4.translate(viewProjectionMatrix, x, 0, y);
+
+      // Set the matrix.
+      gl.uniformMatrix4fv(this.matrixLocation, false, matrix);
 
 
 
 
-        //Generate The Perspective Matrix
-        var PerspectiveMatrix = MakePerspective(25, this.AspectRatio, 1, 100000.0);
-
-        var TransformMatrix = MakeTransform(Object);
-
-        //Set slot 0 as the active Texture
-        this.GL.activeTexture(this.GL.TEXTURE0);
-
-        //Load in the Texture To Memory
-        this.GL.bindTexture(this.GL.TEXTURE_2D, Texture);
 
 
 
 
-        //Update The Texture Sampler in the fragment shader to use slot 0
-        this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
 
-        //Set The Perspective and Transformation Matrices
-        var pmatrix = this.GL.getUniformLocation(this.ShaderProgram, "PerspectiveMatrix");
-        this.GL.uniformMatrix4fv(pmatrix, false, new Float32Array(PerspectiveMatrix));
 
-        var tmatrix = this.GL.getUniformLocation(this.ShaderProgram, "TransformationMatrix");
-        this.GL.uniformMatrix4fv(tmatrix, false, new Float32Array(TransformMatrix));
 
-        //Draw The Triangles
-        this.GL.drawElements(this.GL.TRIANGLES, triangles.length, this.GL.UNSIGNED_SHORT, 0);
+
+
+
+
+
+        var roomList = [0, 1, 4 ,2 ,13, 3, 77];
+        for(var i in roomList) {
+//        for(var i = 0; i<level.Rooms.length; i++) {
+            var room =i;
+
+
+            // Rectangles
+            var RectangleBuffer = this.GL.createBuffer();
+            this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, RectangleBuffer);
+            var rectangles = this.getRectangles(room);
+            this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(rectangles), this.GL.STATIC_DRAW);
+            //Draw The rectangles
+            this.GL.drawElements(this.GL.TRIANGLES, rectangles.length, this.GL.UNSIGNED_SHORT, 0);
+            //
+
+            // Triangles
+            var TriangleBuffer = this.GL.createBuffer();
+            this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, TriangleBuffer);
+            var triangles = this.getTriangles(room);
+            this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(triangles), this.GL.STATIC_DRAW);
+            //Draw The Triangles
+            this.GL.drawElements(this.GL.TRIANGLES, triangles.length, this.GL.UNSIGNED_SHORT, 0);        
+            //
+
+ 
+        }
+
 
 
 
@@ -310,7 +369,7 @@ function MakeTransform(Object) {
     var B = -1 * Math.sin(y);
     var C = Math.sin(y);
     var D = Math.cos(y);
-    Object.Rotation += 3;
+
     return [
         A, 0, B, 0,
         0, 1, 0, 0,

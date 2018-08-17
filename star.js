@@ -1,5 +1,5 @@
 var Cube = {
-	Rotation : 95,
+	Rotation : 225,
  
     Texture : [ //This array is in groups of two, the x and y coordinates (a.k.a U,V) in the texture
         //The numbers go from 0.0 to 1.0, One pair for each vertex
