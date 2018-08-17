@@ -71,6 +71,64 @@ uniform mat4 u_matrix;
 
     <button onclick="Cube.Rotation -= 5; Update();">left </button>
     <button onclick="Cube.Rotation += 10; Update();">right </button>
+
+
+
+
+<script>
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+
+
+        cameraMovement[2] -=100;
+        Update();
+        // up arrow
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+        cameraMovement[2] +=100;
+        Update();
+    }
+    else if (e.keyCode == '37') {
+
+        cameraMovement[0] -=100;
+        Update();
+       // left arrow
+    }
+    else if (e.keyCode == '39') {
+       // right arrow
+       cameraMovement[0] +=100;
+       Update();
+    }
+
+    else if (e.keyCode == '34') {
+       //pg down
+       cameraMovement[1] +=100;
+       Update();
+    }
+
+    else if (e.keyCode == '33') {
+       //pg Up
+       cameraMovement[1] -=100;
+       Update();
+    }    
+    else{
+        console.log(e.keyCode)
+    }
+
+}
+
+</script>
+
+
+
+
     </body>
 </html>
 

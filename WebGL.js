@@ -1,11 +1,13 @@
 //https://opentomb.earvillage.net/TRosettaStone3/trosettastone.html#level_format_tr2
-    // Compute the position of the first F
-    var fPosition = [8192, -1023, 1024];
+// Compute the position of the first F
+var fPosition = [8192, -1023, 1024];
 
-    var cameraPosition = [ 0,0,0];
-  function degToRad(d) {
+var cameraPosition =  [15573.642270153401, -1050, 3986.0616611949986]
+var cameraMovement = [ 0,0,0];
+
+function degToRad(d) {
     return d * Math.PI / 180;
-  }
+}
 
 
   var cameraAngleRadians = degToRad(0);
@@ -246,9 +248,28 @@ class WebGL {
     var cameraMatrix = m4.lookAt(cameraPosition, fPosition, up);
 */
 
-
+/*
     
     var cameraMatrix = m4.yRotation(degToRad( Object.Rotation) );
+    cameraMatrix = m4.translate(cameraMatrix,cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+*/
+
+
+    var cameraMatrix = m4.yRotation(degToRad(0) );
+    cameraMatrix = m4.translate(cameraMatrix,cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+
+    cameraMatrix = m4.multiply(cameraMatrix, m4.yRotation(degToRad( Object.Rotation) ));
+    cameraMatrix = m4.multiply(cameraMatrix, m4.zRotation(degToRad( 180) ));
+
+    cameraMatrix = m4.translate(cameraMatrix,cameraMovement[0], cameraMovement[1], cameraMovement[2]);
+    cameraMovement = [ 0,0,0];
+
+    cameraPosition = [
+      cameraMatrix[12],
+      cameraMatrix[13],
+      cameraMatrix[14],
+    ];
+
 
 
     // Make a view matrix from the camera matrix
@@ -257,17 +278,8 @@ class WebGL {
     // Compute a view projection matrix
     var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
 
-    var ii = 0; 
-      var angle = ii * Math.PI * 2 / numFs;
-      var x = Math.cos(angle) * radius;
-      var y = Math.sin(angle) * radius
-
-      // starting with the view projection matrix
-      // compute a matrix for the F
-      var matrix = m4.translate(viewProjectionMatrix, x, 0, y);
-
-      // Set the matrix.
-      gl.uniformMatrix4fv(this.matrixLocation, false, matrix);
+ 
+      gl.uniformMatrix4fv(this.matrixLocation, false, viewProjectionMatrix);
 
 
 
@@ -298,7 +310,7 @@ class WebGL {
             //Draw The rectangles
             this.GL.drawElements(this.GL.TRIANGLES, rectangles.length, this.GL.UNSIGNED_SHORT, 0);
             //
-
+ 
             // Triangles
             var TriangleBuffer = this.GL.createBuffer();
             this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, TriangleBuffer);
@@ -307,7 +319,7 @@ class WebGL {
             //Draw The Triangles
             this.GL.drawElements(this.GL.TRIANGLES, triangles.length, this.GL.UNSIGNED_SHORT, 0);        
             //
-
+ 
  
         }
 
