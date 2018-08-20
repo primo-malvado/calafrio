@@ -57,6 +57,8 @@ class WebGL {
                 this.VertexPosition = this.GL.getAttribLocation(this.ShaderProgram, "a_position");
                 this.GL.enableVertexAttribArray(this.VertexPosition);
 
+
+
                 //Link Texture Coordinate Attribute from Shader
                 this.VertexTexture = this.GL.getAttribLocation(this.ShaderProgram, "TextureCoord");
                 this.GL.enableVertexAttribArray(this.VertexTexture);
@@ -76,60 +78,7 @@ class WebGL {
 
     }
 
-
-
-
-    LoadTexture() {
-        //Create a new Texture and Assign it as the active one
-        var TempTex = this.GL.createTexture();
-        this.GL.bindTexture(this.GL.TEXTURE_2D, TempTex);
-
-
-
-
-        const pixel = new Uint8Array([255, 123, 125, 255]); // opaque blue
-        this.GL.texImage2D(this.GL.TEXTURE_2D, 0, this.GL.RGBA,
-            1, 1, 0, this.GL.RGBA, this.GL.UNSIGNED_BYTE,
-            pixel);
-
-
-
-
-        TextureImage = new Image();
-
-        var _that = this;
-        TextureImage.onload = function() {
-
-
-
-
-            //Flip Positive Y (Optional)
-            _that.GL.pixelStorei(_that.GL.UNPACK_FLIP_Y_WEBGL, true);
-
-            //Load in The Image
-            _that.GL.texImage2D(_that.GL.TEXTURE_2D, 0, _that.GL.RGBA, _that.GL.RGBA, _that.GL.UNSIGNED_BYTE, TextureImage);
-
-            //Setup Scaling properties
-            _that.GL.texParameteri(_that.GL.TEXTURE_2D, _that.GL.TEXTURE_MAG_FILTER, _that.GL.LINEAR);
-            _that.GL.texParameteri(_that.GL.TEXTURE_2D, _that.GL.TEXTURE_MIN_FILTER, _that.GL.LINEAR_MIPMAP_NEAREST);
-            _that.GL.generateMipmap(_that.GL.TEXTURE_2D);
-
-            //Unbind the texture and return it.
-            _that.GL.bindTexture(_that.GL.TEXTURE_2D, null);
-
-
-
-
-        };
-
-        TextureImage.src = "Texture.png";
-
-
-
-
-        return TempTex;
-    }
-
+ 
 
     getVertices(){
         return level.Rooms[0].RoomData[0].Vertices.reduce(function(accumulator, currentValue) {
@@ -172,130 +121,83 @@ class WebGL {
     }
 
     Draw(Object) {
-        var VertexBuffer = this.GL.createBuffer(); //Create a New Buffer
 
-        //Bind it as The Current Buffer
-        this.GL.bindBuffer(this.GL.ARRAY_BUFFER, VertexBuffer);
 
         var vertices = this.getVertices();
 
 
+        var VertexBuffer = this.GL.createBuffer(); //Create a New Buffer
+        //Bind it as The Current Buffer
+        this.GL.bindBuffer(this.GL.ARRAY_BUFFER, VertexBuffer);
         // Fill it With the Data
         this.GL.bufferData(this.GL.ARRAY_BUFFER, new Float32Array(vertices), this.GL.STATIC_DRAW);
 
         //Connect Buffer To Shader's attribute
         this.GL.vertexAttribPointer(this.VertexPosition, 3, this.GL.FLOAT, false, 0, 0);
 
+
+
         //Repeat For The next Two
         var TextureBuffer = this.GL.createBuffer();
         this.GL.bindBuffer(this.GL.ARRAY_BUFFER, TextureBuffer);
         this.GL.bufferData(this.GL.ARRAY_BUFFER, new Float32Array(Object.Texture), this.GL.STATIC_DRAW);
+
+
         this.GL.vertexAttribPointer(this.VertexTexture, 2, this.GL.FLOAT, false, 0, 0);
 
 
 
 
         //Set slot 0 as the active Texture
-        this.GL.activeTexture(this.GL.TEXTURE0);
+        //this.GL.activeTexture(this.GL.TEXTURE0);
         //Load in the Texture To Memory
-        this.GL.bindTexture(this.GL.TEXTURE_2D, this.textures[2]);
+        this.GL.bindTexture(this.GL.TEXTURE_2D, this.textures[3]);
         //Update The Texture Sampler in the fragment shader to use slot 0
-        this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
+        //this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
         //Set The Perspective and Transformation Matrices
 
-
- /*
-
-        //Generate The Perspective Matrix
-        var PerspectiveMatrix = MakePerspective(90, this.AspectRatio, 1, 100000.0);
-        var TransformMatrix = MakeTransform(Object);
-        var pmatrix = this.GL.getUniformLocation(this.ShaderProgram, "PerspectiveMatrix");
-        this.GL.uniformMatrix4fv(pmatrix, false, new Float32Array(PerspectiveMatrix));
-        var tmatrix = this.GL.getUniformLocation(this.ShaderProgram, "TransformationMatrix");
-        this.GL.uniformMatrix4fv(tmatrix, false, new Float32Array(TransformMatrix));
-*/
  
-    var gl = this.GL;
+ 
+        var gl = this.GL;
 
-    var numFs = 5;
-    var radius = 200;
+        var numFs = 5;
+        var radius = 200;
 
-    // Compute the projection matrix
-    var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    var zNear = 1;
-    var zFar = 100000;
-    var projectionMatrix = m4.perspective(fieldOfViewRadians, this.AspectRatio, zNear, zFar);
+        // Compute the projection matrix
+        var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        var zNear = 1;
+        var zFar = 100000;
+        var projectionMatrix = m4.perspective(fieldOfViewRadians, this.AspectRatio, zNear, zFar);
 
-/*
+     
 
-    // Use matrix math to compute a position on a circle where
-    // the camera is
-    var cameraMatrix = m4.yRotation(cameraAngleRadians);
-    cameraMatrix = m4.translate(cameraMatrix, 0, 0, radius * 1.5);
+        var cameraMatrix = m4.yRotation(degToRad(0) );
+        cameraMatrix = m4.translate(cameraMatrix,cameraPosition[0], cameraPosition[1], cameraPosition[2]);
 
-    // Get the camera's postion from the matrix we computed
-    cameraPosition = [
-      cameraMatrix[12],
-      cameraMatrix[13],
-      cameraMatrix[14],
-    ];
-    cameraMatrix = m4.translate(cameraMatrix, 0, 0, radius * 1.5);
+        cameraMatrix = m4.multiply(cameraMatrix, m4.yRotation(degToRad( Object.Rotation) ));
+        cameraMatrix = m4.multiply(cameraMatrix, m4.zRotation(degToRad( 180) ));
 
+        cameraMatrix = m4.translate(cameraMatrix,cameraMovement[0], cameraMovement[1], cameraMovement[2]);
+        cameraMovement = [ 0,0,0];
 
-    var up = [0, 1, 0];
-
-    // Compute the camera's matrix using look at.
-    var cameraMatrix = m4.lookAt(cameraPosition, fPosition, up);
-*/
-
-/*
-    
-    var cameraMatrix = m4.yRotation(degToRad( Object.Rotation) );
-    cameraMatrix = m4.translate(cameraMatrix,cameraPosition[0], cameraPosition[1], cameraPosition[2]);
-*/
-
-
-    var cameraMatrix = m4.yRotation(degToRad(0) );
-    cameraMatrix = m4.translate(cameraMatrix,cameraPosition[0], cameraPosition[1], cameraPosition[2]);
-
-    cameraMatrix = m4.multiply(cameraMatrix, m4.yRotation(degToRad( Object.Rotation) ));
-    cameraMatrix = m4.multiply(cameraMatrix, m4.zRotation(degToRad( 180) ));
-
-    cameraMatrix = m4.translate(cameraMatrix,cameraMovement[0], cameraMovement[1], cameraMovement[2]);
-    cameraMovement = [ 0,0,0];
-
-    cameraPosition = [
-      cameraMatrix[12],
-      cameraMatrix[13],
-      cameraMatrix[14],
-    ];
+        cameraPosition = [
+          cameraMatrix[12],
+          cameraMatrix[13],
+          cameraMatrix[14],
+        ];
 
 
 
-    // Make a view matrix from the camera matrix
-    var viewMatrix = m4.inverse(cameraMatrix);
+        // Make a view matrix from the camera matrix
+        var viewMatrix = m4.inverse(cameraMatrix);
 
-    // Compute a view projection matrix
-    var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
+        // Compute a view projection matrix
+        var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
+
+     
+        gl.uniformMatrix4fv(this.matrixLocation, false, viewProjectionMatrix);
 
  
-      gl.uniformMatrix4fv(this.matrixLocation, false, viewProjectionMatrix);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         var roomList = [0, 1, 4 ,2 ,13, 3, 77];
         for(var i in roomList) {
 //        for(var i = 0; i<level.Rooms.length; i++) {
