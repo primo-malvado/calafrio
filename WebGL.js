@@ -428,6 +428,28 @@ function Ready() {
             //setInterval(Update, 41.6666);
 
 
+var textile = 2
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+var imgData=ctx.createImageData(256,256);
+for (var i=0;i<level.Textile16[textile].length;i++)
+  {
+    var pix = level.Textile16[textile][i];
+ 
+  imgData.data[4*i+0]=pix.r;
+  imgData.data[4*i+1]=pix.g;
+  imgData.data[4*i+2]=pix.b;
+  imgData.data[4*i+3]=255*pix.t;
+  }
+ctx.putImageData(imgData,0,0);
+    
+
+
+
+
+
+
+
         })
 
     ;
