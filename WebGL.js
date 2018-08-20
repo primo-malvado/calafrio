@@ -171,7 +171,7 @@ class WebGL {
         }, []);
     }
 
-    Draw(Object, Texture) {
+    Draw(Object) {
         var VertexBuffer = this.GL.createBuffer(); //Create a New Buffer
 
         //Bind it as The Current Buffer
@@ -198,7 +198,7 @@ class WebGL {
         //Set slot 0 as the active Texture
         this.GL.activeTexture(this.GL.TEXTURE0);
         //Load in the Texture To Memory
-        this.GL.bindTexture(this.GL.TEXTURE_2D, Texture);
+        this.GL.bindTexture(this.GL.TEXTURE_2D, this.textures[2]);
         //Update The Texture Sampler in the fragment shader to use slot 0
         this.GL.uniform1i(this.GL.getUniformLocation(this.ShaderProgram, "uSampler"), 0);
         //Set The Perspective and Transformation Matrices
@@ -406,6 +406,9 @@ var TextureImage;
 var level;
 
 
+
+
+
 function Ready() {
 
 
@@ -420,29 +423,63 @@ function Ready() {
         .then(function(buffer) {
 
             level = loadLevel(buffer);
-            console.log(level)
 
 
+
+
+
+            //console.log(level)
             GL = new WebGL("GLCanvas", "FragmentShader", "VertexShader");
-            Texture = GL.LoadTexture();
-            //setInterval(Update, 41.6666);
+            var gl = GL.GL;
+
+            GL.textures = [];
+
+            for(var t = 0; t< level.Textile16.length; t++){
 
 
-var textile = 2
-var c=document.getElementById("myCanvas");
-var ctx=c.getContext("2d");
-var imgData=ctx.createImageData(256,256);
-for (var i=0;i<level.Textile16[textile].length;i++)
-  {
-    var pix = level.Textile16[textile][i];
+
+                var imgData = new ImageData(256,256);
+
+                for (var i=0;i<level.Textile16[t].length;i++)
+                {
+
+                    var pix = level.Textile16[t][i];
  
-  imgData.data[4*i+0]=pix.r;
-  imgData.data[4*i+1]=pix.g;
-  imgData.data[4*i+2]=pix.b;
-  imgData.data[4*i+3]=255*pix.t;
-  }
-ctx.putImageData(imgData,0,0);
-    
+                    imgData.data[4*i+0]=pix.r;
+                    imgData.data[4*i+1]=pix.g;
+                    imgData.data[4*i+2]=pix.b;
+                    imgData.data[4*i+3]=255*pix.t;
+                }
+
+                var texture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+
+
+
+                // Set the parameters so we don't need mips
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+             
+                // Upload the image into the texture.
+                var mipLevel = 0;               // the largest mip
+                var internalFormat = gl.RGBA;   // format we want in the texture
+                var srcFormat = gl.RGBA;        // format of data we are supplying
+                var srcType = gl.UNSIGNED_BYTE  // type of data we are supplying
+                gl.texImage2D(gl.TEXTURE_2D,
+                              mipLevel,
+                              internalFormat,
+                              srcFormat,
+                              srcType,
+                              imgData);
+             
+                // add the texture to the array of textures.
+                GL.textures.push(texture);                
+
+            }
+
+
 
 
 
@@ -462,5 +499,5 @@ ctx.putImageData(imgData,0,0);
 
 function Update() {
     GL.GL.clear(16384 | 256);
-    GL.Draw(Cube, Texture);
+    GL.Draw(Cube);
 }
