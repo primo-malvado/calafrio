@@ -5,19 +5,25 @@
   "main2": "cccindex.js",
   "scripts": {
     "_dev": "sh /usr/src/app/wait-for-postgres.sh && sequelize db:migrate && sequelize db:seed:all &&  nodemon server.js",
-    "dev": "sequelize db:migrate && sequelize db:seed:all &&  nodemon server.js"
-    
+    "dev": "sequelize db:migrate && sequelize db:seed:all && nodemon  ./server.js  --exec babel-node --presets latest",
+    "babel": "babel-node --presets=latest",
+    "build": "babel src -d dist"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
     "express": "^4.16.3",
+    "nodemon": "^1.18.4",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.39.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.4",
+    "sequelize": "^4.39.0",
     "sequelize-cli": "^4.1.1"
   }
 }

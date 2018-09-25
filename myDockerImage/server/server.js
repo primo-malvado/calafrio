@@ -12,13 +12,13 @@ docker-compose down
 
 'use strict';
 
-const express = require('express');
+import express from 'express';
 
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
  
 
  
