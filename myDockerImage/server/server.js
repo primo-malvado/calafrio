@@ -5,7 +5,9 @@ docker exec -it b3e01fcfcce8 kill -9 17
 
 
 
-docker-compose up -d --build
+docker-compose up --build 
+docker-compose down 
+
 */
 
 'use strict';
