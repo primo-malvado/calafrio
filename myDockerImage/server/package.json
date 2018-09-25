@@ -1,0 +1,23 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main2": "cccindex.js",
+  "scripts": {
+    "_dev": "sh /usr/src/app/wait-for-postgres.sh && sequelize db:migrate && sequelize db:seed:all &&  nodemon server.js",
+    "dev": "sequelize db:migrate && sequelize db:seed:all &&  nodemon server.js"
+    
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.39.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4",
+    "sequelize-cli": "^4.1.1"
+  }
+}
