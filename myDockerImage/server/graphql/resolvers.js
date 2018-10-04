@@ -24,5 +24,13 @@ export default {
         
     },
   },
+  
+    Mutation: {
+        addAuthor: (obj, args, context, info) => {
+            return context.Author.create({ name: args.name});
+        },
+    }    
+  
+  
 };
 

@@ -1,9 +1,10 @@
 /*
 docker-compose up --build 
 docker-compose down 
-
-
 */
+import { SchemaDirectiveVisitor } from "graphql-tools";
+import { defaultFieldResolver } from "graphql";
+
 import express from 'express'
 import {ApolloServer} from 'apollo-server-express';
 
@@ -14,8 +15,6 @@ import https from 'https'
 import http from 'http'
 
 // Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
 
 import Sequelize from 'sequelize';
 const sequelize = new Sequelize('practicedocker', 'postgres', 'password', {
@@ -53,18 +52,43 @@ const configurations = {
 const environment = process.env.NODE_ENV || 'development'
 const config = configurations[environment]
 
+ 
+
+class UpperCaseDirective extends SchemaDirectiveVisitor {
+  visitFieldDefinition(field) {
+    const { resolve = defaultFieldResolver } = field;
+    field.resolve = async function (...args) {
+      const result = await resolve.apply(this, args);
+      //console.log(result)
+      if (typeof result === "string") {
+        return result.toUpperCase();
+      }
+      return result;
+    };
+  }
+}
+
+
 
 const apollo = new ApolloServer({
     typeDefs,
     resolvers,
-
-    context: () => {
+   schemaDirectives: {
+    upper: UpperCaseDirective,
+    upperCase: UpperCaseDirective
+},
+    context: ({req}) => {
+        
+        console.log(Object.keys(arguments[0]));
+        //console.log(req.headers);
+        
+        
         return {
 
             dataloaders: {
                 booksByAuthorsIds: new DataLoader(function(authorIds) {
 
-                    //console.log(authorIds)
+                    console.log("booksByAuthorsIds",authorIds)
 
                     var promises = authorIds.map(function(author_id) {
                         return Book.findAll({
@@ -72,21 +96,15 @@ const apollo = new ApolloServer({
                                 author_id: author_id
                             }
                         });
-
                     })
-
-
                     return Promise.all(promises);
-
-
-
                 }),
-                authorById: new DataLoader(function(author_id) {
+                authorById: new DataLoader(function(authorIds) {
 
-
+                    console.log("authorById",authorIds);
                     return Author.findAll({
                         where: {
-                            id: author_id
+                            id: authorIds
                         }
                     });
                 }),
