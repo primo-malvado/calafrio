@@ -2,7 +2,7 @@ var express = require('express');
 var oauthServer = require('oauth2-server');
 var Request = oauthServer.Request;
 var Response = oauthServer.Response;
-var authenticate = require('./components/oauth/authenticate')
+var authenticate = require('./authenticate')
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 // https://github.com/manjeshpv/node-oauth2-server-implementation/blob/master/components/oauth/models.js
 var oauth = new oauthServer({
-  model: require('./components/oauth/model.js')
+  model: require('./model.js')
 });
 
 app.all('/oauth/token', function(req,res,next){
