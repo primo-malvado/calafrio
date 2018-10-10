@@ -23,7 +23,7 @@
     "lint": "yarn eslint && yarn tslint",
     "seed": "lerna run --scope=server seed --stream",
     "exp-publish": "lerna run --scope=mobile exp-publish --stream",
-    "watch": "spin watch",
+    "watch": "lerna run watch --stream",
     "heroku-postbuild": "lerna run heroku-postbuild --stream",
     "cli": "node tools/cli",
     "precommit": "lint-staged",
