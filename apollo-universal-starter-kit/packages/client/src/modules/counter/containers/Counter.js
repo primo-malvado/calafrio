@@ -3,14 +3,19 @@ import Helmet from 'react-helmet';
 
 import { PageLayout } from '../../common/components/web';
 import settings from '../../../../../../settings';
-import translate, { TranslateFunction } from '../../../i18n';
+import translate /*, { TranslateFunction }*/ from '../../../i18n';
 import counters from '../counters';
-
+/*
 interface CounterProps {
   t: TranslateFunction;
 }
+*/
 
-const Counter = ({ t }: CounterProps) => (
+function t(a) {
+  return a;
+}
+
+const Counter = () => (
   <PageLayout>
     <Helmet
       title={`${settings.app.name} - ${t('title')}`}
@@ -21,7 +26,7 @@ const Counter = ({ t }: CounterProps) => (
         }
       ]}
     />
-    {counters.counterComponent.map((component: any, idx: number, items: any) =>
+    {counters.counterComponent.map((component /*: any*/, idx /*: number*/, items /*: any*/) =>
       React.cloneElement(component, { key: idx + items.length })
     )}
   </PageLayout>

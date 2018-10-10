@@ -1,6 +1,6 @@
 import React from 'react';
-import BaseModule, { BaseModuleShape } from './BaseModule';
-
+import BaseModule /*, { BaseModuleShape }*/ from './BaseModule';
+/*
 export interface ClientModuleShape extends BaseModuleShape {
   route?: any[];
   navItem?: any[];
@@ -10,19 +10,20 @@ export interface ClientModuleShape extends BaseModuleShape {
 }
 
 interface ClientModule extends ClientModuleShape {}
+*/
 class ClientModule extends BaseModule {
-  constructor(...modules: ClientModuleShape[]) {
+  constructor(...modules /*: ClientModuleShape[]*/) {
     super(...modules);
   }
 
   get routes() {
-    return this.route.map((component: any, idx: number, items: any) =>
+    return this.route.map((component /*: any*/, idx /*: number*/, items /*: any*/) =>
       React.cloneElement(component, { key: component.key || idx + items.length })
     );
   }
 
   get navItems() {
-    return this.navItem.map((component: any, idx: number, items: any) =>
+    return this.navItem.map((component /*: any*/, idx /*: number*/, items /*: any*/) =>
       React.cloneElement(component, {
         key: component.key || idx + items.length
       })
@@ -30,7 +31,7 @@ class ClientModule extends BaseModule {
   }
 
   get navItemsRight() {
-    return this.navItemRight.map((component: any, idx: number, items: any) =>
+    return this.navItemRight.map((component /*: any*/, idx /*: number*/, items /*: any*/) =>
       React.cloneElement(component, {
         key: component.key || idx + items.length
       })

@@ -3,7 +3,7 @@ import React from 'react';
 import { merge } from 'lodash';
 
 import Module from './Module';
-
+/*
 export interface BaseModuleShape {
   localization?: any[];
   link?: any[];
@@ -18,8 +18,10 @@ export interface BaseModuleShape {
 }
 
 interface BaseModule extends BaseModuleShape {}
+*/
+
 class BaseModule extends Module {
-  constructor(...modules: BaseModuleShape[]) {
+  constructor(...modules /*: BaseModuleShape[]*/) {
     super(...modules);
   }
 
@@ -43,7 +45,7 @@ class BaseModule extends Module {
     return this.routerFactory();
   }
 
-  public getDataRoot(root: any) {
+  /*public*/ getDataRoot(root /*: any*/) {
     let nestedRoot = root;
     for (const component of this.dataRootComponent) {
       nestedRoot = React.createElement(component, {}, nestedRoot);
@@ -51,7 +53,7 @@ class BaseModule extends Module {
     return nestedRoot;
   }
 
-  public getWrappedRoot(root: any, req?: any) {
+  /*public */ getWrappedRoot(root /*: any*/, req /*?: any*/) {
     let nestedRoot = root;
     for (const componentFactory of this.rootComponentFactory) {
       nestedRoot = React.cloneElement(componentFactory(req), {}, nestedRoot);

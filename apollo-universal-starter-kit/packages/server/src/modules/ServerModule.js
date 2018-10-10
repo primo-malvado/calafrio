@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 
 import Module from './Module';
-
+/*
 export interface ServerModuleShape {
   // Localization
   localization?: any[];
@@ -17,16 +17,18 @@ export interface ServerModuleShape {
 }
 
 interface ServerModule extends ServerModuleShape {}
+*/
+
 class ServerModule extends Module {
-  constructor(...modules: ServerModuleShape[]) {
+  constructor(...modules /*: ServerModuleShape[]*/) {
     super(...modules);
   }
 
-  public get schemas() {
+  /*public */ get schemas() {
     return this.schema;
   }
 
-  public async createContext(req: any, res: any, connectionParams?: any, webSocket?: any) {
+  /*public */ async createContext(req /*: any*/, res /*: any*/, connectionParams /*?: any*/, webSocket /*?: any*/) {
     let context = {};
     for (const createContextFunc of this.createContextFunc) {
       context = merge(context, await createContextFunc({ req, res, connectionParams, webSocket, context }));
@@ -34,7 +36,7 @@ class ServerModule extends Module {
     return context;
   }
 
-  public createResolvers(pubsub: any) {
+  /*public */ createResolvers(pubsub /*: any*/) {
     return merge({}, ...this.createResolversFunc.map(createResolvers => createResolvers(pubsub)));
   }
 }

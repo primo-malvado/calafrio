@@ -10,7 +10,7 @@ import ServerModule from '../ServerModule';
 import resources from './locales';
 
 const createContextFunc = async ({ context: { user } }) => ({
-  User,
+  User: User,
   user,
   auth: {
     isAuthenticated: !!user,
@@ -29,5 +29,5 @@ export default new ServerModule(access, auth, {
   createResolversFunc: [resolvers],
   createContextFunc: [createContextFunc],
   middleware: [middleware],
-  localization: [{ ns: 'user', resources }]
+  localization: [{ ns: 'user', resources: resources }]
 });

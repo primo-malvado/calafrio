@@ -1,8 +1,8 @@
-import { PubSub, withFilter } from 'graphql-subscriptions';
+import { /*PubSub,*/ withFilter } from 'graphql-subscriptions';
 import { createBatchResolver } from 'graphql-resolve-batch';
 // interfaces
-import { Post, Comment, Identifier } from './sql';
-
+//import { Post, Comment, Identifier } from './sql';
+/*
 interface Edges {
   cursor: number;
   node: Post & Identifier;
@@ -28,20 +28,21 @@ interface CommentInput {
 interface CommentInputWithId {
   input: Comment & Identifier;
 }
+*/
 
 const POST_SUBSCRIPTION = 'post_subscription';
 const POSTS_SUBSCRIPTION = 'posts_subscription';
 const COMMENT_SUBSCRIPTION = 'comment_subscription';
 
-export default (pubsub: PubSub) => ({
+export default (pubsub /*: PubSub*/) => ({
   Query: {
-    async posts(obj: any, { limit, after }: PostsParams, context: any) {
-      const edgesArray: Edges[] = [];
+    async posts(obj /*: any*/, { limit, after } /*: PostsParams*/, context /*: any*/) {
+      const edgesArray /*: Edges[]*/ = [];
       const posts = await context.Post.postsPagination(limit, after);
       const total = (await context.Post.getTotal()).count;
       const hasNextPage = total > after + limit;
 
-      posts.map((post: Post & Identifier, index: number) => {
+      posts.map((post /*: Post & Identifier*/, index /*: number*/) => {
         edgesArray.push({
           cursor: after + index,
           node: post
@@ -58,7 +59,7 @@ export default (pubsub: PubSub) => ({
         }
       };
     },
-    post(obj: any, { id }: Identifier, context: any) {
+    post(obj /*: any*/, { id } /*: Identifier*/, context /*: any*/) {
       return context.Post.post(id);
     }
   },
@@ -68,7 +69,7 @@ export default (pubsub: PubSub) => ({
     })
   },
   Mutation: {
-    async addPost(obj: any, { input }: PostInput, context: any) {
+    async addPost(obj /*: any*/, { input } /*: PostInput*/, context /*: any*/) {
       const [id] = await context.Post.addPost(input);
       const post = await context.Post.post(id);
       // publish for post list
@@ -81,7 +82,7 @@ export default (pubsub: PubSub) => ({
       });
       return post;
     },
-    async deletePost(obj: any, { id }: Identifier, context: any) {
+    async deletePost(obj /*: any*/, { id } /*: Identifier*/, context /*: any*/) {
       const post = await context.Post.post(id);
       const isDeleted = await context.Post.deletePost(id);
       if (isDeleted) {
@@ -106,7 +107,7 @@ export default (pubsub: PubSub) => ({
         return { id: null };
       }
     },
-    async editPost(obj: any, { input }: PostInputWithId, context: any) {
+    async editPost(obj /*: any*/, { input } /*: PostInputWithId*/, context /*: any*/) {
       await context.Post.editPost(input);
       const post = await context.Post.post(input.id);
       // publish for post list
@@ -127,7 +128,7 @@ export default (pubsub: PubSub) => ({
       });
       return post;
     },
-    async addComment(obj: any, { input }: CommentInput, context: any) {
+    async addComment(obj /*: any*/, { input } /*: CommentInput*/, context /*: any*/) {
       const [id] = await context.Post.addComment(input);
       const comment = await context.Post.getComment(id);
       // publish for edit post page
@@ -141,7 +142,13 @@ export default (pubsub: PubSub) => ({
       });
       return comment;
     },
-    async deleteComment(obj: any, { input: { id, postId } }: CommentInputWithId, context: any) {
+    async deleteComment(
+      obj /*: any*/,
+      {
+        input: { id, postId }
+      } /*: CommentInputWithId*/,
+      context /*: any*/
+    ) {
       await context.Post.deleteComment(id);
       // publish for edit post page
       pubsub.publish(COMMENT_SUBSCRIPTION, {
@@ -154,7 +161,7 @@ export default (pubsub: PubSub) => ({
       });
       return { id };
     },
-    async editComment(obj: any, { input }: CommentInputWithId, context: any) {
+    async editComment(obj /*: any*/, { input } /*: CommentInputWithId*/, context /*: any*/) {
       await context.Post.editComment(input);
       const comment = await context.Post.getComment(input.id);
       // publish for edit post page

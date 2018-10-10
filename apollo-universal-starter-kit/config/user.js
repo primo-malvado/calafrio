@@ -43,7 +43,7 @@ export default {
       scope: ['r_emailaddress', 'r_basicprofile']
     },
     google: {
-      enabled: false,
+      enabled: true,
       clientID: process.env.GOOGLE_CLIENTID,
       clientSecret: process.env.GOOGLE_CLIENTSECRET,
       scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']

@@ -24,11 +24,11 @@ const client = createApolloClient({
   clientResolvers: modules.resolvers
 });
 const history = createHistory();
-const logPageView = (location: any) => {
+const logPageView = (location /*: any*/) => {
   ReactGA.set({ page: location.pathname });
   ReactGA.pageview(location.pathname);
 };
-let store: any;
+let store /*: any*/;
 
 // Initialize Google Analytics and send events on each location change
 ReactGA.initialize(settings.analytics.ga.trackingId);
@@ -51,7 +51,7 @@ if (module.hot) {
 }
 
 class ServerError extends Error {
-  constructor(error: any) {
+  constructor(error /*: any*/) {
     super();
     for (const key of Object.getOwnPropertyNames(error)) {
       this[key] = error[key];
@@ -59,25 +59,25 @@ class ServerError extends Error {
     this.name = 'ServerError';
   }
 }
-
+/*
 interface MainState {
   error?: ServerError;
   info?: any;
   ready?: boolean;
 }
-
-class Main extends React.Component<any, MainState> {
-  constructor(props: any) {
+*/
+class Main extends React.Component /*<any, MainState>*/ {
+  constructor(props /*: any*/) {
     super(props);
     const serverError = window.__SERVER_ERROR__;
     serverError ? (this.state = { error: new ServerError(serverError), ready: true }) : (this.state = {});
   }
 
-  public componentDidCatch(error: ServerError, info: any) {
+  /*public */ componentDidCatch(error /*: ServerError*/, info /*: any*/) {
     this.setState({ error, info });
   }
 
-  public render() {
+  /*public */ render() {
     return this.state.error ? (
       <RedBox error={this.state.error} />
     ) : (

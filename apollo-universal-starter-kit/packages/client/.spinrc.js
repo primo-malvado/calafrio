@@ -27,7 +27,7 @@ const config = {
     cache: '../../.cache',
     ssr: true,
     webpackDll: true,
-    reactHotLoader: false,
+    reactHotLoader: true,
     defines: {
       __DEV__: process.env.NODE_ENV !== 'production',
       __API_URL__: '"/graphql"',

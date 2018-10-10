@@ -10,7 +10,7 @@ import DELETE_POST from '../../../../../client/src/modules/post/graphql/DeletePo
 import POSTS_SUBSCRIPTION from '../../../../../client/src/modules/post/graphql/PostsSubscription.graphql';
 
 describe('Post and comments example API works', () => {
-  let apollo: any;
+  let apollo /*: any*/;
 
   before(() => {
     apollo = getApollo();
@@ -89,7 +89,7 @@ describe('Post and comments example API works', () => {
         variables: { endCursor: 10 }
       })
       .subscribe({
-        next(data: any) {
+        next(data /*: any*/) {
           expect(data).to.deep.equal({
             data: {
               postsUpdated: {
@@ -138,7 +138,7 @@ describe('Post and comments example API works', () => {
         variables: { endCursor: 10 }
       })
       .subscribe({
-        next(data: any) {
+        next(data /*: any*/) {
           expect(data).to.deep.equal({
             data: {
               postsUpdated: {
@@ -181,7 +181,7 @@ describe('Post and comments example API works', () => {
         variables: { endCursor: 10 }
       })
       .subscribe({
-        next(data: any) {
+        next(data /*: any*/) {
           expect(data).to.deep.equal({
             data: {
               postsUpdated: {

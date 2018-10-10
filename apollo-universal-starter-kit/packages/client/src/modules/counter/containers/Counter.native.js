@@ -1,16 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import translate, { TranslateFunction } from '../../../i18n';
+import translate /*, { TranslateFunction }*/ from '../../../i18n';
 import counters from '../counters';
-
+/*
 interface CounterProps {
   t: TranslateFunction;
 }
-
-const Counter = ({ t }: CounterProps) => (
+*/
+const Counter = () => (
   <View style={styles.container}>
-    {counters.counterComponent.map((component: any, idx: number, items: any) =>
+    {counters.counterComponent.map((component /*: any*/, idx /*: number*/, items /*: any*/) =>
       React.cloneElement(component, { key: idx + items.length })
     )}
   </View>
