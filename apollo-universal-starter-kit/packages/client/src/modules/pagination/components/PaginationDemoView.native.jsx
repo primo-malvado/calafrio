@@ -55,12 +55,12 @@ class PaginationDemoView extends React.Component {
             renderItem={renderItem}
             ListHeaderComponent={renderHeader(titleTexti18n)}
           />
-      <Pagination
-        totalPages={Math.ceil(items.totalCount / items.limit)}
-        handlePageChange={handlePageChange}
-        pagination={pagination}
-        loadMoreText={t('list.btn.more')}
-        hasNextPage={items.pageInfo.hasNextPage}
+          <Pagination
+            totalPages={Math.ceil(items.totalCount / items.limit)}
+            handlePageChange={handlePageChange}
+            pagination={pagination}
+            loadMoreText={t('list.btn.more')}
+            hasNextPage={items.pageInfo.hasNextPage}
           />
         </ScrollView>
       </View>

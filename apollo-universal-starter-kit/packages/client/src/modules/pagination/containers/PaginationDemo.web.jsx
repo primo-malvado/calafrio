@@ -1,29 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import translate from '../../../i18n';
+
 import PaginationDemoView from '../components/PaginationDemoView.web';
 import withDataProvider from '../containers/DataProvider';
 import { PageLayout, Select, Option } from '../../common/components/web';
-
+import translate from '../../../i18n';
 import settings from '../../../../../../settings';
 
 @translate('pagination')
 class PaginationDemo extends React.Component {
   static propTypes = {
     t: PropTypes.func,
-    items: PropTypes.object,
-    loadData: PropTypes.func
+    loadData: PropTypes.func,
+    items: PropTypes.object
   };
 
   state = { pagination: 'standard' };
-
-  onPaginationTypeChange = e => {
-    const { loadData, items } = this.props;
-    const paginationType = e.target.value;
-    this.setState({ pagination: paginationType }, loadData(0, items.limit));
-  };
-
 
   renderMetaData = () => {
     const { t } = this.props;
@@ -49,6 +42,11 @@ class PaginationDemo extends React.Component {
     }
   };
 
+  onPaginationTypeChange = e => {
+    const { loadData, items } = this.props;
+    const paginationType = e.target.value;
+    this.setState({ pagination: paginationType }, loadData(0, items.limit));
+  };
 
   render() {
     const { t, items } = this.props;

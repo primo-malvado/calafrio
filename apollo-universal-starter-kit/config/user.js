@@ -16,6 +16,7 @@ export default {
       confirm: true,
       sendConfirmationEmail: true,
       sendAddNewUserEmail: true,
+      minLength: 8,
       enabled: true
     },
     certificate: {
@@ -42,7 +43,7 @@ export default {
       scope: ['r_emailaddress', 'r_basicprofile']
     },
     google: {
-      enabled: true,
+      enabled: false,
       clientID: process.env.GOOGLE_CLIENTID,
       clientSecret: process.env.GOOGLE_CLIENTSECRET,
       scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']

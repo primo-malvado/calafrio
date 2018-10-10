@@ -32,9 +32,9 @@ const PaginationDemoView = ({ items, handlePageChange, pagination, t }) => {
 };
 
 PaginationDemoView.propTypes = {
-  t: PropTypes.func,
   items: PropTypes.object,
   handlePageChange: PropTypes.func,
+  t: PropTypes.func,
   pagination: PropTypes.string
 };
 

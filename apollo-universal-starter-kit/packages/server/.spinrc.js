@@ -3,7 +3,7 @@ const url = require('url');
 const config = {
   builders: {
     server: {
-      entry: './src/index.ts',
+      entry: './src/index.js',
       stack: ['server'],
       defines: {
         __SERVER__: true

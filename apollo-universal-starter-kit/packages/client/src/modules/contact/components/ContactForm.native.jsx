@@ -15,7 +15,7 @@ const contactFormSchema = {
   content: [required, minLength(10)]
 };
 
-const ContactForm = ({ values, handleSubmit, errors, t, status, setStatus }) => (
+const ContactForm = ({ values, handleSubmit, t, errors, status, setStatus }) => (
   <FormView contentContainerStyle={{ flexGrow: 1 }} style={styles.formView}>
     <Modal isVisible={status && status.showModal} onBackdropPress={setStatus}>
       <View style={styles.modal}>
@@ -35,7 +35,7 @@ const ContactForm = ({ values, handleSubmit, errors, t, status, setStatus }) => 
           value={values.name}
           placeholderTextColor={placeholderColor}
         />
-    <Field
+        <Field
           name="email"
           component={RenderField}
           type="text"
@@ -44,19 +44,17 @@ const ContactForm = ({ values, handleSubmit, errors, t, status, setStatus }) => 
           keyboardType="email-address"
           placeholderTextColor={placeholderColor}
         />
-    <Field
-      name="content"
-      component={RenderField}
-      type="textarea"
-      placeholder={t('form.field.content')}
-      value={values.content}
-      placeholderTextColor={placeholderColor}
-    />
+        <Field
+          name="content"
+          component={RenderField}
+          type="textarea"
+          placeholder={t('form.field.content')}
+          value={values.content}
+          placeholderTextColor={placeholderColor}
+        />
       </View>
       <View style={styles.submit}>
-      <Button onPress={handleSubmit}>
-        {t('form.btnSubmit')}
-      </Button>
+        <Button onPress={handleSubmit}>{t('form.btnSubmit')}</Button>
       </View>
     </View>
     <KeyboardSpacer />
@@ -64,11 +62,11 @@ const ContactForm = ({ values, handleSubmit, errors, t, status, setStatus }) => 
 );
 
 ContactForm.propTypes = {
-  values: PropTypes.object,
   handleSubmit: PropTypes.func,
   setStatus: PropTypes.func,
   errors: PropTypes.object,
   status: PropTypes.object,
+  values: PropTypes.object,
   t: PropTypes.func
 };
 
