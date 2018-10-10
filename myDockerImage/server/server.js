@@ -2,8 +2,6 @@
 docker-compose up --build 
 docker-compose down 
 */
-import { SchemaDirectiveVisitor } from "graphql-tools";
-import { defaultFieldResolver } from "graphql";
 
 import express from 'express'
 import {ApolloServer} from 'apollo-server-express';
@@ -15,6 +13,8 @@ import https from 'https'
 import http from 'http'
 
 // Constants
+import UpperCaseDirective from './graphql/directives/UpperCaseDirective'
+import AuthDirective from './graphql/directives/AuthDirective'
 
 import Sequelize from 'sequelize';
 const sequelize = new Sequelize('practicedocker', 'postgres', 'password', {
@@ -30,10 +30,14 @@ const sequelize = new Sequelize('practicedocker', 'postgres', 'password', {
     }
 });
 
-var Author = require("./models/author.js")(sequelize, Sequelize);
-var Book = require("./models/book.js")(sequelize, Sequelize);
 
-var DataLoader = require('dataloader');
+var contextModel = {
+ Author: require("./models/author.js")(sequelize, Sequelize),
+ Book: require("./models/book.js")(sequelize, Sequelize)
+};
+
+var dataloaders = require("./models/dataloaders.js")(contextModel);
+
 
 const configurations = {
     // Note: You may need sudo to run on port 443
@@ -54,68 +58,31 @@ const config = configurations[environment]
 
  
 
-class UpperCaseDirective extends SchemaDirectiveVisitor {
-  visitFieldDefinition(field) {
-    const { resolve = defaultFieldResolver } = field;
-    field.resolve = async function (...args) {
-      const result = await resolve.apply(this, args);
-      //console.log(result)
-      if (typeof result === "string") {
-        return result.toUpperCase();
-      }
-      return result;
-    };
-  }
-}
-
-
-
 const apollo = new ApolloServer({
+ /*
+   formatError: error => {
+    console.log(error);
+    return new Error('Internal server error');
+  },
+    */
     typeDefs,
     resolvers,
    schemaDirectives: {
     upper: UpperCaseDirective,
-    upperCase: UpperCaseDirective
+    upperCase: UpperCaseDirective,
+    auth: AuthDirective,
+    authorized: AuthDirective,
+    authenticated: AuthDirective    
 },
     context: ({req}) => {
         
         console.log(Object.keys(arguments[0]));
-        //console.log(req.headers);
-        
         
         return {
 
-            dataloaders: {
-                booksByAuthorsIds: new DataLoader(function(authorIds) {
+            dataloaders: dataloaders,
+            models:contextModel
 
-                    console.log("booksByAuthorsIds",authorIds)
-
-                    var promises = authorIds.map(function(author_id) {
-                        return Book.findAll({
-                            where: {
-                                author_id: author_id
-                            }
-                        });
-                    })
-                    return Promise.all(promises);
-                }),
-                authorById: new DataLoader(function(authorIds) {
-
-                    console.log("authorById",authorIds);
-                    return Author.findAll({
-                        where: {
-                            id: authorIds
-                        }
-                    });
-                }),
-                /*authorsAll: new DataLoader(function(xxx) {
-                    return Author.findAll( );
-                })*/
-            },
-
-
-            Author: Author,
-            Book: Book,
         };
     },
 

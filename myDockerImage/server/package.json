@@ -5,6 +5,7 @@
   "main2": "cccindex.js",
   "scripts": {
     "_dev": "sh /usr/src/app/wait-for-postgres.sh && sequelize db:migrate && sequelize db:seed:all &&  nodemon server.js",
+    
     "dev": "sequelize db:migrate && sequelize db:seed:all && nodemon  ./server.js  --exec babel-node --presets latest",
     "babel": "babel-node --presets=latest",
     "build": "babel src -d dist"

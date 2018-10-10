@@ -1,36 +1,30 @@
 export default {
     Book: {
         author: (obj, args, context, info) => {
-            
-            //return context.Author.findOne({where: {id: obj.author_id}});
             return context.dataloaders.authorById.load(obj.author_id);
         }
     },
     Author: {
         books: (obj, args, context, info) => {
-            
-            //return context.Book.findAll({where: {author_id: obj.id}});
             return context.dataloaders.booksByAuthorsIds.load(obj.id);
-            
         }
     },
-  Query: { 
-    authors: (obj, args, context, info) => {
-        return context.Author.findAll( );
-        
+    Query: { 
+        authors: (obj, args, context, info) => {
+            return context.models.Author.findAll( );
+        },
+        books: (obj, args, context, info) => {
+            return context.models.Book.findAll();
+        },
     },
-    books: (obj, args, context, info) => {
-        return context.Book.findAll();
-        
-    },
-  },
-  
     Mutation: {
         addAuthor: (obj, args, context, info) => {
-            return context.Author.create({ name: args.name});
+            console.log(args)
+            return context.models.Author.create({ 
+                name: args.name,
+                email: args.email,
+            });
         },
     }    
-  
-  
 };
 

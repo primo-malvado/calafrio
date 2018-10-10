@@ -13,7 +13,7 @@ directive @upper on FIELD_DEFINITION
     name: String
     books: [Book]
   }
-  type Book {
+  type Book{
     title: String @upper
     titleold: String @deprecated(reason: "Use 'titleold'.")    
     
@@ -26,17 +26,35 @@ directive @upper on FIELD_DEFINITION
   }
 
 
+directive @auth(
+  requires: Role = ADMIN,
+) on OBJECT | FIELD_DEFINITION
 
- 
-mutation {
-  addAuthor(name: "Terrorista") {
-    name
-  }
+enum Role {
+  ADMIN
+  REVIEWER
+  USER
+  UNKNOWN
+}
+
+type User @auth(requires: USER) {
+  name: String
+  banned: Boolean @auth(requires: ADMIN)
+  canPost: Boolean @auth(requires: REVIEWER)
 }
 
 
+
+
+#mutation {
+#  addAuthor(name: "Terrorista") {
+#    name
+#  }
+#}
+ 
+
 type Mutation {
-  addAuthor(name: String): Author
+  addAuthor(name: String email:String): Author
 }    
     
     
