@@ -9,7 +9,7 @@ import log from '../../common/log';
 
 export default () => {
   return new ApolloServer({
-    schema,
+    schema: schema,
     context: async ({ req, res }) => ({ ...(await modules.createContext(req, res)), req, res }),
     formatError: error => {
       return error.message === 'Not Authenticated!' ? new AuthenticationError(error) : error;

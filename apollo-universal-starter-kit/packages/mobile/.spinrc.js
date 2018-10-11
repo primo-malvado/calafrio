@@ -3,7 +3,7 @@ const url = require('url');
 const config = {
   builders: {
     android: {
-      entry: './src/index.ts',
+      entry: './src/index.js',
       buildDir: 'build/android',
       dllBuildDir: 'build/android/dll',
       stack: ['react-native', 'android'],
@@ -13,7 +13,7 @@ const config = {
       enabled: true
     },
     ios: {
-      entry: './src/index.ts',
+      entry: './src/index.js',
       buildDir: 'build/ios',
       dllBuildDir: 'build/ios/dll',
       stack: ['react-native', 'ios'],
@@ -31,7 +31,7 @@ const config = {
     }
   },
   options: {
-    stack: ['apollo', 'react', 'styled-components', 'es6', 'ts', 'webpack', 'i18next'],
+    stack: ['apollo', 'react', 'styled-components', 'es6'/*, 'ts'*/, 'webpack', 'i18next'],
     cache: '../../.cache',
     webpackDll: true,
     reactHotLoader: false,
