@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 export default class Intro extends Component {
-  /* public */ public render() {
+  /* public */ render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
