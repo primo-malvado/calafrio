@@ -9,12 +9,12 @@ declare module '*.graphql' {
 }
 
 declare module '*.json' {
-  const value: any;
+  const value/*: any*/;
   export = value;
 }
 
 declare module '*.scss' {
-  const value: any;
+  const value/*: any*/;
   export = value;
 }
 

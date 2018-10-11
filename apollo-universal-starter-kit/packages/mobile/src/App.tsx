@@ -18,7 +18,7 @@ const store = createStore(
 );
 
 interface MainProps {
-  exp: any;
+  exp /*: any*/;
 }
 
 export default class Main extends React.Component<MainProps> {

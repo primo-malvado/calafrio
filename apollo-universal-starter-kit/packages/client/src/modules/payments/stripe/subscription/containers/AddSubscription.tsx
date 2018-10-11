@@ -19,8 +19,8 @@ import CREDIT_CARD_QUERY from '../graphql/CreditCardQuery.graphql';
 
 interface AddSubscriptionProps {
   t: TranslateFunction;
-  history: any;
-  navigation: any;
+  history /*: any*/;
+  navigation /*: any*/;
 }
 
 // react-stripe-elements will not render on the server and on the mobile.

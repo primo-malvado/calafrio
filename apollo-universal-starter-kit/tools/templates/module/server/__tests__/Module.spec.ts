@@ -3,8 +3,8 @@ import { step } from 'mocha-steps';
 import { getServer, getApollo } from '../../../testHelpers/integrationSetup';
 
 describe('$Module$ API works', () => {
-  let server: any;
-  let apollo: any;
+  let server/*: any*/;
+  let apollo/*: any*/;
 
   before(() => {
     server = getServer();

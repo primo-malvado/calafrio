@@ -15,8 +15,8 @@ import { CreditCardInput } from '../types';
 
 interface UpdateCreditCardProps {
   t: TranslateFunction;
-  history: any;
-  navigation: any;
+  history /*: any*/;
+  navigation /*: any*/;
 }
 
 // react-stripe-elements will not render on the server.

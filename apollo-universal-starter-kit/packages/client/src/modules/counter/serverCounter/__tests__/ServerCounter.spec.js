@@ -30,9 +30,9 @@ const mocks = {
 
 describe('Server counter example UI works', () => {
   const renderer = new Renderer(mocks, {});
-  let app: any;
-  let container: any;
-  let content: any;
+  let app /*: any*/;
+  let container /*: any*/;
+  let content /*: any*/;
   const ServerCounterWithI18n = translate('counter')(ServerCounter);
 
   beforeEach(() => {

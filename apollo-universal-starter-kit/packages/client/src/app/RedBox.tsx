@@ -69,7 +69,7 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
   /* public */ public render() {
     const error: Error = this.props.error;
     const { redbox, message, stack, frame } = styles;
-    let frames: any;
+    let frames /*: any*/;
 
     try {
       if (error.message.indexOf('\n    at ') >= 0) {

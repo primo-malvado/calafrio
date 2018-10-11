@@ -1,23 +1,24 @@
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import update from 'immutability-helper';
+import PropTypes from 'prop-types';
 
 import translate from '../../../../i18n';
 import { ServerCounterView, ServerCounterButton } from '../components/ServerCounterView';
 import ADD_COUNTER from '../graphql/AddCounter.graphql';
 import COUNTER_SUBSCRIPTION from '../graphql/CounterSubscription.graphql';
 import COUNTER_QUERY from '../graphql/CounterQuery.graphql';
-
+/*
 interface ButtonProps {
   counterAmount: number;
   t: TranslateFunction;
   counter: any;
 }
-
-const IncreaseButton = ({ counterAmount, t, counter }: ButtonProps) => (
+*/
+const IncreaseButton = ({ counterAmount, t, counter } /*: ButtonProps*/) => (
   <Mutation mutation={ADD_COUNTER}>
     {(mutate /*: any*/) => {
-      const addServerCounter = (amount: number) => () =>
+      const addServerCounter = (amount /*: number*/) => () =>
         mutate({
           variables: { amount },
           updateQueries: {
@@ -47,23 +48,27 @@ const IncreaseButton = ({ counterAmount, t, counter }: ButtonProps) => (
     }}
   </Mutation>
 );
+IncreaseButton.propTypes = {
+  counterAmount: PropTypes.number,
+  t: PropTypes.func,
+  counter: PropTypes.any
+};
 
+/*
 interface CounterProps {
   t: TranslateFunction;
-  subscribeToMore: (opts /*: any*/) => any;
+  subscribeToMore: (opts : any) => any;
   loading: boolean;
   counter: any;
 }
-
-class ServerCounter extends React.Component<CounterProps> {
-  private subscription: any;
-
-  constructor(props: CounterProps) {
+*/
+class ServerCounter extends React.Component /*<CounterProps>*/ {
+  constructor(props /*: CounterProps*/) {
     super(props);
     this.subscription = null;
   }
 
-  /* public */ public componentDidMount() {
+  /* public */ componentDidMount() {
     if (!this.props.loading) {
       // Subscribe or re-subscribe
       if (!this.subscription) {
@@ -73,7 +78,7 @@ class ServerCounter extends React.Component<CounterProps> {
   }
 
   // remove when Renderer is overwritten
-  /* public */ public componentDidUpdate(prevProps: CounterProps) {
+  /* public */ componentDidUpdate(prevProps /*: CounterProps*/) {
     if (!prevProps.loading) {
       // Subscribe or re-subscribe
       if (!this.subscription) {
@@ -82,13 +87,15 @@ class ServerCounter extends React.Component<CounterProps> {
     }
   }
 
-  /* public */ public componentWillUnmount() {
+  /* public */ componentWillUnmount() {
     if (this.subscription) {
       this.subscription();
     }
   }
 
-  /* public */ public subscribeToCount() {
+  /*private */ subscription /*: any*/;
+
+  /* public */ subscribeToCount() {
     this.subscription = this.props.subscribeToMore({
       document: COUNTER_SUBSCRIPTION,
       variables: {},
@@ -100,7 +107,7 @@ class ServerCounter extends React.Component<CounterProps> {
               counterUpdated: { amount }
             }
           }
-        }: any
+        } /*: any*/
       ) => {
         return update(prev, {
           serverCounter: {
@@ -113,7 +120,7 @@ class ServerCounter extends React.Component<CounterProps> {
     });
   }
 
-  /* public */ public render() {
+  /* public */ render() {
     const { t, counter, loading } = this.props;
     return (
       <ServerCounterView t={t} counter={counter} loading={loading}>
@@ -122,6 +129,13 @@ class ServerCounter extends React.Component<CounterProps> {
     );
   }
 }
+
+ServerCounter.propTypes = {
+  t: PropTypes.func,
+  subscribeToMore: PropTypes.func,
+  loading: PropTypes.bool,
+  counter: PropTypes.any
+};
 
 const ServerCounterWithQuery = (props /*: any*/) => (
   <Query query={COUNTER_QUERY}>

@@ -14,9 +14,9 @@ const COUNTER_REDUX_VALUE = 1;
 
 describe('Redux counter example UI works', () => {
   const renderer = new Renderer({}, {});
-  let app: any;
-  let container: any;
-  let content: any;
+  let app /*: any*/;
+  let container /*: any*/;
+  let content /*: any*/;
   const ReduxCounterWithI18n = translate('counter')(ReduxCounter);
 
   beforeEach(() => {

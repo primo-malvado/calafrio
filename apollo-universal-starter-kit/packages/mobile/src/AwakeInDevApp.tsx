@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import App from './App';
 
 interface AwakeInDevAppProps {
-  exp: any;
+  exp /*: any*/;
 }
 
 interface AwakeInDevAppState {

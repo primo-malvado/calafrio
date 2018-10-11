@@ -1,25 +1,33 @@
 import React from 'react';
+
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { ReduxCounterButton, ReduxCounterView } from '../components/ReduxCounterView';
-import translate, { TranslateFunction } from '../../../../i18n';
-
+import translate from '../../../../i18n';
+/*
 interface CounterProps {
   t: TranslateFunction;
   onReduxIncrement: (increment: number) => void;
   reduxCount: number;
 }
-
-const ReduxCounter = ({ t, onReduxIncrement, reduxCount }: CounterProps) => (
+*/
+const ReduxCounter = ({ t, onReduxIncrement, reduxCount } /*: CounterProps*/) => (
   <ReduxCounterView text={t('text', { reduxCount })}>
     <ReduxCounterButton text={t('btnLabel')} onClick={onReduxIncrement(1)} />
   </ReduxCounterView>
 );
 
+ReduxCounter.propTypes = {
+  t: PropTypes.func,
+  onReduxIncrement: PropTypes.func,
+  reduxCount: PropTypes.number
+};
+
 export default connect(
   (state /*: any*/) => ({ reduxCount: state.counter.reduxCount }),
   (dispatch /*: any*/) => ({
-    onReduxIncrement(value: number) {
+    onReduxIncrement(value /*: number*/) {
       return () =>
         dispatch({
           type: 'COUNTER_INCREMENT',

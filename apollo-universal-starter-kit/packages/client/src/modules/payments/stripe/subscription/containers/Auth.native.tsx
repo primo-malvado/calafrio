@@ -3,7 +3,7 @@ import React, { ComponentType } from 'react';
 import { withStripeSubscription } from './withStripeSubscription';
 
 interface SubscriptionAuthRouterProps {
-  navigation: any;
+  navigation /*: any*/;
   component: ComponentType;
   loading: boolean;
   stripeSubscription: {
