@@ -17,8 +17,7 @@
     "jest:watch": "cross-env NODE_ENV=jest PORT=7070 yarn --cwd ../.. jest --watch",
     "test": "yarn tests && yarn lint",
     "eslint": "eslint --fix --ext js --ext jsx --ext json src",
-    "tslint": "tslint --fix -p tsconfig.json -c ../../tslint.json",
-    "lint": "yarn eslint && yarn tslint",
+    "lint": "yarn eslint",
     "watch": "spin watch",
     "heroku-postbuild": "yarn build && yarn exp-publish",
     "cli": "node ../../tools/cli"

@@ -19,8 +19,7 @@
     "tests:watch": "lerna run tests:watch --stream",
     "test": "yarn tests && yarn lint",
     "eslint": "eslint --fix --ext js --ext jsx --ext json .",
-    "tslint": "tslint --fix -p tsconfig.json -c tslint.json",
-    "lint": "yarn eslint && yarn tslint",
+    "lint": "yarn eslint",
     "seed": "lerna run --scope=server seed --stream",
     "exp-publish": "lerna run --scope=mobile exp-publish --stream",
     "watch": "lerna run watch --stream",
@@ -30,36 +29,25 @@
     "postinstall": "opencollective postinstall",
     "stripe:setup": "lerna run --scope=server stripe:setup"
   },
+  
+ "husky": {
+   "hooks": {  
+     "pre-commit": "lint-staged2"
+   }
+ },  
+  
   "lint-staged": {
     "*.{js,jsx,json}": [
       "eslint --fix",
       "git add"
     ],
-    "*.{ts,tsx}": [
-      "tslint --fix",
-      "git add"
-    ],
+
     "*.graphql": [
       "prettier --parser graphql --write",
       "git add"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sysgears/apollo-universal-starter-kit"
-  },
-  "bugs": {
-    "url": "https://github.com/sysgears/apollo-universal-starter-kit/issues"
-  },
-  "homepage": "https://github.com/sysgears/apollo-universal-starter-kit",
-  "keywords": [
-    "apollo",
-    "universal",
-    "starter",
-    "graphql",
-    "react",
-    "redux"
-  ],
+ 
   "author": "SysGears INC",
   "license": "MIT",
   "workspaces": [
@@ -122,11 +110,6 @@
     "shelljs": "^0.8.1",
     "source-list-map": "^2.0.0",
     "style-loader": "^0.23.0",
-    "ts-loader": "^4.5.0",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.5.0",
-    "tslint-plugin-prettier": "^2.0.0",
-    "typescript": "^2.9.2",
     "url-loader": "^1.0.1",
     "wait-on": "^3.0.1",
     "webpack": "^4.17.1",

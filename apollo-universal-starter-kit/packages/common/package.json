@@ -4,8 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "eslint": "eslint --fix --ext js --ext jsx --ext json .",
-    "tslint": "tslint --fix -p tsconfig.json -c ../../tslint.json",
-    "lint": "yarn eslint && yarn tslint"
+    "lint": "yarn eslint"
   },
   "dependencies": {
     "apollo-cache-inmemory": "1.2.9",
