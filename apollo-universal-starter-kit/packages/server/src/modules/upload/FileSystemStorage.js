@@ -1,7 +1,7 @@
-import fs, { Stats } from 'fs';
+import fs /*, { Stats }*/ from 'fs';
 import mkdirp from 'mkdirp';
 import shortid from 'shortid';
-
+/*
 export interface UploadedFile {
   path: string;
   name: string;
@@ -14,12 +14,16 @@ export interface UploadFileStream {
   filename: string;
   mimetype: string;
 }
-
+*/
 /**
  * Class FileSystemStorage provides saving, getting info, deleting the files in the file system.
  */
 class FileSystemStorage {
-  public save(uploadFileStream: UploadFileStream, location: string, shouldGenerateId = true): Promise<UploadedFile> {
+  /* public */ save(
+    uploadFileStream /*: UploadFileStream*/,
+    location /*: string*/,
+    shouldGenerateId = true
+  ) /*: Promise<UploadedFile>*/ {
     const { stream, filename, mimetype } = uploadFileStream;
     const id = shouldGenerateId ? `${shortid.generate()}-` : '';
     const path = `${location}/${id}${filename}`;
@@ -31,7 +35,7 @@ class FileSystemStorage {
 
     return new Promise((resolve, reject) =>
       stream
-        .on('error', async (error: Error) => {
+        .on('error', async (error /*: Error*/) => {
           if (stream.truncated) {
             // Delete the truncated file
             await this.delete(path);
@@ -40,7 +44,7 @@ class FileSystemStorage {
           reject(error);
         })
         .pipe(fs.createWriteStream(path))
-        .on('error', (error: Error) => reject(error))
+        .on('error', (error /*: Error*/) => reject(error))
         .on('finish', async () => {
           const { size } = await this.getInfo(path);
           resolve({ path, size, name: filename, type: mimetype });
@@ -48,7 +52,7 @@ class FileSystemStorage {
     );
   }
 
-  public delete(filePath: string): Promise<void> {
+  /* public */ delete(filePath /*: string*/) /*: Promise<void>*/ {
     return new Promise((resolve, reject) => {
       fs.unlink(filePath, err => {
         if (err) {
@@ -60,7 +64,7 @@ class FileSystemStorage {
     });
   }
 
-  public getInfo(filePath: string): Promise<Stats> {
+  /* public */ getInfo(filePath /*: string*/) /*: Promise<Stats>*/ {
     return new Promise((resolve, reject) => {
       fs.stat(filePath, (err, stats) => {
         if (err) {

@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Button } from '../../../common/components/web';
-import { TranslateFunction } from '../../../../i18n';
-
+ 
 const Section = styled.section`
   margin-bottom: 30px;
   text-align: center;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { PageLayout } from '../../common/components/web';
-import { TranslateFunction } from '../../../i18n';
+//import { TranslateFunction } from '../../../i18n';
 import settings from '../../../../../../settings';
 
 interface $Module$ViewProps {

@@ -1,18 +1,18 @@
-import fileSystemStorage, { UploadFileStream } from './FileSystemStorage';
+import fileSystemStorage /*, { UploadFileStream }*/ from './FileSystemStorage';
 import settings from '../../../../../settings';
-
+/*
 interface UploadFileStreams {
   files: [Promise<UploadFileStream>];
 }
-
+*/
 export default () => ({
   Query: {
-    files(obj: any, args: any, { Upload }: any) {
+    files(obj /*: any*/, args /*: any*/, { Upload } /*: any*/) {
       return Upload.files();
     }
   },
   Mutation: {
-    async uploadFiles(obj: any, { files }: UploadFileStreams, { Upload, req }: any) {
+    async uploadFiles(obj /*: any*/, { files } /*: UploadFileStreams*/, { Upload, req } /*: any*/) {
       const { t } = req;
 
       try {
@@ -27,7 +27,7 @@ export default () => ({
         throw new Error(t('upload:fileNotLoaded'));
       }
     },
-    async removeFile(obj: {}, { id }: { id: number }, { Upload, req }: any) {
+    async removeFile(obj /*: {}*/, { id } /*: { id: number }*/, { Upload, req } /*: any*/) {
       const file = await Upload.file(id);
       const { t } = req;
 

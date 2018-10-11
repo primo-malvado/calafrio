@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React /*, { ReactElement }*/ from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { SchemaLink } from 'apollo-link-schema';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
@@ -7,7 +7,7 @@ import { StaticRouter } from 'react-router';
 import { ServerStyleSheet } from 'styled-components';
 import fs from 'fs';
 import path from 'path';
-import Helmet, { HelmetData } from 'react-helmet';
+import Helmet /*, { HelmetData }*/ from 'react-helmet';
 import serialize from 'serialize-javascript';
 
 import { isApiExternal, apiUrl } from '../net';
@@ -18,8 +18,8 @@ import modules from '../modules';
 import schema from '../api/schema';
 import { styles } from '../../../client/src/modules/common/components/web';
 
-let assetMap: { [key: string]: string };
-
+let assetMap /*: { [key: string]: string }*/;
+/*
 interface HtmlProps {
   content: string;
   state: any;
@@ -27,8 +27,8 @@ interface HtmlProps {
   css: Array<ReactElement<{}>>;
   helmet: HelmetData;
 }
-
-const Html = ({ content, state, css, clientModules, helmet }: HtmlProps) => (
+*/
+const Html = ({ content, state, css, clientModules, helmet } /*: HtmlProps*/) => (
   <html lang="en" {...helmet.htmlAttributes.toComponent()}>
     <head>
       {helmet.title.toComponent()}
@@ -48,12 +48,12 @@ const Html = ({ content, state, css, clientModules, helmet }: HtmlProps) => (
       {!!__DEV__ && (
         <style
           dangerouslySetInnerHTML={{
-            __html: styles._getCss() + clientModules.stylesInserts.map((style: any) => style._getCss()).join('')
+            __html: styles._getCss() + clientModules.stylesInserts.map((style /*: any*/) => style._getCss()).join('')
           }}
         />
       )}
       {!!css && css}
-      {clientModules.scriptsInserts.map((script: string, i: number) => {
+      {clientModules.scriptsInserts.map((script /*: string*/, i /*: number*/) => {
         if (script) {
           return <script key={i} src={script} />;
         }
@@ -75,7 +75,7 @@ const Html = ({ content, state, css, clientModules, helmet }: HtmlProps) => (
   </html>
 );
 
-const renderServerSide = async (req: any, res: any) => {
+const renderServerSide = async (req /*: any*/, res /*: any*/) => {
   const clientModules = require('../../../client/src/modules').default;
   const schemaLink = new SchemaLink({ schema, context: { ...(await modules.createContext(req, res)), req, res } });
   const client = createApolloClient({
@@ -86,7 +86,7 @@ const renderServerSide = async (req: any, res: any) => {
     connectionParams: null
   });
   const store = createReduxStore({}, client);
-  const context: any = {};
+  const context /*: any*/ = {};
   const App = clientModules.getWrappedRoot(
     <Provider store={store}>
       <ApolloProvider client={client}>
@@ -113,7 +113,7 @@ const renderServerSide = async (req: any, res: any) => {
     }
 
     const sheet = new ServerStyleSheet();
-    const htmlProps: HtmlProps = {
+    const htmlProps /*: HtmlProps*/ = {
       content: ReactDOMServer.renderToString(sheet.collectStyles(App)),
       css: sheet.getStyleElement().map((el, idx) => (el ? React.cloneElement(el, { key: idx }) : el)),
       helmet: Helmet.renderStatic(), // Avoid memory leak while tracking mounted instances
@@ -126,7 +126,7 @@ const renderServerSide = async (req: any, res: any) => {
   }
 };
 
-export default async (req: any, res: any, next: (e?: Error) => void) => {
+export default async (req /*: any*/, res /*: any*/, next /*: (e?: Error) => void*/) => {
   try {
     if (req.path.indexOf('.') < 0 && __SSR__) {
       return await renderServerSide(req, res);

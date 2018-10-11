@@ -3,21 +3,12 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import SubscriptionCardForm from './SubscriptionCardFormView';
-import { TranslateFunction } from '../../../../../i18n';
-import { CreditCardInput } from '../types';
 import settings from '../../../../../../../../settings';
 
-interface AddSubscriptionViewProps {
-  t: TranslateFunction;
-  submitting: boolean;
-  onSubmit: (subscriptionInput: CreditCardInput, stripe: any) => void;
-  error: string | null;
-}
+class AddSubscriptionView extends React.Component /*<AddSubscriptionViewProps>*/ {
+  /*private */ scrollViewRef /*: any*/;
 
-export default class AddSubscriptionView extends React.Component<AddSubscriptionViewProps> {
-  private scrollViewRef: any;
-
-  public render() {
+  render() {
     const { t } = this.props;
 
     return (
@@ -68,3 +59,5 @@ const styles = StyleSheet.create({
     margin: 10
   }
 });
+
+export default AddSubscriptionView;

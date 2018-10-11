@@ -2,17 +2,8 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import SubscriptionCardForm from './SubscriptionCardFormView';
-import { CreditCardInput } from '../types';
-import { TranslateFunction } from '../../../../../i18n';
 
-interface UpdateCardViewProps {
-  onSubmit: (subscriptionInput: CreditCardInput, stripe: any) => void;
-  t: TranslateFunction;
-  submitting: boolean;
-  error: string | null;
-}
-
-export default (props: UpdateCardViewProps) => {
+const UpdateCreditCardView = (props /*: UpdateCardViewProps*/) => {
   const { t } = props;
 
   return (
@@ -43,3 +34,5 @@ const styles = StyleSheet.create({
     margin: 10
   }
 });
+
+export default UpdateCreditCardView;

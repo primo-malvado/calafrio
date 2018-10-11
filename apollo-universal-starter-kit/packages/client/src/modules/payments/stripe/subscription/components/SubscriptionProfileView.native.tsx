@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { Card } from '../../../../common/components/native';
 import CreditCardInfo from '../containers/CreditCardInfo';
 import CancelSubscription from '../containers/CancelSubscription';
-import { TranslateFunction } from '../../../../../i18n';
+//import { TranslateFunction } from '../../../../../i18n';
 import { CardSubtitleText } from '../../../../common/components/native';
 
 interface SubscriptionProfileViewProps {

@@ -3,7 +3,7 @@ import settings from '../../../../../settings';
 
 import knex from '../../sql/connector';
 import log from '../../../../common/log';
-
+/*
 interface EventQuery {
   __knexQueryUid: string;
   sql: string;
@@ -19,14 +19,14 @@ interface Times {
     finished: boolean;
   };
 }
-
+*/
 // The map used to store the query times, where the query unique
 // identifier is the key.
-const times: Times = {};
+const times /*: Times */ = {};
 // Used for keeping track of the order queries are executed.
 let count = 0;
 
-const printQueryWithTime = (uid: string) => {
+const printQueryWithTime = (uid /*: string*/) => {
   const { startTime, endTime, query } = times[uid];
   const elapsedTime = endTime - startTime;
 
@@ -40,7 +40,7 @@ const printQueryWithTime = (uid: string) => {
   delete times[uid];
 };
 
-const printIfPossible = (uid: string) => {
+const printIfPossible = (uid /*: string*/) => {
   const { position } = times[uid];
 
   // Look of a query with a position one less than the current query
@@ -52,7 +52,7 @@ const printIfPossible = (uid: string) => {
   }
 };
 
-const printQueriesAfterGivenPosition = (position: number) => {
+const printQueriesAfterGivenPosition = (position /*: number*/) => {
   // Look for the next query in the queue
   const nextTimeUid = Object.keys(times).find(key => times[key].position === position + 1);
 
@@ -68,7 +68,7 @@ const printQueriesAfterGivenPosition = (position: number) => {
 
 if (__DEV__ && settings.app.logging.debugSQL) {
   knex
-    .on('query', (query: EventQuery) => {
+    .on('query', (query /*: EventQuery*/) => {
       const uid = query.__knexQueryUid;
       times[uid] = {
         position: count,
@@ -80,7 +80,7 @@ if (__DEV__ && settings.app.logging.debugSQL) {
       };
       count = count + 1;
     })
-    .on('query-response', (response: any, query: EventQuery) => {
+    .on('query-response', (response /*: any*/, query /*: EventQuery*/) => {
       const uid = query.__knexQueryUid;
       times[uid].endTime = now();
       times[uid].finished = true;

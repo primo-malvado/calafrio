@@ -9,7 +9,7 @@ const { enabled, publicKey } = settings.stripe.subscription;
 if (enabled && !!publicKey) {
   const mocks = {
     Query: () => ({
-      currentUser(): any {
+      currentUser() /*: any*/ {
         return {
           id: 1,
           username: 'user',

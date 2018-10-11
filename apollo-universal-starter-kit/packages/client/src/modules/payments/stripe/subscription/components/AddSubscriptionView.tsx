@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Elements } from 'react-stripe-elements';
 
-import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 import { LayoutCenter, clientOnly, Table, Row, Col } from '../../../../common/components/index.web';
 import { PageLayout } from '../../../../common/components/web';
 import SubscriptionCardForm from './SubscriptionCardFormView';
@@ -14,7 +14,7 @@ const ElementsClientOnly = clientOnly(Elements);
 interface AddSubscriptionViewProps {
   t: TranslateFunction;
   submitting: boolean;
-  onSubmit: (subscriptionInput: CreditCardInput, stripe: any) => void;
+  onSubmit: (subscriptionInput: CreditCardInput, stripe /*: any*/) => void;
   error: string | null;
 }
 

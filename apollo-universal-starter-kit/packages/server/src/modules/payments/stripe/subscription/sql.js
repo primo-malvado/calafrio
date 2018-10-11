@@ -1,7 +1,7 @@
 import { camelizeKeys, decamelizeKeys } from 'humps';
 import knex from '../../../../sql/connector';
 import { returnId } from '../../../../sql/helpers';
-
+/*
 export interface Subscription {
   userId: number;
   active: boolean;
@@ -18,9 +18,9 @@ interface SubscriptionProps {
   userId: number;
   [key: string]: any;
 }
-
+*/
 export default class StripeSubscriptionDAO {
-  public async editSubscription({ userId, ...subscription }: SubscriptionProps) {
+  /* public */ async editSubscription({ userId, ...subscription } /*: SubscriptionProps*/) {
     const subscriptionId = await knex('stripe_subscription')
       .select('id')
       .where({ user_id: userId })
@@ -35,37 +35,39 @@ export default class StripeSubscriptionDAO {
     }
   }
 
-  public async getSubscription(userId: number): Promise<Subscription> {
+  /* public */ async getSubscription(userId /*: number*/) /*: Promise<Subscription>*/ {
     return camelizeKeys(
       await knex('stripe_subscription')
         .select('s.*')
         .from('stripe_subscription as s')
         .where('s.user_id', '=', userId)
         .first()
-    ) as Subscription;
+    ) /*as Subscription*/;
   }
 
-  public async getSubscriptionByStripeSubscriptionId(stripeSubscriptionId: string): Promise<Subscription> {
+  /* public */ async getSubscriptionByStripeSubscriptionId(
+    stripeSubscriptionId /*: string*/
+  ) /*: Promise<Subscription>*/ {
     return camelizeKeys(
       await knex('stripe_subscription')
         .select('s.*')
         .from('stripe_subscription as s')
         .where('s.stripe_subscription_id', '=', stripeSubscriptionId)
         .first()
-    ) as Subscription;
+    ) /* as Subscription*/;
   }
 
-  public async getSubscriptionByStripeCustomerId(stripeCustomerId: string): Promise<Subscription> {
+  /* public */ async getSubscriptionByStripeCustomerId(stripeCustomerId /*: string*/) /*: Promise<Subscription>*/ {
     return camelizeKeys(
       await knex('stripe_subscription')
         .select('s.*')
         .from('stripe_subscription as s')
         .where('s.stripe_customer_id', '=', stripeCustomerId)
         .first()
-    ) as Subscription;
+    ) /* as Subscription*/;
   }
 
-  public async getCreditCard(userId: number) {
+  /* public */ async getCreditCard(userId /*: number*/) {
     return camelizeKeys(
       await knex('stripe_subscription')
         .select('s.expiry_month', 's.expiry_year', 's.last4', 's.brand')

@@ -1,6 +1,6 @@
 import { returnId, orderedFor } from '../../sql/helpers';
 import knex from '../../sql/connector';
-
+/*
 export interface Post {
   title: string;
   content: string;
@@ -14,9 +14,9 @@ export interface Comment {
 export interface Identifier {
   id: number;
 }
-
+*/
 export default class PostDAO {
-  public postsPagination(limit: number, after: number) {
+  /*public */ postsPagination(limit /*: number*/, after /*: number*/) {
     return knex
       .select('id', 'title', 'content')
       .from('post')
@@ -25,7 +25,7 @@ export default class PostDAO {
       .offset(after);
   }
 
-  public async getCommentsForPostIds(postIds: number[]) {
+  /* public */ async getCommentsForPostIds(postIds /*: number[]*/) {
     const res = await knex
       .select('id', 'content', 'post_id AS postId')
       .from('comment')
@@ -34,13 +34,13 @@ export default class PostDAO {
     return orderedFor(res, postIds, 'postId', false);
   }
 
-  public getTotal() {
+  /* public */ getTotal() {
     return knex('post')
       .countDistinct('id as count')
       .first();
   }
 
-  public post(id: number) {
+  /* public */ post(id /*: number*/) {
     return knex
       .select('id', 'title', 'content')
       .from('post')
@@ -48,27 +48,27 @@ export default class PostDAO {
       .first();
   }
 
-  public addPost(params: Post) {
+  /* public */ addPost(params /*: Post*/) {
     return returnId(knex('post')).insert(params);
   }
 
-  public deletePost(id: number) {
+  /* public */ deletePost(id /*: number*/) {
     return knex('post')
       .where('id', '=', id)
       .del();
   }
 
-  public editPost({ id, title, content }: Post & Identifier) {
+  /* public */ editPost({ id, title, content } /*: Post & Identifier*/) {
     return knex('post')
       .where('id', '=', id)
       .update({ title, content });
   }
 
-  public addComment({ content, postId }: Comment) {
+  /* public */ addComment({ content, postId } /*: Comment*/) {
     return returnId(knex('comment')).insert({ content, post_id: postId });
   }
 
-  public getComment(id: number) {
+  /* public */ getComment(id /*: number*/) {
     return knex
       .select('id', 'content')
       .from('comment')
@@ -76,13 +76,13 @@ export default class PostDAO {
       .first();
   }
 
-  public deleteComment(id: number) {
+  /* public */ deleteComment(id /*: number*/) {
     return knex('comment')
       .where('id', '=', id)
       .del();
   }
 
-  public editComment({ id, content }: Comment & Identifier) {
+  /* public */ editComment({ id, content } /*: Comment & Identifier*/) {
     return knex('comment')
       .where('id', '=', id)
       .update({

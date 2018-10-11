@@ -33,7 +33,10 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
     };
   }
 
-  public onSubmit = (addSubscription: any) => async (creditCardInput: CreditCardInput, stripe?: any) => {
+  /* public */ public onSubmit = (addSubscription /*: any*/) => async (
+    creditCardInput: CreditCardInput,
+    stripe? /*: any*/
+  ) => {
     const { t, history, navigation } = this.props;
     this.setState({ submitting: true });
     let preparedCreditCard;
@@ -56,7 +59,9 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
 
       this.setState({
         submitting: false,
-        error: addStripeSubscription.errors ? addStripeSubscription.errors.map((e: any) => e.message).join('\n') : null
+        error: addStripeSubscription.errors
+          ? addStripeSubscription.errors.map((e /*: any*/) => e.message).join('\n')
+          : null
       });
       history ? history.push('/subscriber-page') : navigation.goBack();
     } catch (e) {
@@ -64,7 +69,7 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
     }
   };
 
-  public render() {
+  /* public */ public render() {
     const { t } = this.props;
     const { error, submitting } = this.state;
 

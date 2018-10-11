@@ -17,7 +17,7 @@ export default new ClientModule(counters, {
         screen: createStackNavigator({
           Counter: {
             screen: Counter,
-            navigationOptions: ({ navigation }: any) => ({
+            navigationOptions: ({ navigation } /*: any*/) => ({
               headerTitle: <HeaderTitleWithI18n i18nKey="title" style="subTitle" />,
               headerLeft: (
                 <IconButton iconName="menu" iconSize={32} iconColor="#0275d8" onPress={() => navigation.openDrawer()} />

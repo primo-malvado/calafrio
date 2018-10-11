@@ -8,8 +8,8 @@ import ADD_COUNTER from '../../../../../client/src/modules/counter/serverCounter
 import COUNTER_SUBSCRIPTION from '../../../../../client/src/modules/counter/serverCounter/graphql/CounterSubscription.graphql';
 
 describe('Counter example API works', () => {
-  let server: any;
-  let apollo: any;
+  let server /*: any*/;
+  let apollo /*: any*/;
 
   before(() => {
     server = getServer();
@@ -56,7 +56,7 @@ describe('Counter example API works', () => {
         variables: {}
       })
       .subscribe({
-        next(data: any) {
+        next(data /*: any*/) {
           data.should.deep.equal({
             data: { counterUpdated: { amount: 8, __typename: 'Counter' } }
           });

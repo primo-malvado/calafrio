@@ -1,13 +1,15 @@
 import * as url from 'url';
+/*
 import * as express from 'express';
+*/
 import * as GraphiQL from 'apollo-server-module-graphiql';
 
 import { isApiExternal, serverPort } from '../net';
-
+/*
 type ExpressGraphQLOptionsFunction = (req?: express.Request, res?: express.Response) => any | Promise<any>;
-
-function graphiqlExpress(options: GraphiQL.GraphiQLData | ExpressGraphQLOptionsFunction) {
-  const graphiqlHandler = (req: express.Request, res: express.Response, next: any) => {
+*/
+function graphiqlExpress(options /*: GraphiQL.GraphiQLData | ExpressGraphQLOptionsFunction*/) {
+  const graphiqlHandler = (req /*: express.Request*/, res /*: express.Response*/, next /*: any*/) => {
     const query = req.url && url.parse(req.url, true).query;
     GraphiQL.resolveGraphiQLString(query, options, req).then(
       graphiqlString => {
@@ -22,7 +24,7 @@ function graphiqlExpress(options: GraphiQL.GraphiQLData | ExpressGraphQLOptionsF
   return graphiqlHandler;
 }
 
-export default graphiqlExpress((req: express.Request) => {
+export default graphiqlExpress((req /*: express.Request*/) => {
   const { protocol, hostname } = url.parse(req.get('Referer') || `http://localhost`);
   const subscriptionsUrl = (!isApiExternal
     ? `${protocol}//${hostname}:${serverPort}${__API_URL__}`

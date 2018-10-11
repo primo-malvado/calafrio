@@ -21,7 +21,7 @@ class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key
     };
   }
 
-  public onClick = (cancelSubscription: any) => async () => {
+  /* public */ public onClick = (cancelSubscription /*: any*/) => async () => {
     this.setState({ submitting: true });
 
     // Sets state only when there is an error to prevent warning about
@@ -32,7 +32,7 @@ class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key
         this.setState({
           submitting: false,
           error: data.cancelStripeSubscription.errors
-            ? data.cancelStripeSubscription.errors.map((e: any) => e.message).join('\n')
+            ? data.cancelStripeSubscription.errors.map((e /*: any*/) => e.message).join('\n')
             : null
         });
       }
@@ -41,7 +41,7 @@ class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key
     }
   };
 
-  public render() {
+  /* public */ public render() {
     const { t } = this.props;
 
     return (

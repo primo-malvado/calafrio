@@ -1,30 +1,30 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
-
-import { Button, primary } from '../../../../common/components/native';
 import { FontAwesome } from '@expo/vector-icons';
 
+import { Button, primary } from '../../../../common/components/native';
+/*
 interface SubscriptionCardFormViewProps {
   submitting: boolean;
   buttonName: string;
-  onSubmit: (subscriptionInput: any, stripe?: any) => void;
+  onSubmit: (subscriptionInput  : any , stripe? : any) => void;
   error: string | null;
 }
-
-export default class SubscriptionCardFormView extends React.Component<SubscriptionCardFormViewProps, any> {
-  constructor(props: SubscriptionCardFormViewProps) {
+*/
+export default class SubscriptionCardFormView extends React.Component /*<SubscriptionCardFormViewProps, any>*/ {
+  constructor(props /*: SubscriptionCardFormViewProps*/) {
     super(props);
     this.state = { cardInfo: { valid: false } };
   }
 
-  public render() {
+  /* public */ render() {
     const { onSubmit, submitting, buttonName, error } = this.props;
 
     return (
       <View>
         <View>
-          <CreditCardInput requiresName onChange={(cardInfo: any) => this.setState({ cardInfo })} />
+          <CreditCardInput requiresName onChange={(cardInfo /*: any*/) => this.setState({ cardInfo })} />
         </View>
         <View style={styles.buttonWrapper}>
           <Button

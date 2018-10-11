@@ -3,7 +3,7 @@
 /* tslint:disable:no-reference */
 /// <reference path="../../../../../typings/typings.d.ts" />
 import { json } from 'body-parser';
-import { Express } from 'express';
+//import { Express } from 'express';
 import stripeLocal from 'stripe-local';
 
 import ServerModule from '../../../ServerModule';
@@ -30,16 +30,16 @@ if (__DEV__ && enabled && process.env.STRIPE_SECRET_KEY) {
   });
 }
 
-const createContext = async ({ context: { user } }: any) => ({
+const createContext = async ({ context: { user } } /*: any*/) => ({
   StripeSubscription,
   stripeSubscription: user ? await StripeSubscription.getSubscription(user.id) : null
 });
 
-const beforeware = (app: Express) => {
+const beforeware = (app /*: Express*/) => {
   app.use(webhookUrl, json());
 };
 
-const middleware = (app: Express) => {
+const middleware = (app /*: Express*/) => {
   app.post(webhookUrl, webhookMiddleware);
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { withFormik } from 'formik';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 
-import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 import Field from '../../../../../utils/FieldAdapter';
 import { Form, RenderField, Button, Alert, Label } from '../../../../common/components/web';
 import { required, validateForm } from '../../../../../../../common/validation';
@@ -12,7 +12,7 @@ interface SubscriptionCardFormViewProps {
   buttonName: string;
   error: string | null;
   handleSubmit?: () => void;
-  onSubmit: (subscriptionInput: any, stripe: any) => void;
+  onSubmit: (subscriptionInput /*: any*/, stripe /*: any*/) => void;
   values?: {
     name: string;
   };

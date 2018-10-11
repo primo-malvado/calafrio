@@ -11,7 +11,7 @@ const defaults = {
 
 const resolvers = {
   Query: {
-    clientCounter: (_: any, args: any, { cache }: any) => {
+    clientCounter: (_ /*: any*/, args /*: any*/, { cache } /*: any*/) => {
       const {
         clientCounter: { amount }
       } = cache.readQuery({ query: COUNTER_QUERY_CLIENT });
@@ -22,7 +22,7 @@ const resolvers = {
     }
   },
   Mutation: {
-    addClientCounter: async (_: any, { increment }: any, { cache }: any): Promise<any> => {
+    addClientCounter: async (_ /*: any*/, { increment } /*: any*/, { cache } /*: any*/): Promise<any> => {
       const {
         clientCounter: { amount }
       } = cache.readQuery({ query: COUNTER_QUERY_CLIENT });

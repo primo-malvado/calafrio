@@ -43,7 +43,7 @@ export const createToken = (creditCardInput: CreditCardInput) => {
  * @return - Returns credit card with the token or error
  */
 
-export const createCreditCardToken = async (creditCardInput: CreditCardInput, stripe: any) => {
+export const createCreditCardToken = async (creditCardInput: CreditCardInput, stripe /*: any*/) => {
   const { name } = creditCardInput;
   let stripeResponse;
 

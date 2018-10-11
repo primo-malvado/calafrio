@@ -4,14 +4,14 @@ import fs from 'fs';
 import { isApiExternal } from '../net';
 import log from '../../../common/log';
 
-let assetMap: { [key: string]: string };
+let assetMap /*: { [key: string]: string }*/;
 
 /**
  * Gets rid of circular data in the object,
  * replaces circular links to '[Circular]' string
  * It is needed for converting the Error object into JSON via JSON.stringify
  */
-const stripCircular = (cilcularData: any, seen: any[] | null) => {
+const stripCircular = (cilcularData /*: any*/, seen /*: any[] | null*/) => {
   const notCilcularData = Array.isArray(cilcularData) ? [] : {};
   seen = seen || [];
   seen.push(cilcularData);
@@ -35,7 +35,7 @@ const stripCircular = (cilcularData: any, seen: any[] | null) => {
  *
  * Important: should have 4 params, even if they don't used
  */
-function errorMiddleware(e: Error, req: any, res: any, next: () => void) {
+function errorMiddleware(e /*: Error*/, req /*: any*/, res /*: any*/ /*, next : () => void*/) {
   if (!isApiExternal && req.path === __API_URL__) {
     const stack = e.stack.toString().replace(/[\n]/g, '\\n');
     res.status(200).send(`[{"data": {}, "errors":[{"message": "${stack}"}]}]`);

@@ -7,7 +7,7 @@ import settings from '../../../../../../../settings';
 
 const { plan } = settings.stripe.subscription;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
+/*
 interface CreditCard {
   input: {
     token: string;
@@ -17,23 +17,35 @@ interface CreditCard {
     brand: string;
   };
 }
-
+*/
 export default () => ({
   Query: {
-    stripeSubscription: withAuth(['stripe:view:self'], (obj: any, args: any, { stripeSubscription }: any) => {
+    stripeSubscription: withAuth(['stripe:view:self'], (
+      obj /*: any*/,
+      args /*: any*/,
+      { stripeSubscription } /*: any*/
+    ) => {
       return { active: !!(stripeSubscription && stripeSubscription.active) };
     }),
-    stripeSubscriptionProtectedNumber: withAuth(['stripe:view:self'], (obj: any, args: any, context: any) => {
+    stripeSubscriptionProtectedNumber: withAuth(['stripe:view:self'], (
+      obj /*: any*/,
+      args /*: any*/,
+      context /*: any*/
+    ) => {
       return context.stripeSubscription && context.stripeSubscription.active
         ? { number: Math.floor(Math.random() * 10) }
         : null;
     }),
-    stripeSubscriptionCard: withAuth(['stripe:view:self'], (obj: any, args: any, context: any) => {
+    stripeSubscriptionCard: withAuth(['stripe:view:self'], (obj /*: any*/, args /*: any*/, context /*: any*/) => {
       return context.StripeSubscription.getCreditCard(context.user.id);
     })
   },
   Mutation: {
-    addStripeSubscription: withAuth(['stripe:update:self'], async (obj: any, { input }: CreditCard, context: any) => {
+    addStripeSubscription: withAuth(['stripe:update:self'], async (
+      obj /*: any*/,
+      { input } /*: CreditCard*/,
+      context /*: any*/
+    ) => {
       try {
         const { user, stripeSubscription, StripeSubscription } = context;
         const { token, expiryMonth, expiryYear, last4, brand } = input;
@@ -79,7 +91,11 @@ export default () => ({
         return { active: false, errors: e };
       }
     }),
-    updateStripeSubscriptionCard: withAuth(['stripe:update:self'], async (obj: any, args: CreditCard, context: any) => {
+    updateStripeSubscriptionCard: withAuth(['stripe:update:self'], async (
+      obj /*: any*/,
+      args /*: CreditCard*/,
+      context /*: any*/
+    ) => {
       try {
         const { token, expiryMonth, expiryYear, last4, brand } = args.input;
         const { StripeSubscription, user, stripeSubscription } = context;
@@ -102,7 +118,11 @@ export default () => ({
         return false;
       }
     }),
-    cancelStripeSubscription: withAuth(['stripe:update:self'], async (obj: any, args: any, context: any) => {
+    cancelStripeSubscription: withAuth(['stripe:update:self'], async (
+      obj /*: any*/,
+      args /*: any*/,
+      context /*: any*/
+    ) => {
       try {
         const { user, stripeSubscription, StripeSubscription, req } = context;
         const { stripeSubscriptionId, stripeCustomerId, stripeSourceId } = stripeSubscription;

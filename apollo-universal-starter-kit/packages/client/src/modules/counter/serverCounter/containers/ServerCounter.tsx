@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import update from 'immutability-helper';
 
-import translate, { TranslateFunction } from '../../../../i18n';
+import translate from '../../../../i18n';
 import { ServerCounterView, ServerCounterButton } from '../components/ServerCounterView';
 import ADD_COUNTER from '../graphql/AddCounter.graphql';
 import COUNTER_SUBSCRIPTION from '../graphql/CounterSubscription.graphql';
@@ -16,12 +16,12 @@ interface ButtonProps {
 
 const IncreaseButton = ({ counterAmount, t, counter }: ButtonProps) => (
   <Mutation mutation={ADD_COUNTER}>
-    {(mutate: any) => {
+    {(mutate /*: any*/) => {
       const addServerCounter = (amount: number) => () =>
         mutate({
           variables: { amount },
           updateQueries: {
-            serverCounterQuery: (prev: any, { mutationResult }: any) => {
+            serverCounterQuery: (prev /*: any*/, { mutationResult } /*: any*/) => {
               const newAmount = mutationResult.data.addServerCounter.amount;
               return update(prev, {
                 serverCounter: {
@@ -50,7 +50,7 @@ const IncreaseButton = ({ counterAmount, t, counter }: ButtonProps) => (
 
 interface CounterProps {
   t: TranslateFunction;
-  subscribeToMore: (opts: any) => any;
+  subscribeToMore: (opts /*: any*/) => any;
   loading: boolean;
   counter: any;
 }
@@ -63,7 +63,7 @@ class ServerCounter extends React.Component<CounterProps> {
     this.subscription = null;
   }
 
-  public componentDidMount() {
+  /* public */ public componentDidMount() {
     if (!this.props.loading) {
       // Subscribe or re-subscribe
       if (!this.subscription) {
@@ -73,7 +73,7 @@ class ServerCounter extends React.Component<CounterProps> {
   }
 
   // remove when Renderer is overwritten
-  public componentDidUpdate(prevProps: CounterProps) {
+  /* public */ public componentDidUpdate(prevProps: CounterProps) {
     if (!prevProps.loading) {
       // Subscribe or re-subscribe
       if (!this.subscription) {
@@ -82,18 +82,18 @@ class ServerCounter extends React.Component<CounterProps> {
     }
   }
 
-  public componentWillUnmount() {
+  /* public */ public componentWillUnmount() {
     if (this.subscription) {
       this.subscription();
     }
   }
 
-  public subscribeToCount() {
+  /* public */ public subscribeToCount() {
     this.subscription = this.props.subscribeToMore({
       document: COUNTER_SUBSCRIPTION,
       variables: {},
       updateQuery: (
-        prev: any,
+        prev /*: any*/,
         {
           subscriptionData: {
             data: {
@@ -113,7 +113,7 @@ class ServerCounter extends React.Component<CounterProps> {
     });
   }
 
-  public render() {
+  /* public */ public render() {
     const { t, counter, loading } = this.props;
     return (
       <ServerCounterView t={t} counter={counter} loading={loading}>
@@ -123,7 +123,7 @@ class ServerCounter extends React.Component<CounterProps> {
   }
 }
 
-const ServerCounterWithQuery = (props: any) => (
+const ServerCounterWithQuery = (props /*: any*/) => (
   <Query query={COUNTER_QUERY}>
     {({ loading, error, data: { serverCounter }, subscribeToMore }) => {
       if (error) {

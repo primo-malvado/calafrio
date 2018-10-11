@@ -3,8 +3,7 @@ import React, { Fragment } from 'react';
 import CreditCardInfo from '../containers/CreditCardInfo';
 import CancelSubscription from '../containers/CancelSubscription';
 import { CardGroup, CardText, CardTitle } from '../../../../common/components/web';
-import { TranslateFunction } from '../../../../../i18n';
-
+ 
 interface SubscriptionProfileViewProps {
   loading: boolean;
   stripeSubscription: {

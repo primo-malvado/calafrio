@@ -17,8 +17,8 @@ const ReduxCounter = ({ t, onReduxIncrement, reduxCount }: CounterProps) => (
 );
 
 export default connect(
-  (state: any) => ({ reduxCount: state.counter.reduxCount }),
-  (dispatch: any) => ({
+  (state /*: any*/) => ({ reduxCount: state.counter.reduxCount }),
+  (dispatch /*: any*/) => ({
     onReduxIncrement(value: number) {
       return () =>
         dispatch({

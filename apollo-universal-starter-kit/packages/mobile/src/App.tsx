@@ -22,7 +22,7 @@ interface MainProps {
 }
 
 export default class Main extends React.Component<MainProps> {
-  public render() {
+  /* public */ public render() {
     const { hostname } = url.parse(__API_URL__);
     const apiUrl =
       this.props.exp.manifest.bundleUrl && hostname === 'localhost'

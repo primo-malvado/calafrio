@@ -16,7 +16,7 @@ interface SubscriptionAuthRouterProps {
  * redirect to add subscription screen otherwise.
  */
 class SubscriptionAuthRouter extends React.Component<SubscriptionAuthRouterProps> {
-  public componentDidUpdate() {
+  /* public */ public componentDidUpdate() {
     const { loading, navigation, stripeSubscription } = this.props;
 
     if (!loading && stripeSubscription && !stripeSubscription.active && navigation) {
@@ -24,7 +24,7 @@ class SubscriptionAuthRouter extends React.Component<SubscriptionAuthRouterProps
     }
   }
 
-  public render() {
+  /* public */ public render() {
     const { component: Component, loading, stripeSubscription, ...props } = this.props;
     return !loading && stripeSubscription && stripeSubscription.active ? <Component {...props} /> : null;
   }

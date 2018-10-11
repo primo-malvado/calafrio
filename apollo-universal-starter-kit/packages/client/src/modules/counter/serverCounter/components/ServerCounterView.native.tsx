@@ -2,8 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button, Loading, primary } from '../../../common/components/native';
-import { TranslateFunction } from '../../../../i18n';
-
+ 
 interface ViewProps {
   t: TranslateFunction;
   children: any;

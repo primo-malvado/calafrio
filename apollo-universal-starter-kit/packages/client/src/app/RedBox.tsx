@@ -6,7 +6,10 @@ import { mapStackTrace } from 'sourcemapped-stacktrace';
 import settings from '../../../../settings';
 
 const format = (fmt: string, ...args: any[]) =>
-  fmt.replace(/{(\d+)}/g, (match: any, index: number) => (typeof args[index] !== 'undefined' ? args[index] : match));
+  fmt.replace(
+    /{(\d+)}/g,
+    (match /*: any*/, index: number) => (typeof args[index] !== 'undefined' ? args[index] : match)
+  );
 
 interface RedBoxState {
   mapped: boolean;
@@ -22,12 +25,12 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
     this.state = { mapped: false };
   }
 
-  public componentDidMount() {
+  /* public */ public componentDidMount() {
     if (!this.state.mapped) {
       mapStackTrace(this.props.error.stack, (mappedStack: string[]) => {
         const processStack = __DEV__
           ? fetch('/servdir')
-              .then((res: any) => res.text())
+              .then((res /*: any*/) => res.text())
               .then((servDir: string) => mappedStack.map((frame: string) => frame.replace('webpack:///', servDir)))
           : Promise.resolve(mappedStack);
         processStack.then((stack: string[]) => {
@@ -38,7 +41,7 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
     }
   }
 
-  public renderFrames(frames: StackFrame[]) {
+  /* public */ public renderFrames(frames: StackFrame[]) {
     const { frame: frameStyle, file, linkToFile } = styles;
 
     return frames.map((frame: StackFrame, index: number) => {
@@ -63,7 +66,7 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
     });
   }
 
-  public render() {
+  /* public */ public render() {
     const error: Error = this.props.error;
     const { redbox, message, stack, frame } = styles;
     let frames: any;

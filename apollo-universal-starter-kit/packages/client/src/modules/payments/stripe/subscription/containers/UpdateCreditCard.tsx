@@ -29,7 +29,10 @@ class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: st
     };
   }
 
-  public onSubmit = (updateCard: any) => async (creditCardInput: CreditCardInput, stripe?: any) => {
+  /* public */ public onSubmit = (updateCard /*: any*/) => async (
+    creditCardInput: CreditCardInput,
+    stripe? /*: any*/
+  ) => {
     this.setState({ submitting: true });
     const { t, history, navigation } = this.props;
     let preparedCreditCard;
@@ -62,7 +65,7 @@ class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: st
     }
   };
 
-  public render() {
+  /* public */ public render() {
     const { t } = this.props;
     return (
       <Mutation mutation={UPDATE_CREDIT_CARD} refetchQueries={[{ query: CREDIT_CARD_QUERY }]}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import translate, { TranslateFunction } from '../../../../i18n';
+import translate /*, { TranslateFunction }*/ from '../../../../i18n';
 import { MenuItem } from '../../../../modules/common/components/web';
 import * as user from '../../../user/index.web';
 import settings from '../../../../../../../settings';
@@ -13,9 +13,9 @@ import AddSubscription from './containers/AddSubscription';
 import SubscriberPage from './containers/SubscriberPage';
 import UpdateCreditCard from './containers/UpdateCreditCard';
 
-const { AuthRoute, IfLoggedIn }: any = user;
+const { AuthRoute, IfLoggedIn } /*: any */ = user;
 
-const NavLinkWithI18n = translate('stripeSubscription')(({ t }: { t: TranslateFunction }) => (
+const NavLinkWithI18n = translate('stripeSubscription')(({ t } /*: { t: TranslateFunction }*/) => (
   <NavLink to="/subscriber-page" className="nav-link" activeClassName="active">
     {t('navLink')}
   </NavLink>
@@ -29,13 +29,13 @@ export default (settings.stripe.subscription.enabled && settings.stripe.subscrip
           exact
           role="user"
           path="/subscriber-page"
-          component={(props: any) => <SubscriptionAuthRouter {...props} component={SubscriberPage} />}
+          component={(props /*: any*/) => <SubscriptionAuthRouter {...props} component={SubscriberPage} />}
         />,
         <AuthRoute
           exact
           role="user"
           path="/update-credit-card"
-          component={(props: any) => <SubscriptionAuthRouter {...props} component={UpdateCreditCard} />}
+          component={(props /*: any*/) => <SubscriptionAuthRouter {...props} component={UpdateCreditCard} />}
         />
       ],
       navItem: [

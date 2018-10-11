@@ -21,7 +21,7 @@ const mocks = {
     __typename: 'Counter'
   }),
   Mutation: () => ({
-    addServerCounter: (obj: any, { amount }: any) => ({
+    addServerCounter: (obj /*: any*/, { amount } /*: any*/) => ({
       amount: INC_COUNTER_VALUE + amount,
       __typename: 'Counter'
     })

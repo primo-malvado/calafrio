@@ -8,7 +8,7 @@ interface $Module$Props {
 }
 
 class $Module$ extends React.Component<$Module$Props> {
-  public render() {
+ /* public */render() {
     return <$Module$View {...this.props} />;
   }
 }

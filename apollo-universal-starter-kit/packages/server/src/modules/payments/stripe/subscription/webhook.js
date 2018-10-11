@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { TranslationFunction } from 'i18next';
+//import { TranslationFunction } from 'i18next';
 
 import StripeSubscriptionDAO from './sql';
 import mailer from '../../../mailer/mailer';
@@ -16,8 +16,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
  * @param subject - The email title.
  * @param html - The email body.
  */
-const sendEmailToUser = async (userId: number, subject: string, html: string) => {
-  const { email }: any = await User.getUser(userId);
+const sendEmailToUser = async (userId /*: number*/, subject /*: string*/, html /*: string*/) => {
+  const { email } /*: any */ = await User.getUser(userId);
 
   mailer.sendMail({
     from: `${settings.app.name} <${process.env.EMAIL_USER}>`,
@@ -34,7 +34,7 @@ const sendEmailToUser = async (userId: number, subject: string, html: string) =>
  * @param websiteUrl - The URL of the subscription page to be sent in the email.
  * @param t - The translate function.
  */
-const deleteSubscription = async (stripeEvent: any, websiteUrl: string, t: TranslationFunction) => {
+const deleteSubscription = async (stripeEvent /*: any*/, websiteUrl /*: string*/, t /*: TranslationFunction*/) => {
   const subscription = await StripeSubscription.getSubscriptionByStripeSubscriptionId(stripeEvent.data.object.id);
 
   if (subscription) {
@@ -68,7 +68,11 @@ const deleteSubscription = async (stripeEvent: any, websiteUrl: string, t: Trans
  * @param websiteUrl - The URL of the subscription page to be sent in the email.
  * @param t - The translate function.
  */
-const notifyFailedSubscription = async (stripeEvent: any, websiteUrl: string, t: TranslationFunction) => {
+const notifyFailedSubscription = async (
+  stripeEvent /*: any*/,
+  websiteUrl /*: string*/,
+  t /*: TranslationFunction*/
+) => {
   const subscription = await StripeSubscription.getSubscriptionByStripeCustomerId(stripeEvent.data.object.customer);
 
   if (subscription) {
@@ -87,7 +91,7 @@ const notifyFailedSubscription = async (stripeEvent: any, websiteUrl: string, t:
  * Webhook middleware.
  * This endpoint handles Stripe events
  */
-export default async (req: any, res: any) => {
+export default async (req /*: any*/, res /*: any*/) => {
   try {
     const websiteUrl = `${req.protocol}://${req.get('host')}`;
     const stripeEvent = process.env.STRIPE_ENDPOINT_SECRET

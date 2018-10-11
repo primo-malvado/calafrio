@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Helmet from 'react-helmet';
 import { Elements } from 'react-stripe-elements';
 
-import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 import { LayoutCenter } from '../../../../common/components/web';
 
 import SubscriptionCardForm from './SubscriptionCardFormView';
@@ -10,7 +10,7 @@ import settings from '../../../../../../../../settings';
 import { CreditCardInput } from '../types';
 
 interface UpdateCardViewProps {
-  onSubmit: (subscriptionInput: CreditCardInput, stripe: any) => void;
+  onSubmit: (subscriptionInput: CreditCardInput, stripe /*: any*/) => void;
   t: TranslateFunction;
   submitting: boolean;
   error: string | null;

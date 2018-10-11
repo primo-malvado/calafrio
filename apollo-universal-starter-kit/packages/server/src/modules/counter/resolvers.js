@@ -1,13 +1,13 @@
 const COUNTER_SUBSCRIPTION = 'counter_subscription';
 
-export default (pubsub: any) => ({
+export default (pubsub /*: any*/) => ({
   Query: {
-    serverCounter(obj: any, args: any, context: any) {
+    serverCounter(obj /*: any*/, args /*: any*/, context /*: any*/) {
       return context.Counter.counterQuery();
     }
   },
   Mutation: {
-    async addServerCounter(obj: any, { amount }: any, context: any) {
+    async addServerCounter(obj /*: any*/, { amount } /*: any*/, context /*: any*/) {
       await context.Counter.addCounter(amount);
       const counter = await context.Counter.counterQuery();
 
