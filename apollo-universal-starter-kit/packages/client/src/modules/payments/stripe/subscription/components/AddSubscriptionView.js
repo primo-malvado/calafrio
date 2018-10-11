@@ -2,23 +2,23 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Elements } from 'react-stripe-elements';
 
-// import { TranslateFunction } from '../../../../../i18n';
+import PropTypes from 'prop-types';
 import { LayoutCenter, clientOnly, Table, Row, Col } from '../../../../common/components/index.web';
 import { PageLayout } from '../../../../common/components/web';
 import SubscriptionCardForm from './SubscriptionCardFormView';
 import settings from '../../../../../../../../settings';
-import { CreditCardInput } from '../types';
+//import { CreditCardInput } from '../types';
 
 const ElementsClientOnly = clientOnly(Elements);
-
+/*
 interface AddSubscriptionViewProps {
   t: TranslateFunction;
   submitting: boolean;
-  onSubmit: (subscriptionInput: CreditCardInput, stripe /*: any*/) => void;
+  onSubmit: (subscriptionInput: CreditCardInput, stripe : any) => void;
   error: string | null;
 }
-
-export default (props: AddSubscriptionViewProps) => {
+*/
+const AddSubscriptionView = (props /*: AddSubscriptionViewProps*/) => {
   const { t } = props;
 
   return (
@@ -58,7 +58,7 @@ export default (props: AddSubscriptionViewProps) => {
  * @param t - The translate function.
  * @return Returns header and table with test credit cards
  */
-const renderTestingCards = (t: TranslateFunction) => {
+const renderTestingCards = (t /*: TranslateFunction*/) => {
   const testCreditCard = [
     {
       id: 1,
@@ -91,7 +91,7 @@ const renderTestingCards = (t: TranslateFunction) => {
       title: 'type',
       dataIndex: 'type',
       key: 'type',
-      render(text: string) {
+      render(text /*: string*/) {
         return <span>{text}</span>;
       }
     },
@@ -99,7 +99,7 @@ const renderTestingCards = (t: TranslateFunction) => {
       title: 'number',
       dataIndex: 'number',
       key: 'number',
-      render(text: string) {
+      render(text /*: string*/) {
         return <span>{text}</span>;
       }
     },
@@ -107,7 +107,7 @@ const renderTestingCards = (t: TranslateFunction) => {
       title: 'date',
       dataIndex: 'date',
       key: 'date',
-      render(text: string) {
+      render(text /*: string*/) {
         return <span>{text}</span>;
       }
     },
@@ -115,7 +115,7 @@ const renderTestingCards = (t: TranslateFunction) => {
       title: 'csv',
       dataIndex: 'csv',
       key: 'csv',
-      render(text: string) {
+      render(text /*: string*/) {
         return <span>{text}</span>;
       }
     },
@@ -123,7 +123,7 @@ const renderTestingCards = (t: TranslateFunction) => {
       title: 'zip',
       dataIndex: 'zip',
       key: 'zip',
-      render(text: string) {
+      render(text /*: string*/) {
         return <span>{text}</span>;
       }
     }
@@ -136,3 +136,12 @@ const renderTestingCards = (t: TranslateFunction) => {
     </div>
   );
 };
+
+AddSubscriptionView.propTypes = {
+  t: PropTypes.func,
+  submitting: PropTypes.bool,
+  onSubmit: PropTypes.func,
+  error: PropTypes.string
+};
+
+export default AddSubscriptionView;

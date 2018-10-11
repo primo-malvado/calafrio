@@ -1,16 +1,17 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
 // import { TranslateFunction } from '../../../../../i18n';
 import { Button, Alert, CardGroup, CardTitle, CardText } from '../../../../common/components/web';
-
+/*
 interface CancelSubscriptionViewProps {
   onClick: () => void;
   error: string | null;
   submitting: boolean;
   t: TranslateFunction;
 }
-
-export default ({ t, onClick, error, submitting }: CancelSubscriptionViewProps) => {
+*/
+const CancelSubscriptionView = ({ t, onClick, error, submitting } /*: CancelSubscriptionViewProps*/) => {
   return (
     <CardGroup>
       <CardTitle>{t('cancel.title')}</CardTitle>
@@ -23,3 +24,12 @@ export default ({ t, onClick, error, submitting }: CancelSubscriptionViewProps) 
     </CardGroup>
   );
 };
+
+CancelSubscriptionView.propTypes = {
+  onClick: PropTypes.func,
+  error: PropTypes.string,
+  submitting: PropTypes.bool,
+  t: PropTypes.func
+};
+
+export default CancelSubscriptionView;

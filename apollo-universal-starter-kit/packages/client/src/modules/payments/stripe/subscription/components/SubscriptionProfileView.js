@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
 
+import PropTypes from 'prop-types';
 import CreditCardInfo from '../containers/CreditCardInfo';
 import CancelSubscription from '../containers/CancelSubscription';
 import { CardGroup, CardText, CardTitle } from '../../../../common/components/web';
-
+/*
 interface SubscriptionProfileViewProps {
   loading: boolean;
   stripeSubscription: {
-    active: boolean;
+    active: boolean
   };
   t: TranslateFunction;
 }
-
-export default ({ t, loading, stripeSubscription }: SubscriptionProfileViewProps) => {
+*/
+const SubscriptionProfileView = ({ t, loading, stripeSubscription } /*: SubscriptionProfileViewProps*/) => {
   if (loading) {
     return <p>{t('loading')}</p>;
   }
@@ -35,3 +36,12 @@ export default ({ t, loading, stripeSubscription }: SubscriptionProfileViewProps
     </div>
   );
 };
+SubscriptionProfileView.propTypes = {
+  loading: PropTypes.bool,
+  stripeSubscription: PropTypes.shape({
+    active: PropTypes.bool
+  }),
+  t: PropTypes.func
+};
+
+export default SubscriptionProfileView;

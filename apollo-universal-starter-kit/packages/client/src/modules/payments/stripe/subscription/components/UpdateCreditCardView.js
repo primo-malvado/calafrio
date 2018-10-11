@@ -7,16 +7,16 @@ import { LayoutCenter } from '../../../../common/components/web';
 
 import SubscriptionCardForm from './SubscriptionCardFormView';
 import settings from '../../../../../../../../settings';
-import { CreditCardInput } from '../types';
-
+//import { CreditCardInput } from '../types';
+/*
 interface UpdateCardViewProps {
-  onSubmit: (subscriptionInput: CreditCardInput, stripe /*: any*/) => void;
+  onSubmit: (subscriptionInput: CreditCardInput, stripe : any) => void;
   t: TranslateFunction;
   submitting: boolean;
   error: string | null;
 }
-
-export default (props: UpdateCardViewProps) => {
+*/
+const UpdateCreditCardView = (props /*: UpdateCardViewProps*/) => {
   const { t } = props;
 
   return (
@@ -31,3 +31,5 @@ export default (props: UpdateCardViewProps) => {
     </Fragment>
   );
 };
+
+export default UpdateCreditCardView;

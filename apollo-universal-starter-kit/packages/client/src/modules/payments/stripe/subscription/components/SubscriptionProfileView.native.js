@@ -1,21 +1,22 @@
 import React, { Fragment } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { Card } from '../../../../common/components/native';
+import PropTypes from 'prop-types';
+import { Card, CardSubtitleText } from '../../../../common/components/native';
+
 import CreditCardInfo from '../containers/CreditCardInfo';
 import CancelSubscription from '../containers/CancelSubscription';
 // import { TranslateFunction } from '../../../../../i18n';
-import { CardSubtitleText } from '../../../../common/components/native';
-
+/*
 interface SubscriptionProfileViewProps {
   loading: boolean;
   stripeSubscription: {
-    active: boolean;
+    active: boolean
   };
   t: TranslateFunction;
 }
-
-export default ({ t, loading, stripeSubscription }: SubscriptionProfileViewProps) => {
+*/
+const SubscriptionProfileView = ({ t, loading, stripeSubscription } /*: SubscriptionProfileViewProps*/) => {
   if (loading) {
     return <Text>{t('loading')}</Text>;
   }
@@ -36,6 +37,16 @@ export default ({ t, loading, stripeSubscription }: SubscriptionProfileViewProps
     </Fragment>
   );
 };
+
+SubscriptionProfileView.propTypes = {
+  loading: PropTypes.bool,
+  stripeSubscription: PropTypes.shape({
+    active: PropTypes.bool
+  }),
+  t: PropTypes.func
+};
+
+export default SubscriptionProfileView;
 
 const styles = StyleSheet.create({
   container: {

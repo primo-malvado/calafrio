@@ -1,10 +1,11 @@
-import React, { ComponentType } from 'react';
-import { Query } from 'react-apollo';
+/*eslint react/display-name: 0 */
 
+import React from 'react';
+import { Query } from 'react-apollo';
 import SUBSCRIPTION_QUERY from '../graphql/SubscriptionQuery.graphql';
 
-export const withStripeSubscription = (Component: ComponentType) => {
-  return (props /*: any*/) => {
+export const withStripeSubscription = Component => {
+  return props => {
     return (
       <Query query={SUBSCRIPTION_QUERY} fetchPolicy="network-only">
         {({ loading, data: { stripeSubscription } }) => (
@@ -14,3 +15,5 @@ export const withStripeSubscription = (Component: ComponentType) => {
     );
   };
 };
+
+export default {};

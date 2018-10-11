@@ -1,19 +1,22 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 
+import PropTypes from 'prop-types';
 import CancelSubscriptionView from '../components/CancelSubscriptionView';
-import translate, { TranslateFunction } from '../../../../../i18n';
+import translate /*, { TranslateFunction }*/ from '../../../../../i18n';
 
 import SUBSCRIPTION_QUERY from '../graphql/SubscriptionQuery.graphql';
 import CREDIT_CARD_QUERY from '../graphql/CreditCardQuery.graphql';
 import CANCEL_SUBSCRIPTION from '../graphql/CancelSubscription.graphql';
 
+/*
 interface CancelSubscriptionProps {
   t: TranslateFunction;
 }
+*/
 
-class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key: string]: any }> {
-  constructor(props: CancelSubscriptionProps) {
+class CancelSubscription extends React.Component /*<CancelSubscriptionProps, { [key: string]: any }>*/ {
+  constructor(props /*: CancelSubscriptionProps*/) {
     super(props);
     this.state = {
       submitting: false,
@@ -21,7 +24,7 @@ class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key
     };
   }
 
-  /* public */ public onClick = (cancelSubscription /*: any*/) => async () => {
+  /* public */ onClick = (cancelSubscription /*: any*/) => async () => {
     this.setState({ submitting: true });
 
     // Sets state only when there is an error to prevent warning about
@@ -41,14 +44,14 @@ class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key
     }
   };
 
-  /* public */ public render() {
+  /* public */ render() {
     const { t } = this.props;
 
     return (
       <Mutation
         mutation={CANCEL_SUBSCRIPTION}
         update={(cache, { data: { cancelStripeSubscription } }) => {
-          const cachedSubscription: any = cache.readQuery({ query: SUBSCRIPTION_QUERY });
+          const cachedSubscription /*: any*/ = cache.readQuery({ query: SUBSCRIPTION_QUERY });
           cachedSubscription.stripeSubscription = cancelStripeSubscription;
           cache.writeQuery({ query: SUBSCRIPTION_QUERY, data: cachedSubscription });
         }}
@@ -68,5 +71,9 @@ class CancelSubscription extends React.Component<CancelSubscriptionProps, { [key
     );
   }
 }
+
+CancelSubscription.propTypes = {
+  t: PropTypes.func
+};
 
 export default translate('stripeSubscription')(CancelSubscription);

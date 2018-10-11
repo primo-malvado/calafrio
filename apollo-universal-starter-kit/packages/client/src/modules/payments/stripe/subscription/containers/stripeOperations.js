@@ -1,5 +1,5 @@
 import settings from '../../../../../../../../settings';
-import { CreditCardInput } from '../types';
+//import { CreditCardInput } from '../types';
 
 /**
  * Sends the request to the Stripe api for creating credit card token.
@@ -10,7 +10,7 @@ import { CreditCardInput } from '../types';
  *
  * @return - Returns promise with the Stripe data
  */
-export const createToken = (creditCardInput: CreditCardInput) => {
+export const createToken = (creditCardInput /*: CreditCardInput*/) => {
   const card = {
     'card[number]': creditCardInput.values.number.replace(/ /g, ''),
     'card[exp_month]': creditCardInput.values.expiry.split('/')[0],
@@ -43,7 +43,7 @@ export const createToken = (creditCardInput: CreditCardInput) => {
  * @return - Returns credit card with the token or error
  */
 
-export const createCreditCardToken = async (creditCardInput: CreditCardInput, stripe /*: any*/) => {
+export const createCreditCardToken = async (creditCardInput /*: CreditCardInput*/, stripe /*: any*/) => {
   const { name } = creditCardInput;
   let stripeResponse;
 

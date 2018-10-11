@@ -2,7 +2,7 @@ import * as React from 'react';
 import { hydrate, render } from 'react-dom';
 
 // Virtual module, generated in-memory by spinjs, contains count of backend rebuilds
-// tslint:disable-next-line
+// eslint-disable-next-line  import/extensions, import/no-unresolved
 import 'backend_reload';
 
 import log from '../../common/log';
@@ -13,7 +13,7 @@ const root = document.getElementById('root');
 
 let frontendReloadCount = 0;
 
-const renderApp = ({ key }: { key: number }) => renderFunc(<Main rootTag={root} key={key} />, root);
+const renderApp = ({ key } /*: { key: number }*/) => renderFunc(<Main rootTag={root} key={key} />, root);
 
 renderApp({ key: frontendReloadCount });
 

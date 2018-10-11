@@ -2,9 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
+import PropTypes from 'prop-types';
 // import { TranslateFunction } from '../../../../../i18n';
 import { CardItem, CardText, CardSubtitleText, CardLabel, Button, primary } from '../../../../common/components/native';
-
+/*
 interface CardInfoViewProps {
   loading: boolean;
   creditCard: {
@@ -14,17 +15,17 @@ interface CardInfoViewProps {
     brand: string;
   };
   t: TranslateFunction;
-  navigation /*: any*/;
+  navigation : any;
 }
-
-const renderCardItem = (title: string, value: string) => (
+ */
+const renderCardItem = (title /*: string*/, value /*: string*/) => (
   <CardItem style={styles.container}>
     <CardLabel style={styles.container}>{title}</CardLabel>
     <CardText style={styles.container}>{value}</CardText>
   </CardItem>
 );
 
-const CreditCardInfoView = ({ loading, t, creditCard, navigation }: CardInfoViewProps) => (
+const CreditCardInfoView = ({ loading, t, creditCard, navigation } /*: CardInfoViewProps*/) => (
   <View style={styles.container}>
     {!loading &&
       creditCard &&
@@ -47,6 +48,18 @@ const CreditCardInfoView = ({ loading, t, creditCard, navigation }: CardInfoView
       )}
   </View>
 );
+
+CreditCardInfoView.propTypes = {
+  loading: PropTypes.bool,
+  creditCard: PropTypes.shape({
+    expiryMonth: PropTypes.number,
+    expiryYear: PropTypes.number,
+    last4: PropTypes.string,
+    brand: PropTypes.string
+  }),
+  t: PropTypes.func,
+  navigation: PropTypes.any
+};
 
 const styles = StyleSheet.create({
   container: {

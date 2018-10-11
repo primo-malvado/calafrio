@@ -1,18 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import PropTypes from 'prop-types';
 // import { TranslateFunction } from '../../../../../i18n';
 import { Card, CardSubtitleText } from '../../../../common/components/native';
-
+/*
 interface SubscribersOnlyViewProps {
   loading: boolean;
   subscriberNumber: {
-    number: number;
+    number: number
   };
   t: TranslateFunction;
 }
-
-export default ({ loading, subscriberNumber, t }: SubscribersOnlyViewProps) => {
+*/
+const SubscriberPageView = ({ loading, subscriberNumber, t } /*: SubscribersOnlyViewProps*/) => {
   if (loading) {
     return <Text>{t('loading')}</Text>;
   }
@@ -26,6 +27,16 @@ export default ({ loading, subscriberNumber, t }: SubscribersOnlyViewProps) => {
     </View>
   );
 };
+
+SubscriberPageView.propTypes = {
+  loading: PropTypes.bool,
+
+  subscriberNumber: PropTypes.shape({
+    number: PropTypes.number
+  }),
+  t: PropTypes.func
+};
+export default SubscriberPageView;
 
 const styles = StyleSheet.create({
   subscriberPageWrapper: {

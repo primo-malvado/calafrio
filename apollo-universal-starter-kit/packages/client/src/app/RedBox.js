@@ -1,6 +1,5 @@
 import React from 'react';
-import ErrorStackParser from 'error-stack-parser';
-import { StackFrame } from 'error-stack-parser';
+import ErrorStackParser, { StackFrame } from 'error-stack-parser';
 import { mapStackTrace } from 'sourcemapped-stacktrace';
 
 import settings from '../../../../settings';
@@ -25,7 +24,7 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
     this.state = { mapped: false };
   }
 
-  /* public */ public componentDidMount() {
+  /* public */ componentDidMount() {
     if (!this.state.mapped) {
       mapStackTrace(this.props.error.stack, (mappedStack: string[]) => {
         const processStack = __DEV__
@@ -41,7 +40,7 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
     }
   }
 
-  /* public */ public renderFrames(frames: StackFrame[]) {
+  /* public */ renderFrames(frames: StackFrame[]) {
     const { frame: frameStyle, file, linkToFile } = styles;
 
     return frames.map((frame: StackFrame, index: number) => {
@@ -66,7 +65,7 @@ export default class RedBox extends React.Component<RedBoxProps, RedBoxState> {
     });
   }
 
-  /* public */ public render() {
+  /* public */ render() {
     const error: Error = this.props.error;
     const { redbox, message, stack, frame } = styles;
     let frames /*: any*/;

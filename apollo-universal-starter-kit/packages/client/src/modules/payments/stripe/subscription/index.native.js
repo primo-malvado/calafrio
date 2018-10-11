@@ -14,6 +14,14 @@ import UpdateCreditCard from './containers/UpdateCreditCard';
 
 const HeaderTitleWithI18n = translate('stripeSubscription')(HeaderTitle);
 
+const SubscriptionAuthRouterSubscriberPage = (props /*: any*/) => {
+  return <SubscriptionAuthRouter {...props} component={SubscriberPage} />;
+};
+
+const SubscriptionAuthRouterUpdateCreditCard = (props /*: any*/) => {
+  return <SubscriptionAuthRouter {...props} component={UpdateCreditCard} />;
+};
+
 const SubIndex =
   settings.stripe.subscription.enabled && settings.stripe.subscription.publicKey
     ? new ClientModule({
@@ -23,9 +31,7 @@ const SubIndex =
               screen: createStackNavigator({
                 SubscriberPage: {
                   //screen: (props /*: any*/) => <SubscriptionAuthRouter {...props} component={SubscriberPage} />,
-                  screen: (props /*: any*/) => {
-                    return <SubscriptionAuthRouter {...props} component={SubscriberPage} />;
-                  },
+                  screen: SubscriptionAuthRouterSubscriberPage,
                   navigationOptions: ({ navigation } /*: any*/) => ({
                     headerTitle: <HeaderTitleWithI18n i18nKey="subscriberPage.title" style="subTitle" />,
                     headerLeft: (
@@ -39,9 +45,7 @@ const SubIndex =
                   })
                 },
                 UpdateCreditCard: {
-                  screen: (props /*: any*/) => {
-                    return <SubscriptionAuthRouter {...props} component={UpdateCreditCard} />;
-                  },
+                  screen: SubscriptionAuthRouterUpdateCreditCard,
                   navigationOptions: ({ navigation } /*: any*/) => ({
                     headerTitle: <HeaderTitleWithI18n i18nKey="update.title" style="subTitle" />,
                     // custom back button to User profile

@@ -1,26 +1,27 @@
 import React from 'react';
 import { withFormik } from 'formik';
 import { CardElement, injectStripe } from 'react-stripe-elements';
+import PropTypes from 'prop-types';
 
 // import { TranslateFunction } from '../../../../../i18n';
 import Field from '../../../../../utils/FieldAdapter';
 import { Form, RenderField, Button, Alert, Label } from '../../../../common/components/web';
 import { required, validateForm } from '../../../../../../../common/validation';
-
+/*
 interface SubscriptionCardFormViewProps {
   submitting: boolean;
   buttonName: string;
   error: string | null;
   handleSubmit?: () => void;
-  onSubmit: (subscriptionInput /*: any*/, stripe /*: any*/) => void;
+  onSubmit: (subscriptionInput : any, stripe : any) => void;
   values?: {
-    name: string;
+    name: string
   };
   stripe?: any;
   t: TranslateFunction;
 }
-
-const SubscriptionCardFormView = (props: SubscriptionCardFormViewProps) => {
+*/
+const SubscriptionCardFormView = (props /*: SubscriptionCardFormViewProps*/) => {
   const { handleSubmit, submitting, buttonName, error, values, t } = props;
 
   return (
@@ -43,9 +44,34 @@ const SubscriptionCardFormView = (props: SubscriptionCardFormViewProps) => {
   );
 };
 
+/*
+  submitting: boolean;
+  buttonName: string;
+  error: string | null;
+  handleSubmit?: () => void;
+  onSubmit: (subscriptionInput : any, stripe : any) => void;
+  values?: {
+    name: string
+  };
+  stripe?: any;
+  t: TranslateFunction;
+*/
+SubscriptionCardFormView.propTypes = {
+  submitting: PropTypes.bool,
+  buttonName: PropTypes.string,
+  error: PropTypes.string, // string | null
+  handleSubmit: PropTypes.func,
+  onSubmit: PropTypes.func,
+  values: PropTypes.shape({
+    name: PropTypes.string
+  }),
+  stripe: PropTypes.any,
+  t: PropTypes.func
+};
+
 const SubscriptionFormWithFormik = withFormik({
   mapPropsToValues: () => ({ name: '' }),
-  async handleSubmit({ name }, { props }: { props: SubscriptionCardFormViewProps }) {
+  async handleSubmit({ name }, { props } /*: { props: SubscriptionCardFormViewProps }*/) {
     const { stripe, onSubmit } = props;
     onSubmit({ name }, stripe);
   },

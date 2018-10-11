@@ -1,17 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { FontAwesome } from '@expo/vector-icons';
 import { Button } from '../../../../common/components/native';
-// import { TranslateFunction } from '../../../../../i18n';
 
+// import { TranslateFunction } from '../../../../../i18n';
+/*
 interface CancelSubscriptionViewProps {
   onClick: () => void;
   error: string | null;
   submitting: boolean;
   t: TranslateFunction;
 }
-
-export default ({ t, onClick, error, submitting }: CancelSubscriptionViewProps) => {
+*/
+const CancelSubscriptionView = ({ t, onClick, error, submitting } /*: CancelSubscriptionViewProps*/) => {
   return (
     <View style={styles.container}>
       <View style={styles.buttonWrapper}>
@@ -32,6 +34,15 @@ export default ({ t, onClick, error, submitting }: CancelSubscriptionViewProps) 
     </View>
   );
 };
+
+CancelSubscriptionView.propTypes = {
+  t: PropTypes.func,
+  onClick: PropTypes.func,
+  error: PropTypes.string,
+  submitting: PropTypes.bool
+};
+
+export default CancelSubscriptionView;
 
 const styles = StyleSheet.create({
   container: {

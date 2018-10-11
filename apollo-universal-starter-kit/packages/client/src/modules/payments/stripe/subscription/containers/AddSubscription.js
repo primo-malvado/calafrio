@@ -5,27 +5,27 @@
 import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { StripeProvider } from 'react-stripe-elements';
-
+import PropTypes from 'prop-types';
 import settings from '../../../../../../../../settings';
-import translate, { TranslateFunction } from '../../../../../i18n';
+import translate /*, { TranslateFunction }*/ from '../../../../../i18n';
 import { createCreditCardToken } from './stripeOperations';
 import { PLATFORM } from '../../../../../../../common/utils';
-import { CreditCardInput } from '../types';
+//import { CreditCardInput } from '../types';
 import AddSubscriptionView from '../components/AddSubscriptionView';
 
 import ADD_SUBSCRIPTION from '../graphql/AddSubscription.graphql';
 import SUBSCRIPTION_QUERY from '../graphql/SubscriptionQuery.graphql';
 import CREDIT_CARD_QUERY from '../graphql/CreditCardQuery.graphql';
-
+/*
 interface AddSubscriptionProps {
   t: TranslateFunction;
-  history /*: any*/;
-  navigation /*: any*/;
+  history : any;
+  navigation : any;
 }
-
+*/
 // react-stripe-elements will not render on the server and on the mobile.
-class AddSubscription extends React.Component<AddSubscriptionProps, { [key: string]: any }> {
-  constructor(props: AddSubscriptionProps) {
+class AddSubscription extends React.Component /*<AddSubscriptionProps, { [key: string]: any}>*/ {
+  constructor(props /*: AddSubscriptionProps*/) {
     super(props);
     this.state = {
       submitting: false,
@@ -33,9 +33,9 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
     };
   }
 
-  /* public */ public onSubmit = (addSubscription /*: any*/) => async (
-    creditCardInput: CreditCardInput,
-    stripe? /*: any*/
+  /* public */ onSubmit = (addSubscription /*: any*/) => async (
+    creditCardInput /*: CreditCardInput*/,
+    stripe /*?: any*/
   ) => {
     const { t, history, navigation } = this.props;
     this.setState({ submitting: true });
@@ -69,7 +69,7 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
     }
   };
 
-  /* public */ public render() {
+  /* public */ render() {
     const { t } = this.props;
     const { error, submitting } = this.state;
 
@@ -77,7 +77,7 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
       <Mutation
         mutation={ADD_SUBSCRIPTION}
         update={(cache, { data: { addStripeSubscription } }) => {
-          const data: any = cache.readQuery({ query: SUBSCRIPTION_QUERY });
+          const data /*: any */ = cache.readQuery({ query: SUBSCRIPTION_QUERY });
           data.stripeSubscription = addStripeSubscription;
           cache.writeQuery({ query: SUBSCRIPTION_QUERY, data });
         }}
@@ -111,5 +111,11 @@ class AddSubscription extends React.Component<AddSubscriptionProps, { [key: stri
     );
   }
 }
+
+AddSubscription.propTypes = {
+  t: PropTypes.func,
+  history: PropTypes.any,
+  navigation: PropTypes.any
+};
 
 export default translate('stripeSubscription')(AddSubscription);

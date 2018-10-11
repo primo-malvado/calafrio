@@ -1,19 +1,20 @@
 import React, { Fragment } from 'react';
-// import { TranslateFunction } from '../../../../../i18n';
-
-import { LayoutCenter } from '../../../../common/components/index.web';
 import Helmet from 'react-helmet';
-import settings from '../../../../../../../../settings';
 
+import PropTypes from 'prop-types';
+// import { TranslateFunction } from '../../../../../i18n';
+import { LayoutCenter } from '../../../../common/components/index.web';
+import settings from '../../../../../../../../settings';
+/*
 interface SubscribersOnlyViewProps {
   loading: boolean;
   subscriberNumber: {
-    number: number;
+    number: number
   };
   t: TranslateFunction;
 }
-
-export default ({ loading, subscriberNumber, t }: SubscribersOnlyViewProps) => {
+*/
+const SubscriberPageView = ({ loading, subscriberNumber, t } /*: SubscribersOnlyViewProps*/) => {
   if (loading) {
     return <p>{t('loading')}</p>;
   }
@@ -30,3 +31,13 @@ export default ({ loading, subscriberNumber, t }: SubscribersOnlyViewProps) => {
     </Fragment>
   );
 };
+
+SubscriberPageView.propTypes = {
+  loading: PropTypes.bool,
+
+  subscriberNumber: PropTypes.shape({
+    number: PropTypes.number
+  }),
+  t: PropTypes.func
+};
+export default SubscriberPageView;

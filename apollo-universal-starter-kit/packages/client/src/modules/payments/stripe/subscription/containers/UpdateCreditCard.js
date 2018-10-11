@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+
+import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import { StripeProvider } from 'react-stripe-elements';
 
@@ -8,20 +10,20 @@ import UPDATE_CREDIT_CARD from '../graphql/UpdateCreditCard.graphql';
 import CREDIT_CARD_QUERY from '../graphql/CreditCardQuery.graphql';
 
 import settings from '../../../../../../../../settings';
-import translate, { TranslateFunction } from '../../../../../i18n';
+import translate /*, { TranslateFunction }*/ from '../../../../../i18n';
 import { PLATFORM } from '../../../../../../../common/utils';
 import { createCreditCardToken } from './stripeOperations';
-import { CreditCardInput } from '../types';
-
+//import { CreditCardInput } from '../types';
+/*
 interface UpdateCreditCardProps {
   t: TranslateFunction;
-  history /*: any*/;
-  navigation /*: any*/;
+  history : any;
+  navigation : any;
 }
-
+*/
 // react-stripe-elements will not render on the server.
-class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: string]: any }> {
-  constructor(props: UpdateCreditCardProps) {
+class UpdateCreditCard extends React.Component /*<UpdateCreditCardProps, { [key: string]: any }>*/ {
+  constructor(props /*: UpdateCreditCardProps*/) {
     super(props);
     this.state = {
       submitting: false,
@@ -29,9 +31,9 @@ class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: st
     };
   }
 
-  /* public */ public onSubmit = (updateCard /*: any*/) => async (
-    creditCardInput: CreditCardInput,
-    stripe? /*: any*/
+  /* public */ onSubmit = (updateCard /*: any*/) => async (
+    creditCardInput /*: CreditCardInput*/,
+    stripe /*?: any*/
   ) => {
     this.setState({ submitting: true });
     const { t, history, navigation } = this.props;
@@ -65,7 +67,7 @@ class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: st
     }
   };
 
-  /* public */ public render() {
+  /* public */ render() {
     const { t } = this.props;
     return (
       <Mutation mutation={UPDATE_CREDIT_CARD} refetchQueries={[{ query: CREDIT_CARD_QUERY }]}>
@@ -96,5 +98,9 @@ class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: st
     );
   }
 }
+
+UpdateCreditCard.propTypes = {
+  t: PropTypes.func
+};
 
 export default translate('stripeSubscription')(UpdateCreditCard);
