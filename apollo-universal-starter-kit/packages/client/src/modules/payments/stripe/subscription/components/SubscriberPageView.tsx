@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-//import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 
 import { LayoutCenter } from '../../../../common/components/index.web';
 import Helmet from 'react-helmet';

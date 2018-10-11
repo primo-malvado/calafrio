@@ -1,6 +1,6 @@
 import React from 'react';
 
-//import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 import { Button, Alert, CardGroup, CardTitle, CardText } from '../../../../common/components/web';
 
 interface CancelSubscriptionViewProps {

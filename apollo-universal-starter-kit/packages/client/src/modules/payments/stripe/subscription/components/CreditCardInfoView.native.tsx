@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
-//import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 import { CardItem, CardText, CardSubtitleText, CardLabel, Button, primary } from '../../../../common/components/native';
 
 interface CardInfoViewProps {

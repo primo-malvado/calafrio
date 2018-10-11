@@ -22,7 +22,10 @@ const SubIndex =
             Subscription: {
               screen: createStackNavigator({
                 SubscriberPage: {
-                  screen: (props /*: any*/) => <SubscriptionAuthRouter {...props} component={SubscriberPage} />,
+                  //screen: (props /*: any*/) => <SubscriptionAuthRouter {...props} component={SubscriberPage} />,
+                  screen: (props /*: any*/) => {
+                    return <SubscriptionAuthRouter {...props} component={SubscriberPage} />;
+                  },
                   navigationOptions: ({ navigation } /*: any*/) => ({
                     headerTitle: <HeaderTitleWithI18n i18nKey="subscriberPage.title" style="subTitle" />,
                     headerLeft: (

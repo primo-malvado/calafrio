@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-//import { TranslateFunction } from '../../../../../i18n';
+// import { TranslateFunction } from '../../../../../i18n';
 import { Button, CardGroup, CardTitle, CardText } from '../../../../common/components/web';
 
 interface CardInfoViewProps {

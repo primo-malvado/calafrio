@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
 import { FontAwesome } from '@expo/vector-icons';
-
+import PropTypes from 'prop-types';
 import { Button, primary } from '../../../../common/components/native';
 /*
 interface SubscriptionCardFormViewProps {
@@ -12,7 +12,7 @@ interface SubscriptionCardFormViewProps {
   error: string | null;
 }
 */
-export default class SubscriptionCardFormView extends React.Component /*<SubscriptionCardFormViewProps, any>*/ {
+class SubscriptionCardFormView extends React.Component /*<SubscriptionCardFormViewProps, any>*/ {
   constructor(props /*: SubscriptionCardFormViewProps*/) {
     super(props);
     this.state = { cardInfo: { valid: false } };
@@ -50,6 +50,18 @@ export default class SubscriptionCardFormView extends React.Component /*<Subscri
   }
 }
 
+SubscriptionCardFormView.propTypes = {
+  onSubmit: PropTypes.func,
+  submitting: PropTypes.bool,
+  buttonName: PropTypes.string,
+  error: PropTypes.string // string | null
+
+  /*
+  onSubmit: (subscriptionInput  : any , stripe? : any) => void;
+  error: string | null;  
+  */
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,3 +98,4 @@ const styles = StyleSheet.create({
     marginTop: 10
   }
 });
+export default SubscriptionCardFormView;
