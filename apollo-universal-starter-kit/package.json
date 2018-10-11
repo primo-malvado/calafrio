@@ -25,7 +25,7 @@
     "watch": "lerna run watch --stream",
     "heroku-postbuild": "lerna run heroku-postbuild --stream",
     "cli": "node tools/cli",
-    "precommit": "lint-staged",
+    "_precommit": "lint-staged",
     "postinstall": "opencollective postinstall",
     "stripe:setup": "lerna run --scope=server stripe:setup"
   },
