@@ -1,0 +1,17 @@
+{
+  "name": "aminhaxixa",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.4.3"
+  },
+  "scripts": {
+      "watch": "lerna run watch --stream"
+  },
+
+    
+  "dependencies": {
+    "spinjs": "^0.4.166"
+  }
+}

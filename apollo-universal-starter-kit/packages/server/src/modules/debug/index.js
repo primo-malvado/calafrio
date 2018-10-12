@@ -3,23 +3,7 @@ import settings from '../../../../../settings';
 
 import knex from '../../sql/connector';
 import log from '../../../../common/log';
-/*
-interface EventQuery {
-  __knexQueryUid: string;
-  sql: string;
-  bindings: any[];
-}
 
-interface Times {
-  [key: string]: {
-    position: number;
-    query: EventQuery;
-    startTime: number;
-    endTime?: number;
-    finished: boolean;
-  };
-}
-*/
 // The map used to store the query times, where the query unique
 // identifier is the key.
 const times /*: Times */ = {};
@@ -80,7 +64,7 @@ if (__DEV__ && settings.app.logging.debugSQL) {
       };
       count = count + 1;
     })
-    .on('query-response', (response /*: any*/, query /*: EventQuery*/) => {
+    .on('query-response', (response, query /*: EventQuery*/) => {
       const uid = query.__knexQueryUid;
       times[uid].endTime = now();
       times[uid].finished = true;

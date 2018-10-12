@@ -2,23 +2,14 @@ import Expo, { Constants } from 'expo';
 import React from 'react';
 import { View } from 'react-native';
 import App from './App';
-/*
-interface AwakeInDevAppProps {
-  exp : any;
-}
-interface AwakeInDevAppState {
-  isReady: boolean;
-}
-*/
 
-// we don't want this to require transformation
-class AwakeInDevApp extends React.Component /*<AwakeInDevAppProps, AwakeInDevAppState>*/ {
-  constructor(props /*: AwakeInDevAppProps*/) {
+class AwakeInDevApp extends React.Component {
+  constructor(props) {
     super(props);
     this.state = { isReady: false };
   }
 
-  /* public */ async componentDidMount() {
+  async componentDidMount() {
     await Expo.Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
@@ -28,7 +19,7 @@ class AwakeInDevApp extends React.Component /*<AwakeInDevAppProps, AwakeInDevApp
     this.setState({ isReady: true });
   }
 
-  /* public */ render() {
+  render() {
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
