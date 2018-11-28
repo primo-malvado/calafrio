@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-plugin-prettier",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules",
+      "build"
+    ]
+  },
+  "rules": {
+    "prettier": [
+      true,
+      {
+        "printWidth": 120,
+        "singleQuote": true
+      }
+    ],
+    "no-console": false
+  }
+}
