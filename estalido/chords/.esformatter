@@ -1,0 +1,41 @@
+{
+
+    "preset": "default",
+    "indent": {
+        "value": "    "
+    },
+
+ 
+    "plugins": [
+        /*"esformatter-var-each",*/
+        "esformatter-quotes",
+        "esformatter-semicolons",
+        "esformatter-braces"
+    ],
+
+    "quotes": {
+        "// type": "double",
+        "// avoidEscape": false
+    },
+    "whiteSpace": {
+        "before": {
+        /*
+            "// ArgumentList": 0,
+            "// IfStatementOpeningBrace": 0,
+            "// FunctionExpressionOpeningBrace": 1,
+            "// ArgumentListObjectExpression": 1,
+            "// ArgumentListFunctionExpression": 1,
+            "// ArgumentListArrayExpression": 1
+            */
+        },
+        "after": {
+            "FunctionReservedWord": 1
+            /*
+            "// ArgumentList": 0,
+            "// ArgumentListObjectExpression": 1,
+            "// ArgumentListFunctionExpression": 1,
+            "// ArgumentListArrayExpression": 1
+            */
+        }
+    } 
+}
