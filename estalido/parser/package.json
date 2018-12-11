@@ -5,16 +5,30 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --content-base static/",
+    "b": "browserify src/client/index.js -o bundle.js -t babelify ",
     "lint": "eslint --fix src/client  webpack.config.js",
     "build": "NODE_ENV='production' webpack -p --progress --config ./webpack.config.js"
   },
   "_scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browserify": {
+    "transform": [
+      [
+ 
+        "babelify",
+        {
+          "presets": [
+            "@babel/es2015"
+          ]
+        }
+      ]
+    ]
+  },
   "author": "",
   "license": "ISC",
   "__devDependencies": {
-    "awesome-typescript-loader": "^3.1.2", 
+    "awesome-typescript-loader": "^3.1.2",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
@@ -23,16 +37,24 @@
     "typescript": "^2.2.1",
     "raw-loader": "^0.5.1",
     "viz.js": "^1.7.0"
-
   },
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.1",
     "babel-plugin-inline-import": "^2.0.6",
     "babel-preset-es2015": "^6.24.1",
     "eslint": "^4.17.0",
     "eslint-config-default": "^0.2.1",
     "webpack": "^3.10.0",
-    "babel-loader": "^7.1.1"
+    "webpack-dev-server": "^3.1.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "babel-cli": "^6.26.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "webpack-cli": "^3.1.2"
   }
 }

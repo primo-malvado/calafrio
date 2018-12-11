@@ -1,1 +1,1916 @@
-!function(e){function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var r={};t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/assets/",t(t.s=13)}([function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var o=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),u={shift:0,reduce:1,accept:2,goto:2},c=function(){function e(t,r){n(this,e),this.lexer=t,this.table=r.table,this.ignoreTokens=r.ignoreTokens||[],this.states=r.states}return o(e,[{key:0,value:function(e){var t=this.lexer.popToken();this.stack.unshift(t),this._actualState=e}},{key:1,value:function(e){this._reduce(e),this._actualState=this.actualState()}},{key:2,value:function(e){this._reduce(e)}},{key:"_reduce",value:function(e){for(var t=this.states[e],r=t.base.length,n=[],o=0;o<r;o++){var u=this.stack.shift();n.unshift(u)}void 0===t.action&&(t.action=function(e){return"---"});var c=t.action(n);this.stack.unshift({tokenType:t.create,tree:n,rules:c})}},{key:"actualState",value:function(){for(var e=0,t=this.stack.length-1;t>-1;t--)e=this.table[e][this.stack[t].tokenType][1];return e}},{key:"parse",value:function(e){for(this.lexer.setInput(e),this.stack=[],this._actualState=this.actualState();;){var t=this.lexer.readToken();if(-1===this.ignoreTokens.indexOf(t.tokenType)){if(!this.table[this._actualState][t.tokenType])throw console.log("%c"+this.lexer.input.substring(this.lexer.nextToken.startPosition-10,this.lexer.nextToken.startPosition)+"%c"+this.lexer.input.substring(this.lexer.nextToken.startPosition,this.lexer.nextToken.toPos)+"%c"+this.lexer.input.substring(this.lexer.nextToken.toPos,this.lexer.YYCURSOR+10),"background:#fff;color:#000","background:#f00;color:#fff","background:#fff;color:#000"),"unexpeted ";var r=this.table[this._actualState][t.tokenType];if(this[r[0]],this[r[0]](r[1]),r[0]===u.accept)break}else this.lexer.popToken()}}}]),e}();t.default=c},function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},u=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),c=function(){function e(t){n(this,e),this.states=["INITIAL"],this.YYCURSOR=0,this.grammar=t,this.nextToken=null}return u(e,[{key:"setInput",value:function(e){this.input=e,this.states=["INITIAL"],this.YYCURSOR=0,this.nextToken=null}},{key:"readToken",value:function(){return null===this.nextToken&&(this.nextToken=this.parse()),this.nextToken}},{key:"beginState",value:function(e){this.states.unshift(e)}},{key:"parse",value:function(){var e=this,t=this.YYCURSOR;this.yytext="";var r="0",n=null;this.YYLIMIT=this.input.length;for(;this.YYCURSOR<this.YYLIMIT;){var u=function(){var o=e.input.charAt(e.YYCURSOR),u=e.grammar[e.states[0]].table.filter(function(e){return e.from===r&&e._ft_<=o&&e._tt_>=o});if(!(u.length>0)){if(null!==n){if(n.parseFunction){var c=n.parseFunction(e);return c.startPosition=t,c.toPos=n.pos,{v:c}}return{v:n}}throw console.log("%c"+e.input.substring(t-10,t)+"%c"+e.input.substring(t,e.YYCURSOR+1)+"%c"+e.input.substring(e.YYCURSOR+1,e.YYCURSOR+10),"background:#fff;color:#000","background:#f00;color:#fff","background:#fff;color:#000"),"lexer unexpeted "}if(e.YYCURSOR++,e.yytext+=o,r=u[0].to,void 0!==e.grammar[e.states[0]].endMap[r]){var a=e.grammar[e.states[0]].endMap[r].tokenType;n={tokenType:a,parseFunction:e.grammar[e.states[0]].endMap[r].parseFunction,content:e.yytext,startPosition:t,pos:e.YYCURSOR}}}();if("object"===(void 0===u?"undefined":o(u)))return u.v}if(null!==n){if(n.parseFunction){var c=n.parseFunction(this);return c.startPosition=t,c.toPos=n.pos,c}return n}return{tokenType:"eof"}}},{key:"popToken",value:function(){var e=this.readToken();return this.nextToken=null,e}}]),e}();t.default=c},function(e,t,r){"use strict";function n(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function o(e){var t=e.map(function(e){return e.from}),r=e.map(function(e){return e.to});return[].concat(n(new Set([].concat(n(t),n(r)))))}Object.defineProperty(t,"__esModule",{value:!0}),t.default=o},function(e,t,r){"use strict";function n(e){var t=e.map(function(e){return e._ft_.charCodeAt(0)}),r=e.map(function(e){return e._tt_.charCodeAt(0)+1}),n=t.concat(r).unique().sort(),o=[];return e.forEach(function(e){var t=e._ft_.charCodeAt(0),r=e._tt_.charCodeAt(0),u=!1;n.forEach(function(n){if(u=!1,n>t&&n<=r){var c={_ft_:String.fromCharCode(t),_tt_:String.fromCharCode(n-1),from:e.from,to:e.to};o.push(c),t=n,u=!0}}),u||o.push({_ft_:String.fromCharCode(t),_tt_:String.fromCharCode(r),from:e.from,to:e.to})}),o}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n,Array.prototype.unique=function(){for(var e=[],t=0;t<this.length;t++)-1==e.indexOf(this[t])&&e.push(this[t]);return e}},function(e,t,r){"use strict";function n(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function o(e,t){e.sort(),t.sort();for(var r=0,n=0,o=[];r<e.length&&n<t.length;)e[r]<t[n]?r++:t[n]<e[r]?n++:(o.push(e[r]),r++,n++);return o}function u(){return""+p++}function c(e,t){var r=e.filter(function(e){return e.token?-1!==t.indexOf(e.from)&&"ε"===e.token:-1!==t.indexOf(e.from)&&"ε"===e._ft_&&"ε"===e._tt_}).map(function(e){return e.to}),o=[].concat(n(new Set([].concat(n(r),n(t)))));return t.length===o.length?o:c(e,o)}function a(e,t,r,n){var o=e.table.filter(function(e){return e.token?-1!==t.indexOf(e.from)&&e.token==r:-1!==t.indexOf(e.from)&&e._ft_<=r&&e._tt_>=n}).map(function(e){return e.to});return c(e.table,o)}function i(e){p=0;var t={idMap:{},processed:{}},r={table:(0,d.default)(e.table),start:e.start,endMap:e.endMap,end:e.end},n={table:[],start:[],end:[]};return n.endMap={},s(r,n,c(r.table,r.start),t,!0),n}function s(e,t,r,n){var c=arguments.length>4&&void 0!==arguments[4]&&arguments[4],a=r.sort().join("_");if(void 0===n.processed[a]){if(n.processed[a]={},void 0===n.idMap[a]){var i=u();if(n.idMap[a]=i,c&&t.start.push(i),o(e.end,r).length>0&&(t.end.push(i),e.endMap)){var s=r.map(function(t){return e.endMap[t]}).filter(function(e){return void 0!==e}).sort(function(e,t){return e.priority-t.priority});t.endMap[i]={parseFunction:s[0].parseFunction}}}e.table.filter(function(e){return-1!==r.indexOf(e.from)}).forEach(function(o){"ε"!==o._ft_&&void 0===n.processed[a][o._ft_]&&(n.processed[a][o._ft_]=!0,f(e,t,r,o,n))})}}function f(e,t,r,n,c){var i=a(e,r,n._ft_,n._tt_),f=r.sort().join("_"),l=i.sort().join("_");if(void 0===c.idMap[l]){var d=u();if(c.idMap[l]=d,o(e.end,i).length>0&&(t.end.push(d),e.endMap)){var p=i.map(function(t){return e.endMap[t]}).filter(function(e){return void 0!==e}).sort(function(e,t){return e.priority-t.priority});t.endMap[d]={parseFunction:p[0].parseFunction}}}t.table.push({_ft_:n._ft_,_tt_:n._tt_,from:c.idMap[f],to:c.idMap[l]}),s(e,t,i,c,!1)}Object.defineProperty(t,"__esModule",{value:!0}),t.determinize=i;var l=r(3),d=function(e){return e&&e.__esModule?e:{default:e}}(l),p=0},function(e,t,r){"use strict";function n(e){function t(e){var r=e.map(function(e){return T.filter(function(t){return t.state.create==T[e].state.base[T[e].pos]&&0===t.pos})}),n=r.map(function(e){return e.map(function(e){return e.id})}),o=e.concat(n.reduce(function(e,t){return e.concat(t)},[])).unique().sort(function(e,t){return e-t});return o.length!=e.length?t(o):o}function r(e){var t=[];return e.map(function(e){return T[e].emptyJumps}).forEach(function(e){t=t.concat(e)}),t.unique().sort(function(e,t){return e-t})}function n(e){var t=e,r=t.join("-");if(void 0===O[r]){var n=I++;e.forEach(function(e){T[e].listFinalStates.push(n)}),O[r]={id:n,ids:e,processed:!1},M[n]=e}return{id:O[r].id,key:r}}function u(e){var t=n(e);if(!1===O[t.key].processed){O[t.key].processed=!0;for(var o={},c=e.map(function(e){return T[e].state.base[T[e].pos]}).filter(function(e){return void 0!==e}).unique(),a=0;a<c.length;a++)!function(t){var a=c[t],i=[];e.map(function(e){var t=T[e],r=T.filter(function(e){return e.state.id===t.state.id&&e.pos===t.pos+1&&e.state.base[e.pos-1]===a}).map(function(e){return e.id});i=i.concat(r)});var s=r(i),f=n(s);void 0===o.next&&(o.next={}),o.next[a]=f.id,u(s)}(a);x[t.id]=o}}var c=void 0,a=void 0,i=void 0,s=void 0,f=void 0,l=void 0,d=void 0,p=void 0,h=e.start;Array.prototype.unique=function(){for(var e=[],t=0;t<this.length;t++)-1==e.indexOf(this[t])&&e.push(this[t]);return e},Array.prototype.contains=function(e){for(var t=this.length;t--;)if(-1!==e.indexOf(this[t]))return!0;return!1};for(var _={},y=0;y<e.precedence.length;y++)for(var g=0;g<e.precedence[y].tokens.length;g++)_[e.precedence[y].tokens[g]]={type:e.precedence[y].type,level:y+1};var m={};for(c in e.states)for(m[c]={firsts:[],follows:[],hasEmptyRules:!1,isTerminal:!1},a=0;a<e.states[c].rules.length;a++)for(i=e.states[c].rules[a].rule,s=i.length,0===s&&(m[c].hasEmptyRules=!0),f=0;f<s;f++)d=i[f],void 0===m[d]&&(m[d]={isTerminal:!0,follows:[],firsts:[d]});for(l=!0;l;){l=!1;for(c in e.states){if(p=m[c].firsts.length,!1===m[c].isTerminal){for(a=0;a<e.states[c].rules.length;a++)if(i=e.states[c].rules[a].rule,(s=i.length)>0)for(f=0;f<s&&(d=i[f],m[c].firsts=m[c].firsts.concat(m[d].firsts),!m[d].isTerminal&&!1!==m[d].hasEmptyRules);f++);m[c].firsts=m[c].firsts.unique()}p!==m[c].firsts.length&&(l=!0)}}for(m[h].follows.push("eof"),l=!0;l;){l=!1;for(c in e.states)if(!1===m[c].isTerminal)for(a=0;a<e.states[c].rules.length;a++)if(i=e.states[c].rules[a].rule,(s=i.length)>0){for(f=s-1;f>0;f--)for(var v=f-1;v>=0;v--){d=i[f];var b=i[v];if(p=m[b].follows.length,m[b].follows=m[b].follows.concat(m[d].firsts),m[b].follows=m[b].follows.unique(),p!==m[b].follows.length&&(l=!0),m[b].isTerminal||!1===m[b].hasEmptyRules)break}var k=i[s-1];p=m[k].follows.length,m[k].follows=m[k].follows.concat(m[c].follows),m[k].follows=m[k].follows.unique(),p!==m[k].follows.length&&(l=!0)}}var x={},T=[],I=0,R=0,E=0,S={},O={},M={};for(c in e.states)for(e.states[c].hasEmptyRules=!1,e.states[c].isTerminal=!1,a=0;a<e.states[c].rules.length;a++){var A=E++,F={id:A,create:c,base:e.states[c].rules[a].rule,action:e.states[c].rules[a].action,precedence:null};S[A]=F,0===F.base.length&&(e.states[c].hasEmptyRules=!0);var w=void 0;for(s=e.states[c].rules[a].rule.length,f=0;f<s+1;f++){var C=R++;w=e.states[c].rules[a].rule[f],void 0!==_[w]&&(F.precedence=_[w]),T.push({state:F,id:C,pos:f,reduce:f===s,listFinalStates:[]})}e.states[c].rules[a].prec&&(w=e.states[c].rules[a].prec,F.precedence=_[w])}for(var N=0;N<T.length;N++)T[N].emptyJumps=t([T[N].id]);u(T[0].emptyJumps);var P=Object.keys(m).filter(function(e){return m[e].isTerminal});P.unshift("eof");var j=Object.keys(m).filter(function(e){return!1===m[e].isTerminal}),$={};for(E in x)!function(){$[E]={};var e={};M[E].filter(function(e){return T[e].reduce}).forEach(function(t){var r=T[t].state;m[r.create].follows.forEach(function(r){void 0===e[r]&&(e[r]=[]),e[r].push(t)})});for(var t=0;t<P.length;t++){var r=[],n=P[t];if(x[E].next&&x[E].next[n]){var u=_[n],c={action:o.shift,stateId:E,to:x[E].next[n],prec:{type:u?u.type:"none",level:u?u.level:-1}};r.push(c)}if(void 0!==e[n]){var a=e[n],i=a.map(function(e){var t=T[e].state;return{stateId:t.id,action:t.create===h?o.accept:o.reduce,to:t.create+":= "+t.base.join(" "),prec:{type:t.precedence?t.precedence.type:"none",level:t.precedence?t.precedence.level:-1}}});r=r.concat(i)}if(r.sort(function(e,t){var r=t.prec.level-e.prec.level;return 0===r&&(r=e.stateId-t.stateId),r}),1!==r.length){if(r.length>1&&("left"===r[0].prec.type&&"left"===r[1].prec.type||"none"===r[0].prec.type&&"none"===r[1].prec.type||r[0].prec.type!==r[1].prec.type))$[E][n]=[r[0].action,r[0].action===o.shift?r[0].to:r[0].stateId];else if(r.length>0)throw"conflito"}else $[E][n]=[r[0].action,r[0].action===o.shift?r[0].to:r[0].stateId]}for(var s=0;s<j.length;s++)if(x[E].next&&x[E].next[j[s]]){var f=j[s],l=x[E].next[j[s]];$[E][f]=[o.goto,l]}}();var Y=Object.keys(S).map(function(e){var t=S[e];return{create:t.create,base:t.base,action:t.action}});return{tokens:Object.keys(m),states:Y,ignoreTokens:e.ignoreTokens,table:$}}Object.defineProperty(t,"__esModule",{value:!0}),t.createParser=n;var o={shift:0,reduce:1,accept:2,goto:2}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.lexerRules=void 0;var n=r(7),o=function(e){return e&&e.__esModule?e:{default:e}}(n),u=r(4),c=r(11),a=[];a.push({onState:"INITIAL",regex:"[0-9]+(\\.[0-9]*)?",parseFunction:function(e){return{content:parseFloat(e.yytext),tokenType:"NUMBER"}}}),a.push({onState:"INITIAL",regex:",",parseFunction:function(e){return{tokenType:","}}}),a.push({onState:"INITIAL",regex:"pi",parseFunction:function(e){return{content:"PI",tokenType:"CONST"}}}),a.push({onState:"INITIAL",regex:"sqrt",parseFunction:function(e){return{tokenType:"SQRT"}}}),a.push({onState:"INITIAL",regex:"cos",parseFunction:function(e){return{tokenType:"COS"}}}),a.push({onState:"INITIAL",regex:"sin",parseFunction:function(e){return{tokenType:"SIN"}}}),a.push({onState:"INITIAL",regex:"\\(",parseFunction:function(e){return{tokenType:"("}}}),a.push({onState:"INITIAL",regex:"\\)",parseFunction:function(e){return{tokenType:")"}}}),a.push({onState:"INITIAL",regex:"\\+",parseFunction:function(e){return{tokenType:"+"}}}),a.push({onState:"INITIAL",regex:"\\^",parseFunction:function(e){return{tokenType:"^"}}}),a.push({onState:"INITIAL",regex:"\\-",parseFunction:function(e){return{tokenType:"-"}}}),a.push({onState:"INITIAL",regex:"\\*",parseFunction:function(e){return{tokenType:"*"}}}),a.push({onState:"INITIAL",regex:"/",parseFunction:function(e){return{tokenType:"/"}}}),a.push({onState:"INITIAL",regex:"((\\n|\\r|\\t|\\s))+",parseFunction:function(e){return{tokenType:"WHITESPACE"}}});var i=[].concat(function(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}(new Set(a.map(function(e){return e.onState}))));a.forEach(function(e,t){a[t].sm=(0,o.default)(e.regex)});var s={};i.forEach(function(e){var t=a.filter(function(t){return t.onState===e});s[e]=(0,u.determinize)((0,c.grammarMixer)(t))});t.lexerRules=s},function(e,t,r){"use strict";function n(e){var t=(0,a.default)(e),r=(0,u.determinize)(t);return(0,o.minimize)(r)}Object.defineProperty(t,"__esModule",{value:!0});var o=r(8),u=r(4),c=r(9),a=function(e){return e&&e.__esModule?e:{default:e}}(c);t.default=n},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function o(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function u(e,t){return e.filter(function(e){return-1!==t.indexOf(e)})}function c(e){return[].concat(o(new Set(e)))}function a(e){var t=(0,d.default)(e.table),r=(0,f.default)(t);r.push("sink");for(var n={},o=[],a={},s=0;s<e.table.length;s++){var l=e.table[s];void 0===a[l.from]&&(a[l.from]={}),a[l.from][l._ft_]=l.to}for(var p=0;p<r.length-1;p++){void 0===n[r[p]]&&(n[r[p]]={});for(var h=p+1;h<r.length;h++)void 0===n[r[h]]&&(n[r[h]]={}),-1!==e.end.indexOf(r[p])!=(-1!==e.end.indexOf(r[h]))?(n[r[p]][r[h]]=!0,n[r[h]][r[p]]=!0):o.push([r[p],r[h]])}var _=0;if(_!==o.length){_=o.length;for(var y=0;y<_;y++)i(a,n,o)}for(var g=[],m=0;m!==o.length;){m=o.length;for(var v=void 0;v=o.pop();){for(var b=!1,k=0;!b&&k<g.length;k++)u(g[k],v).length>0&&(console.log(g[k],v),g[k]=c(g[k].concat(v)),b=!0);b||g.push(v)}o=g,g=[]}var x={};o.forEach(function(e){var t=e.join(",");e.forEach(function(e){x[e]=t})}),e.table.forEach(function(e){e.from=x[e.from]?x[e.from]:e.from,e.to=x[e.to]?x[e.to]:e.to});for(var T=0;T<e.end.length;T++)e.end[T]=x[e.end[T]]?x[e.end[T]]:e.end[T];for(var I=0;I<e.start.length;I++)e.start[I]=x[e.start[I]]?x[e.start[I]]:e.start[I];for(var R=[];e.table.length;)!function(){var t=e.table.pop();R.push(t),e.table=e.table.filter(function(e){return e._ft_!==t._ft_||e._tt_!==t._tt_||e.from!==t.from||e.to!==t.to})}();return e.table=R,e}function i(e,t,r){for(var n=r.pop(),o=e[n[0]],u=e[n[1]],a=void 0===o?[]:Object.keys(o),i=void 0===u?[]:Object.keys(u),s=c(a.concat(i)),f=0;f<s.length;f++){var l=s[f],d=e[n[0]]&&e[n[0]][l]?e[n[0]][l]:"sink",p=e[n[1]]&&e[n[1]][l]?e[n[1]][l]:"sink";if(!(!t[d]||!t[d][p]))return t[n[0]][n[1]]=!0,t[n[1]][n[0]]=!0,!0}return r.unshift(n),!1}Object.defineProperty(t,"__esModule",{value:!0}),t.minimize=a;var s=r(2),f=n(s),l=r(3),d=n(l)},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function o(e){var t={lastId:0,getNextId:function(){return""+this.lastId++},structure:{end:[],start:[],table:[]}},r=t.getNextId(t),n=t.getNextId(t);return t.structure.start.push(r),t.structure.end.push(n),u(t,e,r,n),t.structure}function u(e,t,r,n){var o=void 0,c=void 0,a=void 0;switch(t.tokenType){case"char":e.structure.table.push({from:r,to:n,_ft_:t.rules[0],_tt_:t.rules[0]});break;case"range":e.structure.table.push({from:r,to:n,_ft_:t.rules[0].content,_tt_:t.rules[1].content});break;case"star":o=e.getNextId(e),c=e.getNextId(e),e.structure.table.push({from:r,to:n,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:c,to:o,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:r,to:o,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:c,to:n,_ft_:"ε",_tt_:"ε"}),u(e,t.rules[0],o,c);break;case"optional":o=e.getNextId(e),c=e.getNextId(e),e.structure.table.push({from:o,to:c,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:r,to:o,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:c,to:n,_ft_:"ε",_tt_:"ε"}),u(e,t.rules[0],o,c);break;case"plus":o=e.getNextId(e),c=e.getNextId(e),e.structure.table.push({from:c,to:o,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:r,to:o,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:c,to:n,_ft_:"ε",_tt_:"ε"}),u(e,t.rules[0],o,c);break;case"concat":for(a=0;a<t.rules.length-1;a++)c=e.getNextId(e),u(e,t.rules[a],r,c),r=c;void 0===n&&console.error("quando é k chega aki?"),u(e,t.rules[a],r,n);break;case"or":for(a=0;a<t.rules.length;a++)u(e,t.rules[a],r,n);break;default:console.error("not parsed",t.tokenType)}}function c(e){var t=new f.default(l.config.lexerTable,!1),r=new i.default(t,l.config.parserTable);return r.parse(e),o(r.stack[0].rules)}Object.defineProperty(t,"__esModule",{value:!0});var a=r(0),i=n(a),s=r(1),f=n(s),l=r(10);t.default=c},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n={shift:0,reduce:1,accept:2,goto:2};t.config={lexerTable:{INITIAL:{table:[{from:"0",_ft_:"?",_tt_:"?",to:"1"},{from:"0",_ft_:"[",_tt_:"[",to:"2"},{from:"0",_ft_:".",_tt_:".",to:"3"},{from:"0",_ft_:"]",_tt_:"]",to:"4"},{from:"0",_ft_:")",_tt_:")",to:"5"},{from:"0",_ft_:"(",_tt_:"(",to:"6"},{from:"0",_ft_:"|",_tt_:"|",to:"7"},{from:"0",_ft_:"*",_tt_:"*",to:"8"},{from:"0",_ft_:"+",_tt_:"+",to:"9"},{from:"0",_ft_:"-",_tt_:"-",to:"10"},{from:"0",_ft_:"\\",_tt_:"\\",to:"11"},{from:"11",_ft_:"x",_tt_:"x",to:"12"},{from:"12",_ft_:"0",_tt_:"9",to:"13"},{from:"13",_ft_:"0",_tt_:"9",to:"14"},{from:"13",_ft_:"a",_tt_:"f",to:"14"},{from:"12",_ft_:"a",_tt_:"f",to:"13"},{from:"11",_ft_:"n",_tt_:"n",to:"14"},{from:"11",_ft_:"?",_tt_:"?",to:"14"},{from:"11",_ft_:"$",_tt_:"$",to:"14"},{from:"11",_ft_:"r",_tt_:"t",to:"14"},{from:"11",_ft_:"-",_tt_:".",to:"14"},{from:"11",_ft_:"{",_tt_:"}",to:"14"},{from:"11",_ft_:"(",_tt_:"+",to:"14"},{from:"11",_ft_:"[",_tt_:"^",to:"14"},{from:"0",_ft_:",",_tt_:",",to:"14"},{from:"0",_ft_:"~",_tt_:"~",to:"14"},{from:"0",_ft_:"_",_tt_:"z",to:"14"},{from:"0",_ft_:"!",_tt_:"#",to:"14"},{from:"0",_ft_:"@",_tt_:"Z",to:"14"},{from:"0",_ft_:"%",_tt_:"'",to:"14"},{from:"0",_ft_:"/",_tt_:">",to:"14"}],endMap:{1:{parseFunction:function(e){return{tokenType:"?"}}},2:{parseFunction:function(e){return{tokenType:"["}}},3:{parseFunction:function(e){return{tokenType:"."}}},4:{parseFunction:function(e){return{tokenType:"]"}}},5:{parseFunction:function(e){return{tokenType:")"}}},6:{parseFunction:function(e){return{tokenType:"("}}},7:{parseFunction:function(e){return{tokenType:"|"}}},8:{parseFunction:function(e){return{tokenType:"*"}}},9:{parseFunction:function(e){return{tokenType:"+"}}},10:{parseFunction:function(e){return{tokenType:"-"}}},14:{parseFunction:function(e){return{content:e.yytext,tokenType:"char"}}}},start:["0"],end:["1","2","3","4","5","6","7","8","9","10","14"]}},parserTable:{table:{0:{".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],"[":[n.shift,22],startx:[n.goto,1],RE:[n.goto,2],or:[n.goto,20],simpleRE:[n.goto,21],concatenation:[n.goto,29],basicRE:[n.goto,30],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},1:{eof:[n.accept,0]},2:{eof:[n.reduce,1],"|":[n.shift,3]},3:{".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],"[":[n.shift,22],simpleRE:[n.goto,4],concatenation:[n.goto,29],basicRE:[n.goto,30],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},4:{eof:[n.reduce,4],"|":[n.reduce,4],".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],")":[n.reduce,4],"[":[n.shift,22],basicRE:[n.goto,5],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},5:{eof:[n.reduce,7],"|":[n.reduce,7],".":[n.reduce,7],$:[n.reduce,7],char:[n.reduce,7],metachar:[n.reduce,7],"(":[n.reduce,7],")":[n.reduce,7],"[":[n.reduce,7]},6:{eof:[n.reduce,8],"|":[n.reduce,8],".":[n.reduce,8],$:[n.reduce,8],char:[n.reduce,8],metachar:[n.reduce,8],"(":[n.reduce,8],")":[n.reduce,8],"[":[n.reduce,8]},7:{eof:[n.reduce,9],"|":[n.reduce,9],".":[n.reduce,9],$:[n.reduce,9],char:[n.reduce,9],metachar:[n.reduce,9],"(":[n.reduce,9],")":[n.reduce,9],"[":[n.reduce,9]},8:{eof:[n.reduce,10],"|":[n.reduce,10],".":[n.reduce,10],$:[n.reduce,10],char:[n.reduce,10],metachar:[n.reduce,10],"(":[n.reduce,10],")":[n.reduce,10],"[":[n.reduce,10]},9:{eof:[n.reduce,11],"|":[n.reduce,11],"*":[n.shift,10],"+":[n.shift,11],"?":[n.shift,12],".":[n.reduce,11],$:[n.reduce,11],char:[n.reduce,11],metachar:[n.reduce,11],"(":[n.reduce,11],")":[n.reduce,11],"[":[n.reduce,11]},10:{eof:[n.reduce,12],"|":[n.reduce,12],".":[n.reduce,12],$:[n.reduce,12],char:[n.reduce,12],metachar:[n.reduce,12],"(":[n.reduce,12],")":[n.reduce,12],"[":[n.reduce,12]},11:{eof:[n.reduce,13],"|":[n.reduce,13],".":[n.reduce,13],$:[n.reduce,13],char:[n.reduce,13],metachar:[n.reduce,13],"(":[n.reduce,13],")":[n.reduce,13],"[":[n.reduce,13]},12:{eof:[n.reduce,14],"|":[n.reduce,14],".":[n.reduce,14],$:[n.reduce,14],char:[n.reduce,14],metachar:[n.reduce,14],"(":[n.reduce,14],")":[n.reduce,14],"[":[n.reduce,14]},13:{eof:[n.reduce,15],"|":[n.reduce,15],"*":[n.reduce,15],"+":[n.reduce,15],"?":[n.reduce,15],".":[n.reduce,15],$:[n.reduce,15],char:[n.reduce,15],metachar:[n.reduce,15],"(":[n.reduce,15],")":[n.reduce,15],"[":[n.reduce,15]},14:{eof:[n.reduce,16],"|":[n.reduce,16],"*":[n.reduce,16],"+":[n.reduce,16],"?":[n.reduce,16],".":[n.reduce,16],$:[n.reduce,16],char:[n.reduce,16],metachar:[n.reduce,16],"(":[n.reduce,16],")":[n.reduce,16],"[":[n.reduce,16]},15:{eof:[n.reduce,17],"|":[n.reduce,17],"*":[n.reduce,17],"+":[n.reduce,17],"?":[n.reduce,17],".":[n.reduce,17],$:[n.reduce,17],char:[n.reduce,17],metachar:[n.reduce,17],"(":[n.reduce,17],")":[n.reduce,17],"[":[n.reduce,17]},16:{eof:[n.reduce,18],"|":[n.reduce,18],"*":[n.reduce,18],"+":[n.reduce,18],"?":[n.reduce,18],".":[n.reduce,18],$:[n.reduce,18],char:[n.reduce,18],metachar:[n.reduce,18],"(":[n.reduce,18],")":[n.reduce,18],"[":[n.reduce,18]},17:{eof:[n.reduce,19],"|":[n.reduce,19],"*":[n.reduce,19],"+":[n.reduce,19],"?":[n.reduce,19],".":[n.reduce,19],$:[n.reduce,19],char:[n.reduce,19],metachar:[n.reduce,19],"(":[n.reduce,19],")":[n.reduce,19],"[":[n.reduce,19]},18:{eof:[n.reduce,20],"|":[n.reduce,20],"*":[n.reduce,20],"+":[n.reduce,20],"?":[n.reduce,20],".":[n.reduce,20],$:[n.reduce,20],char:[n.reduce,20],metachar:[n.reduce,20],"(":[n.reduce,20],")":[n.reduce,20],"[":[n.reduce,20]},19:{".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],"[":[n.shift,22],RE:[n.goto,27],or:[n.goto,20],simpleRE:[n.goto,21],concatenation:[n.goto,29],basicRE:[n.goto,30],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},20:{eof:[n.reduce,2],"|":[n.reduce,2],")":[n.reduce,2]},21:{eof:[n.reduce,3],"|":[n.reduce,3],".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],")":[n.reduce,3],"[":[n.shift,22],basicRE:[n.goto,5],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},22:{char:[n.shift,23]},23:{"-":[n.shift,24]},24:{char:[n.shift,25]},25:{"]":[n.shift,26]},26:{eof:[n.reduce,22],"|":[n.reduce,22],"*":[n.reduce,22],"+":[n.reduce,22],"?":[n.reduce,22],".":[n.reduce,22],$:[n.reduce,22],char:[n.reduce,22],metachar:[n.reduce,22],"(":[n.reduce,22],")":[n.reduce,22],"[":[n.reduce,22]},27:{"|":[n.shift,3],")":[n.shift,28]},28:{eof:[n.reduce,21],"|":[n.reduce,21],"*":[n.reduce,21],"+":[n.reduce,21],"?":[n.reduce,21],".":[n.reduce,21],$:[n.reduce,21],char:[n.reduce,21],metachar:[n.reduce,21],"(":[n.reduce,21],")":[n.reduce,21],"[":[n.reduce,21]},29:{eof:[n.reduce,5],"|":[n.reduce,5],".":[n.reduce,5],$:[n.reduce,5],char:[n.reduce,5],metachar:[n.reduce,5],"(":[n.reduce,5],")":[n.reduce,5],"[":[n.reduce,5]},30:{eof:[n.reduce,6],"|":[n.reduce,6],".":[n.reduce,6],$:[n.reduce,6],char:[n.reduce,6],metachar:[n.reduce,6],"(":[n.reduce,6],")":[n.reduce,6],"[":[n.reduce,6]}},states:[{create:"G",base:["startx"],action:function(e){return e[0].rules}},{create:"startx",base:["RE"],action:function(e){return e[0].rules}},{create:"RE",base:["or"],action:function(e){return e[0].rules}},{create:"RE",base:["simpleRE"],action:function(e){return e[0].rules}},{create:"or",base:["RE","|","simpleRE"],action:function(e){return{tokenType:"or",rules:[e[0].rules,e[2].rules]}}},{create:"simpleRE",base:["concatenation"],action:function(e){return{tokenType:"concat",rules:[e[0].rules]}}},{create:"simpleRE",base:["basicRE"],action:function(e){return{tokenType:"concat",rules:[e[0].rules]}}},{create:"concatenation",base:["simpleRE","basicRE"],action:function(e){return{tokenType:"concat",rules:[e[0].rules,e[1].rules]}}},{create:"basicRE",base:["star"],action:function(e){return e[0].rules}},{create:"basicRE",base:["plus"],action:function(e){return e[0].rules}},{create:"basicRE",base:["optional"],action:function(e){return e[0].rules}},{create:"basicRE",base:["elementaryRE"],action:function(e){return e[0].rules}},{create:"star",base:["elementaryRE","*"],action:function(e){return{tokenType:"star",rules:[e[0].rules]}}},{create:"plus",base:["elementaryRE","+"],action:function(e){return{tokenType:"plus",rules:[e[0].rules]}}},{create:"optional",base:["elementaryRE","?"],action:function(e){return{tokenType:"optional",rules:[e[0].rules]}}},{create:"elementaryRE",base:["group"],action:function(e){return e[0].rules}},{create:"elementaryRE",base:["."],action:function(e){return{tokenType:".",rules:e[0].content}}},{create:"elementaryRE",base:["$"],action:function(e){return{tokenType:"$",rules:e[0].content}}},{create:"elementaryRE",base:["char"],action:function(e){return 0===e[0].content.indexOf("\\s")&&(e[0].content=" "),0===e[0].content.indexOf("\\t")&&(e[0].content="\t"),0===e[0].content.indexOf("\\r")&&(e[0].content="\r"),0===e[0].content.indexOf("\\n")&&(e[0].content="\n"),0===e[0].content.indexOf("\\x")&&(e[0].content=String.fromCharCode(parseInt(e[0].content.replace("\\x","0x")))),0===e[0].content.indexOf("\\")&&(e[0].content=e[0].content.replace("\\","")),{tokenType:"char",rules:e[0].content}}},{create:"elementaryRE",base:["metachar"],action:function(e){return{tokenType:"char",rules:":"}}},{create:"elementaryRE",base:["range"],action:function(e){return e[0].rules}},{create:"group",base:["(","RE",")"],action:function(e){return e[1].rules}},{create:"range",base:["[","char","-","char","]"],action:function(e){return 0===e[1].content.indexOf("\\x")&&(e[1].content=String.fromCharCode(parseInt(e[1].content.replace("\\x","0x")))),0===e[3].content.indexOf("\\x")&&(e[3].content=String.fromCharCode(parseInt(e[3].content.replace("\\x","0x")))),0===e[1].content.indexOf("\\")&&(e[1].content=e[1].content.replace("\\","")),0===e[3].content.indexOf("\\")&&(e[3].content=e[3].content.replace("\\","")),{tokenType:"range",rules:[e[1],e[3]]}}}]}}},function(e,t,r){"use strict";function n(e){function t(){return""+n++}for(var r={endMap:{},end:[],start:[],table:[]},n=0,o={},c=0;c<e.length;c++)!function(n){var c=e[n];c.priority=n,o[c.tokenType]={},(0,u.default)(c.sm.table).forEach(function(e){return o[c.tokenType][e]=t()}),c.sm.table.forEach(function(e){r.table.push({from:o[c.tokenType][e.from],to:o[c.tokenType][e.to],_ft_:e._ft_,_tt_:e._tt_})}),c.sm.start.forEach(function(e){r.start.push(o[c.tokenType][e])}),c.sm.end.forEach(function(e){var t=o[c.tokenType][e];r.end.push(t),void 0===r.endMap[t]?r.endMap[t]={tokenType:c.tokenType,parseFunction:c.parseFunction,priority:c.priority}:r.endMap[t].priority>c.priority&&(r.endMap[t]={tokenType:c.tokenType,parseFunction:c.parseFunction,priority:c.priority})})}(c);return r}Object.defineProperty(t,"__esModule",{value:!0}),t.grammarMixer=n;var o=r(2),u=function(e){return e&&e.__esModule?e:{default:e}}(o)},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.parserRules={start:"G",ignoreTokens:["WHITESPACE"],precedence:[{type:"left",tokens:["+","-"]},{type:"left",tokens:["*","/"]},{type:"left",tokens:["^"]},{type:"left",tokens:["UMINUS"]}],states:{G:{rules:[{rule:["expr"],action:function(e){return e[0].rules}}]},expr:{rules:[{rule:["NUMBER"],action:function(e){return{type:"number",child:[e[0].content]}}},{rule:["SQRT","(","expr",")"],action:function(e){return{type:"SQRT",child:[e[2].rules]}}},{rule:["SIN","(","expr",")"],action:function(e){return{type:"SIN",child:[e[2].rules]}}},{rule:["COS","(","expr",")"],action:function(e){return{type:"COS",child:[e[2].rules]}}},{rule:["expr","*","expr"],action:function(e){return{type:"product",child:[e[0].rules,e[2].rules]}}},{rule:["expr","/","expr"],action:function(e){return{type:"/",child:[e[0].rules,e[2].rules]}}},{rule:["expr","+","expr"],action:function(e){return{type:"sum",child:[e[0].rules,e[2].rules]}}},{rule:["expr","-","expr"],action:function(e){return{type:"-",child:[e[0].rules,e[2].rules]}}},{rule:["expr","^","expr"],action:function(e){return{type:"power",child:[e[0].rules,e[2].rules]}}},{rule:["(","expr",")"],action:function(e){return e[1].rules}},{rule:["-","expr"],prec:"UMINUS",action:function(e){return{type:"negative",child:[e[1].rules]}}}]}}}},function(e,t,r){e.exports=r(14)},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}var o=r(0),u=n(o),c=r(1),a=n(c),i=r(5),s=r(6),f=r(12),l="3 -65 / 17  -5 * ( 5 / 12 ) * 3\n",d=(0,i.createParser)(f.parserRules);for(var p in s.lexerRules){var h=s.lexerRules[p];for(var _ in h.endMap){var y=h.endMap[_];delete y.tokenType,delete y.priority}}console.log("teste",l);var g=new a.default(s.lexerRules,!1),m=new u.default(g,d);m.parse(l);var v=m.stack[0].rules;console.log("resultado",JSON.stringify(v))}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/assets/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getStateList;
+function getStateList(table) {
+
+    const fromList = table.map(item => item.from);
+    const toList = table.map(item => item.to);
+
+    return [...new Set([...fromList, ...toList])];
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = expandTable;
+Array.prototype.unique = function () {
+    const unique = [];
+    for (let i = 0; i < this.length; i++) {
+        if (unique.indexOf(this[i]) == -1) {
+            unique.push(this[i]);
+        }
+    }
+    return unique;
+};
+
+function expandTable(table) {
+    const froms = table.map(item => item._ft_.charCodeAt(0));
+
+    const tos = table.map(item => item._tt_.charCodeAt(0) + 1);
+
+    const breaks = froms.concat(tos).unique().sort();
+
+    const newTable = [];
+
+    table.forEach(item => {
+        let f = item._ft_.charCodeAt(0);
+        const t = item._tt_.charCodeAt(0);
+
+        let changed = false;
+        breaks.forEach(_break => {
+            changed = false;
+            if (_break > f && _break <= t) {
+                const _new = {
+                    _ft_: String.fromCharCode(f),
+                    _tt_: String.fromCharCode(_break - 1),
+                    from: item.from,
+                    to: item.to
+                };
+                newTable.push(_new);
+
+                f = _break;
+                changed = true;
+            }
+        });
+
+        if (!changed) {
+            newTable.push({
+                _ft_: String.fromCharCode(f),
+                _tt_: String.fromCharCode(t),
+                from: item.from,
+                to: item.to
+            });
+        }
+    });
+
+    return newTable;
+}
+;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+let Actions = {
+    'shift': 0,
+    'reduce': 1,
+    'accept': 2,
+    'goto': 2
+};
+
+class Parser {
+
+    constructor(lexer, config) {
+        this.lexer = lexer;
+        this.table = config.table;
+        this.ignoreTokens = config.ignoreTokens || [];
+        this.states = config.states;
+    }
+
+    0 /* shift*/(stateId) {
+        const next = this.lexer.popToken();
+        // console.log(next);
+        this.stack.unshift(next);
+
+        this._actualState = stateId;
+    }
+
+    1 /* reduce*/(stateId) {
+        this._reduce(stateId);
+        this._actualState = this.actualState();
+    }
+
+    2 /* accept*/(stateId) {
+        this._reduce(stateId);
+    }
+
+    _reduce(stateId) {
+        const reducer = this.states[stateId];
+
+        const baseLen = reducer.base.length;
+        const tree = [];
+        for (let i = 0; i < baseLen; i++) {
+            const a = this.stack.shift();
+            tree.unshift(a);
+        }
+        if (reducer.action === undefined) {
+            reducer.action = function (args) {
+                return '---';
+            };
+        }
+        const value = reducer.action(tree);
+
+        this.stack.unshift({
+            tokenType: reducer.create,
+            tree,
+            rules: value
+        });
+    }
+
+    actualState() {
+        let actualState = 0;
+
+        for (let pos = this.stack.length - 1; pos > -1; pos--) {
+
+            actualState = this.table[actualState][this.stack[pos].tokenType][1];
+        }
+        return actualState;
+    }
+    parse(text) {
+
+        this.lexer.setInput(text);
+
+        this.stack = [];
+
+        this._actualState = this.actualState();
+
+        while (true) {
+            const token = this.lexer.readToken();
+
+            if (this.ignoreTokens.indexOf(token.tokenType) !== -1) {
+                this.lexer.popToken();
+                continue;
+            }
+
+            if (this.table[this._actualState][token.tokenType]) {
+                const nextAction = this.table[this._actualState][token.tokenType];
+                // console.log(nextAction.t, nextAction[1])
+
+
+                if (typeof this[nextAction[0]] !== 'function') {
+                    debugger;
+                }
+
+                this[nextAction[0]](nextAction[1]);
+
+                if (nextAction[0] === Actions.accept) {
+                    break;
+                }
+            } else {
+
+                console.log(`%c${this.lexer.input.substring(this.lexer.nextToken.startPosition - 10, this.lexer.nextToken.startPosition)}%c${this.lexer.input.substring(this.lexer.nextToken.startPosition, this.lexer.nextToken.toPos)}%c${this.lexer.input.substring(this.lexer.nextToken.toPos, this.lexer.YYCURSOR + 10)}`, 'background:#fff;color:#000', 'background:#f00;color:#fff', 'background:#fff;color:#000');
+
+                throw 'unexpeted ';
+            }
+        }
+    }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Parser);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Lexer {
+    constructor(grammar) {
+        this.states = ['INITIAL'];
+        this.YYCURSOR = 0;
+        this.grammar = grammar;
+        this.nextToken = null;
+    }
+
+    setInput(exp) {
+        this.input = exp;
+        this.states = ['INITIAL'];
+        this.YYCURSOR = 0;
+        this.nextToken = null;
+    }
+
+    readToken() {
+        if (this.nextToken === null) {
+            this.nextToken = this.parse();
+        }
+
+        return this.nextToken;
+    }
+
+    beginState(state) {
+        this.states.unshift(state);
+    }
+
+    parse() {
+        const startPosition = this.YYCURSOR;
+
+        this.yytext = '';
+        let stateId = '0';
+
+        let buffer = null;
+
+        this.YYLIMIT = this.input.length;
+
+        while (this.YYCURSOR < this.YYLIMIT) {
+            const current_read = this.input.charAt(this.YYCURSOR);
+
+            const states = this.grammar[this.states[0]].table.filter(jump => jump.from === stateId && jump._ft_ <= current_read && jump._tt_ >= current_read);
+
+            if (states.length > 0) {
+                this.YYCURSOR++;
+                this.yytext += current_read;
+                stateId = states[0].to;
+
+                if (this.grammar[this.states[0]].endMap[stateId] !== undefined) {
+                    const tokenType = this.grammar[this.states[0]].endMap[stateId].tokenType;
+
+                    buffer = {
+                        tokenType,
+                        parseFunction: this.grammar[this.states[0]].endMap[stateId].parseFunction,
+                        content: this.yytext,
+                        startPosition,
+                        pos: this.YYCURSOR
+                    };
+                }
+            } else if (buffer !== null) {
+                if (buffer.parseFunction) {
+                    const t = buffer.parseFunction(this);
+                    t.startPosition = startPosition;
+                    t.toPos = buffer.pos;
+
+                    return t;
+                }
+                return buffer;
+            } else {
+                console.log(`%c${this.input.substring(startPosition - 10, startPosition)}%c${this.input.substring(startPosition, this.YYCURSOR + 1)}%c${this.input.substring(this.YYCURSOR + 1, this.YYCURSOR + 10)}`, 'background:#fff;color:#000', 'background:#f00;color:#fff', 'background:#fff;color:#000');
+
+                throw 'lexer unexpeted ';
+            }
+        }
+
+        if (buffer !== null) {
+            if (buffer.parseFunction) {
+                const tx = buffer.parseFunction(this);
+                tx.startPosition = startPosition;
+                tx.toPos = buffer.pos;
+
+                return tx;
+            }
+            return buffer;
+        }
+
+        return {
+            tokenType: 'eof'
+        };
+    }
+
+    popToken() {
+        const token = this.readToken();
+        this.nextToken = null;
+        return token;
+    }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Lexer);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = determinize;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__expandTable__ = __webpack_require__(1);
+
+
+
+
+function intersection(x, y) {
+    x.sort();y.sort();
+    let i = 0;
+    let j = 0;
+    const ret = [];
+    while (i < x.length && j < y.length) {
+        if (x[i] < y[j]) {
+            i++;
+        } else if (y[j] < x[i]) {
+            j++;
+        } else {
+            ret.push(x[i]);
+            i++, j++;
+        }
+    }
+    return ret;
+}
+
+let lastId = 0;
+function getNextId() {
+    const n = lastId++;
+    return `${n}`;
+}
+
+function getReachableStates(table, states) {
+    const lista = table.filter(item => {
+        if (item.token) {
+            return states.indexOf(item.from) !== -1 && item.token === 'ε';
+        }
+
+        return states.indexOf(item.from) !== -1 && item._ft_ === 'ε' && item._tt_ === 'ε';
+    }).map(item => item.to);
+
+    const newList = [...new Set([...lista, ...states])];
+    if (states.length === newList.length) {
+        return newList;
+    }
+    return getReachableStates(table, newList);
+}
+
+function getReachableStatesWithToken(config, states, _ft_, _tt_) {
+    const lista = config.table.filter(item => {
+        if (item.token) {
+            return states.indexOf(item.from) !== -1 && item.token == _ft_;
+        }
+
+        return states.indexOf(item.from) !== -1 && item._ft_ <= _ft_ && item._tt_ >= _tt_;
+    }).map(item => item.to);
+
+    return getReachableStates(config.table, lista);
+}
+
+function determinize(structure) {
+    lastId = 0;
+    const monitor = {
+        idMap: {},
+        processed: {}
+    };
+
+    const configOriginal = {
+        table: Object(__WEBPACK_IMPORTED_MODULE_0__expandTable__["a" /* default */])(structure.table),
+        start: structure.start,
+        endMap: structure.endMap,
+        end: structure.end
+    };
+
+    const configDfa = {
+        table: [],
+        start: [],
+        end: []
+
+    };
+    configDfa.endMap = {};
+
+    const prev = getReachableStates(configOriginal.table, configOriginal.start);
+
+    helper(configOriginal, configDfa, prev, monitor, true);
+
+    return configDfa;
+}
+
+function helper(configOriginal, configDfa, prev, monitor, isStart = false) {
+    const prevKey = prev.sort().join('_');
+
+    if (monitor.processed[prevKey] === undefined) {
+        monitor.processed[prevKey] = {};
+
+        if (monitor.idMap[prevKey] === undefined) {
+            const nextId = getNextId();
+            monitor.idMap[prevKey] = nextId;
+
+            if (isStart) {
+                configDfa.start.push(nextId);
+            }
+            if (intersection(configOriginal.end, prev).length > 0) {
+                configDfa.end.push(nextId);
+
+                if (configOriginal.endMap) {
+                    const func = prev.map(id => configOriginal.endMap[id]).filter(item => item !== undefined).sort((a, b) => a.priority - b.priority);
+
+                    configDfa.endMap[nextId] = {
+                        parseFunction: func[0].parseFunction
+                    };
+                }
+            }
+        }
+
+        const jumps = configOriginal.table.filter(item => prev.indexOf(item.from) !== -1);
+
+        jumps.forEach(jump => {
+            if (jump._ft_ !== 'ε' && monitor.processed[prevKey][jump._ft_] === undefined) {
+                monitor.processed[prevKey][jump._ft_] = true;
+                _determinize(configOriginal, configDfa, prev, jump, monitor);
+            }
+        });
+    }
+}
+
+function _determinize(configOriginal, configDfa, prev, _jump, monitor) {
+    const next = getReachableStatesWithToken(configOriginal, prev, _jump._ft_, _jump._tt_);
+
+    const prevKey = prev.sort().join('_');
+    const nextKey = next.sort().join('_');
+
+    if (monitor.idMap[nextKey] === undefined) {
+        const nextId = getNextId();
+        monitor.idMap[nextKey] = nextId;
+
+        if (intersection(configOriginal.end, next).length > 0) {
+            configDfa.end.push(nextId);
+
+            if (configOriginal.endMap) {
+                const func = next.map(id => configOriginal.endMap[id]).filter(item => item !== undefined).sort((a, b) => a.priority - b.priority);
+
+                configDfa.endMap[nextId] = {
+                    parseFunction: func[0].parseFunction
+                };
+            }
+        }
+    }
+
+    configDfa.table.push({
+        _ft_: _jump._ft_,
+        _tt_: _jump._tt_,
+        from: monitor.idMap[prevKey],
+        to: monitor.idMap[nextKey]
+
+    });
+
+    helper(configOriginal, configDfa, next, monitor, false);
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Parser__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Lexer__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rules_regexRules_groupProd__ = __webpack_require__(6);
+
+
+
+function _parseTree(regexStructure) {
+    const config = {
+        lastId: 0,
+        getNextId() {
+            const n = this.lastId++;
+            return `${n}`;
+        },
+        structure: {
+            end: [],
+            start: [],
+            table: []
+
+        }
+    };
+
+    const startId = config.getNextId(config);
+    const endId = config.getNextId(config);
+
+    config.structure.start.push(startId);
+    config.structure.end.push(endId);
+
+    _parseNode(config, regexStructure, startId, endId);
+    return config.structure;
+}
+
+function _parseNode(config, rule, previous, next) {
+    let newPrev, newNext, i;
+
+    switch (rule.tokenType) {
+
+        case 'char':
+            config.structure.table.push({
+                from: previous,
+                to: next,
+                _ft_: rule.rules[0],
+                _tt_: rule.rules[0]
+
+            });
+
+            break;
+
+        case 'range':
+
+            config.structure.table.push({
+                from: previous,
+                to: next,
+                _ft_: rule.rules[0].content,
+                _tt_: rule.rules[1].content
+
+            });
+
+            break;
+
+        case 'star':
+            newPrev = config.getNextId(config);
+            newNext = config.getNextId(config);
+
+            config.structure.table.push({
+                from: previous,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: previous,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            _parseNode(config, rule.rules[0], newPrev, newNext);
+
+            break;
+
+        case 'optional':
+
+            newPrev = config.getNextId(config);
+
+            newNext = config.getNextId(config);
+
+            config.structure.table.push({
+                from: newPrev,
+                to: newNext,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: previous,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            _parseNode(config, rule.rules[0], newPrev, newNext);
+
+            break;
+
+        case 'plus':
+            newPrev = config.getNextId(config);
+
+            newNext = config.getNextId(config);
+
+            config.structure.table.push({
+                from: newNext,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: previous,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            _parseNode(config, rule.rules[0], newPrev, newNext);
+
+            break;
+
+        case 'concat':
+
+            for (i = 0; i < rule.rules.length - 1; i++) {
+                newNext = config.getNextId(config);
+
+                _parseNode(config, rule.rules[i], previous, newNext);
+
+                previous = newNext;
+            }
+
+            if (next === undefined) {
+                console.error('quando é k chega aki?');
+            }
+
+            _parseNode(config, rule.rules[i], previous, next);
+
+            break;
+
+        case 'or':
+
+            for (i = 0; i < rule.rules.length; i++) {
+                _parseNode(config, rule.rules[i], previous, next);
+            }
+
+            break;
+
+        default:
+
+            console.error('not parsed', rule.tokenType);
+
+    }
+}
+
+
+
+function RegexToNfa(inputText) {
+    const lexer = new __WEBPACK_IMPORTED_MODULE_1__Lexer__["a" /* default */](__WEBPACK_IMPORTED_MODULE_2__rules_regexRules_groupProd__["a" /* config */].lexerTable, false);
+    const parser = new __WEBPACK_IMPORTED_MODULE_0__Parser__["a" /* default */](lexer, __WEBPACK_IMPORTED_MODULE_2__rules_regexRules_groupProd__["a" /* config */].parserTable);
+
+    parser.parse(inputText);
+    const a = parser.stack[0].rules;
+
+    const sm = _parseTree(a);
+    return sm;
+    /*
+    let det = determinize(sm)
+    // return det;
+    let min = minimize(det)
+     return min
+    */
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (RegexToNfa);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/*
+let Actions = {
+    'shift': 0,
+    'reduce': 1,
+    'accept': 2,
+    'goto': 2
+};
+*/
+
+const config = {
+    lexerTable: {
+        INITIAL: {
+            table: [{
+                'from': '0',
+                '_ft_': '?',
+                '_tt_': '?',
+                'to': '1'
+            }, {
+                'from': '0',
+                '_ft_': '[',
+                '_tt_': '[',
+                'to': '2'
+            }, {
+                'from': '0',
+                '_ft_': '.',
+                '_tt_': '.',
+                'to': '3'
+            }, {
+                'from': '0',
+                '_ft_': ']',
+                '_tt_': ']',
+                'to': '4'
+            }, {
+                'from': '0',
+                '_ft_': ')',
+                '_tt_': ')',
+                'to': '5'
+            }, {
+                'from': '0',
+                '_ft_': '(',
+                '_tt_': '(',
+                'to': '6'
+            }, {
+                'from': '0',
+                '_ft_': '|',
+                '_tt_': '|',
+                'to': '7'
+            }, {
+                'from': '0',
+                '_ft_': '*',
+                '_tt_': '*',
+                'to': '8'
+            }, {
+                'from': '0',
+                '_ft_': '+',
+                '_tt_': '+',
+                'to': '9'
+            }, {
+                'from': '0',
+                '_ft_': '-',
+                '_tt_': '-',
+                'to': '10'
+            }, {
+                'from': '0',
+                '_ft_': '\\',
+                '_tt_': '\\',
+                'to': '11'
+            }, {
+                'from': '11',
+                '_ft_': 'x',
+                '_tt_': 'x',
+                'to': '12'
+            }, {
+                'from': '12',
+                '_ft_': '0',
+                '_tt_': '9',
+                'to': '13'
+            }, {
+                'from': '13',
+                '_ft_': '0',
+                '_tt_': '9',
+                'to': '14'
+            }, {
+                'from': '13',
+                '_ft_': 'a',
+                '_tt_': 'f',
+                'to': '14'
+            }, {
+                'from': '12',
+                '_ft_': 'a',
+                '_tt_': 'f',
+                'to': '13'
+            }, {
+                'from': '11',
+                '_ft_': 'n',
+                '_tt_': 'n',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '?',
+                '_tt_': '?',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '$',
+                '_tt_': '$',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': 'r',
+                '_tt_': 't',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '-',
+                '_tt_': '.',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '{',
+                '_tt_': '}',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '(',
+                '_tt_': '+',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '[',
+                '_tt_': '^',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': ',',
+                '_tt_': ',',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '~',
+                '_tt_': '~',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '_',
+                '_tt_': 'z',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '!',
+                '_tt_': '#',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '@',
+                '_tt_': 'Z',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '%',
+                '_tt_': '\'',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '/',
+                '_tt_': '>',
+                'to': '14'
+            }],
+            endMap: {
+                1: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '?'
+                        };
+                    }
+                },
+                2: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '['
+                        };
+                    }
+                },
+                3: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '.'
+                        };
+                    }
+                },
+                4: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: ']'
+                        };
+                    }
+                },
+                5: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: ')'
+                        };
+                    }
+                },
+                6: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '('
+                        };
+                    }
+                },
+                7: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '|'
+                        };
+                    }
+                },
+                8: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '*'
+                        };
+                    }
+                },
+                9: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '+'
+                        };
+                    }
+                },
+                10: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '-'
+                        };
+                    }
+                },
+                14: {
+                    parseFunction: function parseFunction(lexer) {
+
+                        return {
+                            content: lexer.yytext,
+                            tokenType: 'char'
+                        };
+                    }
+                }
+            },
+            start: ['0'],
+            end: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '14']
+
+        }
+    },
+    parserTable: {
+        table: {
+            '0': {
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                '[': [0, 22],
+                'startx': [2, 1],
+                'RE': [2, 2],
+                'or': [2, 20],
+                'simpleRE': [2, 21],
+                'concatenation': [2, 29],
+                'basicRE': [2, 30],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '1': {
+                'eof': [2, 0]
+            },
+            '2': {
+                'eof': [1, 1],
+                '|': [0, 3]
+            },
+            '3': {
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                '[': [0, 22],
+                'simpleRE': [2, 4],
+                'concatenation': [2, 29],
+                'basicRE': [2, 30],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '4': {
+                'eof': [1, 4],
+                '|': [1, 4],
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                ')': [1, 4],
+                '[': [0, 22],
+                'basicRE': [2, 5],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '5': {
+                'eof': [1, 7],
+                '|': [1, 7],
+                '.': [1, 7],
+                '$': [1, 7],
+                'char': [1, 7],
+                'metachar': [1, 7],
+                '(': [1, 7],
+                ')': [1, 7],
+                '[': [1, 7]
+            },
+            '6': {
+                'eof': [1, 8],
+                '|': [1, 8],
+                '.': [1, 8],
+                '$': [1, 8],
+                'char': [1, 8],
+                'metachar': [1, 8],
+                '(': [1, 8],
+                ')': [1, 8],
+                '[': [1, 8]
+            },
+            '7': {
+                'eof': [1, 9],
+                '|': [1, 9],
+                '.': [1, 9],
+                '$': [1, 9],
+                'char': [1, 9],
+                'metachar': [1, 9],
+                '(': [1, 9],
+                ')': [1, 9],
+                '[': [1, 9]
+            },
+            '8': {
+                'eof': [1, 10],
+                '|': [1, 10],
+                '.': [1, 10],
+                '$': [1, 10],
+                'char': [1, 10],
+                'metachar': [1, 10],
+                '(': [1, 10],
+                ')': [1, 10],
+                '[': [1, 10]
+            },
+            '9': {
+                'eof': [1, 11],
+                '|': [1, 11],
+                '*': [0, 10],
+                '+': [0, 11],
+                '?': [0, 12],
+                '.': [1, 11],
+                '$': [1, 11],
+                'char': [1, 11],
+                'metachar': [1, 11],
+                '(': [1, 11],
+                ')': [1, 11],
+                '[': [1, 11]
+            },
+            '10': {
+                'eof': [1, 12],
+                '|': [1, 12],
+                '.': [1, 12],
+                '$': [1, 12],
+                'char': [1, 12],
+                'metachar': [1, 12],
+                '(': [1, 12],
+                ')': [1, 12],
+                '[': [1, 12]
+            },
+            '11': {
+                'eof': [1, 13],
+                '|': [1, 13],
+                '.': [1, 13],
+                '$': [1, 13],
+                'char': [1, 13],
+                'metachar': [1, 13],
+                '(': [1, 13],
+                ')': [1, 13],
+                '[': [1, 13]
+            },
+            '12': {
+                'eof': [1, 14],
+                '|': [1, 14],
+                '.': [1, 14],
+                '$': [1, 14],
+                'char': [1, 14],
+                'metachar': [1, 14],
+                '(': [1, 14],
+                ')': [1, 14],
+                '[': [1, 14]
+            },
+            '13': {
+                'eof': [1, 15],
+                '|': [1, 15],
+                '*': [1, 15],
+                '+': [1, 15],
+                '?': [1, 15],
+                '.': [1, 15],
+                '$': [1, 15],
+                'char': [1, 15],
+                'metachar': [1, 15],
+                '(': [1, 15],
+                ')': [1, 15],
+                '[': [1, 15]
+            },
+            '14': {
+                'eof': [1, 16],
+                '|': [1, 16],
+                '*': [1, 16],
+                '+': [1, 16],
+                '?': [1, 16],
+                '.': [1, 16],
+                '$': [1, 16],
+                'char': [1, 16],
+                'metachar': [1, 16],
+                '(': [1, 16],
+                ')': [1, 16],
+                '[': [1, 16]
+            },
+            '15': {
+                'eof': [1, 17],
+                '|': [1, 17],
+                '*': [1, 17],
+                '+': [1, 17],
+                '?': [1, 17],
+                '.': [1, 17],
+                '$': [1, 17],
+                'char': [1, 17],
+                'metachar': [1, 17],
+                '(': [1, 17],
+                ')': [1, 17],
+                '[': [1, 17]
+            },
+            '16': {
+                'eof': [1, 18],
+                '|': [1, 18],
+                '*': [1, 18],
+                '+': [1, 18],
+                '?': [1, 18],
+                '.': [1, 18],
+                '$': [1, 18],
+                'char': [1, 18],
+                'metachar': [1, 18],
+                '(': [1, 18],
+                ')': [1, 18],
+                '[': [1, 18]
+            },
+            '17': {
+                'eof': [1, 19],
+                '|': [1, 19],
+                '*': [1, 19],
+                '+': [1, 19],
+                '?': [1, 19],
+                '.': [1, 19],
+                '$': [1, 19],
+                'char': [1, 19],
+                'metachar': [1, 19],
+                '(': [1, 19],
+                ')': [1, 19],
+                '[': [1, 19]
+            },
+            '18': {
+                'eof': [1, 20],
+                '|': [1, 20],
+                '*': [1, 20],
+                '+': [1, 20],
+                '?': [1, 20],
+                '.': [1, 20],
+                '$': [1, 20],
+                'char': [1, 20],
+                'metachar': [1, 20],
+                '(': [1, 20],
+                ')': [1, 20],
+                '[': [1, 20]
+            },
+            '19': {
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                '[': [0, 22],
+                'RE': [2, 27],
+                'or': [2, 20],
+                'simpleRE': [2, 21],
+                'concatenation': [2, 29],
+                'basicRE': [2, 30],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '20': {
+                'eof': [1, 2],
+                '|': [1, 2],
+                ')': [1, 2]
+            },
+            '21': {
+                'eof': [1, 3],
+                '|': [1, 3],
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                ')': [1, 3],
+                '[': [0, 22],
+                'basicRE': [2, 5],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '22': {
+                'char': [0, 23]
+            },
+            '23': {
+                '-': [0, 24]
+            },
+            '24': {
+                'char': [0, 25]
+            },
+            '25': {
+                ']': [0, 26]
+            },
+            '26': {
+                'eof': [1, 22],
+                '|': [1, 22],
+                '*': [1, 22],
+                '+': [1, 22],
+                '?': [1, 22],
+                '.': [1, 22],
+                '$': [1, 22],
+                'char': [1, 22],
+                'metachar': [1, 22],
+                '(': [1, 22],
+                ')': [1, 22],
+                '[': [1, 22]
+            },
+            '27': {
+                '|': [0, 3],
+                ')': [0, 28]
+            },
+            '28': {
+                'eof': [1, 21],
+                '|': [1, 21],
+                '*': [1, 21],
+                '+': [1, 21],
+                '?': [1, 21],
+                '.': [1, 21],
+                '$': [1, 21],
+                'char': [1, 21],
+                'metachar': [1, 21],
+                '(': [1, 21],
+                ')': [1, 21],
+                '[': [1, 21]
+            },
+            '29': {
+                'eof': [1, 5],
+                '|': [1, 5],
+                '.': [1, 5],
+                '$': [1, 5],
+                'char': [1, 5],
+                'metachar': [1, 5],
+                '(': [1, 5],
+                ')': [1, 5],
+                '[': [1, 5]
+            },
+            '30': {
+                'eof': [1, 6],
+                '|': [1, 6],
+                '.': [1, 6],
+                '$': [1, 6],
+                'char': [1, 6],
+                'metachar': [1, 6],
+                '(': [1, 6],
+                ')': [1, 6],
+                '[': [1, 6]
+            }
+        },
+        states: [{
+            create: 'G',
+            base: ['startx'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'startx',
+            base: ['RE'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'RE',
+            base: ['or'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'RE',
+            base: ['simpleRE'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'or',
+            base: ['RE', '|', 'simpleRE'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'or',
+                    rules: [args[0].rules, args[2].rules]
+                };
+            }
+        }, {
+            create: 'simpleRE',
+            base: ['concatenation'],
+            action: function action(args) {
+                return {
+                    'tokenType': 'concat',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'simpleRE',
+            base: ['basicRE'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'concat',
+
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'concatenation',
+            base: ['simpleRE', 'basicRE'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'concat',
+
+                    rules: [args[0].rules, args[1].rules]
+                };
+            }
+        }, {
+            create: 'basicRE',
+            base: ['star'],
+            action: function action(args) {
+
+                return args[0].rules;
+            }
+        }, {
+            create: 'basicRE',
+            base: ['plus'],
+            action: function action(args) {
+
+                return args[0].rules;
+            }
+        }, {
+            create: 'basicRE',
+            base: ['optional'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'basicRE',
+            base: ['elementaryRE'],
+            action: function action(args) {
+
+                return args[0].rules;
+            }
+        }, {
+            create: 'star',
+            base: ['elementaryRE', '*'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'star',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'plus',
+            base: ['elementaryRE', '+'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'plus',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'optional',
+            base: ['elementaryRE', '?'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'optional',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['group'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['.'],
+            action: function action(args) {
+                return {
+                    'tokenType': '.',
+                    rules: args[0].content
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['$'],
+            action: function action(args) {
+                return {
+                    'tokenType': '$',
+                    rules: args[0].content
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['char'],
+            action: function action(args) {
+
+                if (args[0].content.indexOf('\\s') === 0) {
+
+                    args[0].content = ' ';
+                }
+
+                if (args[0].content.indexOf('\\t') === 0) {
+
+                    args[0].content = '\t';
+                }
+
+                if (args[0].content.indexOf('\\r') === 0) {
+
+                    args[0].content = '\r';
+                }
+
+                if (args[0].content.indexOf('\\n') === 0) {
+
+                    args[0].content = '\n';
+                }
+
+                if (args[0].content.indexOf('\\x') === 0) {
+
+                    args[0].content = String.fromCharCode(parseInt(args[0].content.replace('\\x', '0x')));
+                }
+                if (args[0].content.indexOf('\\') === 0) {
+
+                    args[0].content = args[0].content.replace('\\', '');
+                }
+
+                return {
+                    'tokenType': 'char',
+                    rules: args[0].content
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['metachar'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'char',
+                    rules: ':' // args[0].content,
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['range'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'group',
+            base: ['(', 'RE', ')'],
+            action: function action(args) {
+                return args[1].rules;
+            }
+        }, {
+            create: 'range',
+            base: ['[', 'char', '-', 'char', ']'],
+            action: function action(args) {
+                if (args[1].content.indexOf('\\x') === 0) {
+
+                    args[1].content = String.fromCharCode(parseInt(args[1].content.replace('\\x', '0x')));
+                }
+
+                if (args[3].content.indexOf('\\x') === 0) {
+
+                    args[3].content = String.fromCharCode(parseInt(args[3].content.replace('\\x', '0x')));
+                }
+
+                if (args[1].content.indexOf('\\') === 0) {
+
+                    args[1].content = args[1].content.replace('\\', '');
+                }
+
+                if (args[3].content.indexOf('\\') === 0) {
+
+                    args[3].content = args[3].content.replace('\\', '');
+                }
+
+                return {
+                    'tokenType': 'range',
+                    rules: [args[1], args[3]]
+                };
+            }
+        }]
+    }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = config;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = minimize;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getStateList__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__expandTable__ = __webpack_require__(1);
+
+
+
+function intersept(array1, array2) {
+    return array1.filter(function (n) {
+        return array2.indexOf(n) !== -1;
+    });
+}
+
+function unicos(myArray) {
+    return [...new Set(myArray)];
+}
+
+function minimize(originalStructure) {
+
+    const expandedTable = Object(__WEBPACK_IMPORTED_MODULE_1__expandTable__["a" /* default */])(originalStructure.table);
+    const statesList = Object(__WEBPACK_IMPORTED_MODULE_0__getStateList__["a" /* default */])(expandedTable);
+
+    statesList.push('sink');
+
+    let theListUnique = {};
+
+    let unprocessed = [];
+
+    let theTable = {};
+
+    // extend table to be easyly walked
+    for (let i = 0; i < originalStructure.table.length; i++) {
+        let n = originalStructure.table[i];
+
+        if (theTable[n.from] === undefined) {
+            theTable[n.from] = {};
+        }
+        theTable[n.from][n._ft_] = n.to;
+    }
+
+    // criar a lista inicial com os pares unicos, e nao processados
+    for (let i = 0; i < statesList.length - 1; i++) {
+        if (theListUnique[statesList[i]] === undefined) {
+
+            theListUnique[statesList[i]] = {};
+        }
+
+        for (let j = i + 1; j < statesList.length; j++) {
+
+            if (theListUnique[statesList[j]] === undefined) {
+
+                theListUnique[statesList[j]] = {};
+            }
+
+            if (originalStructure.end.indexOf(statesList[i]) !== -1 !== (originalStructure.end.indexOf(statesList[j]) !== -1)) {
+
+                theListUnique[statesList[i]][statesList[j]] = true;
+                theListUnique[statesList[j]][statesList[i]] = true;
+            } else {
+                unprocessed.push([statesList[i], statesList[j]]);
+            }
+        }
+    }
+
+    let lastCount = 0;
+    if (lastCount !== unprocessed.length) {
+        lastCount = unprocessed.length;
+
+        for (let x = 0; x < lastCount; x++) {
+            isUniqueAll(theTable, theListUnique, unprocessed);
+        }
+    }
+
+    // unprocessed = [[2, 3], [2, 5], [5, 4], [8, 1]]
+    let processed = [];
+
+    let unprocessedLen = 0; // unprocessed.length;
+
+
+    while (unprocessedLen !== unprocessed.length) {
+
+        unprocessedLen = unprocessed.length;
+
+        let current;
+        while (current = unprocessed.pop()) {
+
+            let find = false;
+            for (let i = 0; !find && i < processed.length; i++) {
+                if (intersept(processed[i], current).length > 0) {
+                    console.log(processed[i], current);
+
+                    processed[i] = unicos(processed[i].concat(current));
+
+                    find = true;
+                }
+            }
+
+            if (!find) {
+                processed.push(current);
+            }
+        }
+
+        unprocessed = processed;
+        processed = [];
+    }
+
+    let map = {};
+
+    unprocessed.forEach(function (item) {
+        let name = item.join(',');
+        item.forEach(function (stat) {
+
+            map[stat] = name;
+        });
+    });
+
+    originalStructure.table.forEach(function (xx) {
+        xx.from = map[xx.from] ? map[xx.from] : xx.from;
+        xx.to = map[xx.to] ? map[xx.to] : xx.to;
+    });
+
+    for (let i = 0; i < originalStructure.end.length; i++) {
+        originalStructure.end[i] = map[originalStructure.end[i]] ? map[originalStructure.end[i]] : originalStructure.end[i];
+    }
+
+    for (let i = 0; i < originalStructure.start.length; i++) {
+        originalStructure.start[i] = map[originalStructure.start[i]] ? map[originalStructure.start[i]] : originalStructure.start[i];
+    }
+
+    let table = [];
+
+    while (originalStructure.table.length) {
+        let temp = originalStructure.table.pop();
+        table.push(temp);
+
+        originalStructure.table = originalStructure.table.filter(function (item) {
+            return item._ft_ !== temp._ft_ || item._tt_ !== temp._tt_ || item.from !== temp.from || item.to !== temp.to;
+        });
+    }
+
+    originalStructure.table = table;
+
+    return originalStructure;
+}
+
+function isUniqueAll(theTable, theListUnique, unprocessed) {
+
+    let item = unprocessed.pop();
+
+    let l1 = theTable[item[0]];
+
+    let l2 = theTable[item[1]];
+
+    let tokens1 = l1 === undefined ? [] : Object.keys(l1);
+    let tokens2 = l2 === undefined ? [] : Object.keys(l2);
+    let tokenList = unicos(tokens1.concat(tokens2));
+
+    for (let i = 0; i < tokenList.length; i++) {
+
+        let token = tokenList[i];
+
+        let to1 = theTable[item[0]] && theTable[item[0]][token] ? theTable[item[0]][token] : 'sink';
+        let to2 = theTable[item[1]] && theTable[item[1]][token] ? theTable[item[1]][token] : 'sink';
+
+        let isUniqueX = theListUnique[to1] && theListUnique[to1][to2] ? true : false;
+
+        if (isUniqueX) {
+
+            theListUnique[item[0]][item[1]] = true;
+            theListUnique[item[1]][item[0]] = true;
+            return true;
+        }
+    }
+
+    unprocessed.unshift(item);
+
+    return false;
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(9);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_StateMachineDependency_DotRenderer__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_RegexToNfa__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_StateMachineDependency_Minimizer__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_StateMachineDependency_Determinizer__ = __webpack_require__(4);
+/*import Parser from './classes/Parser';
+import Lexer from './classes/Lexer';
+import { createParser } from './classes/GenerateLalrParser';
+
+import { lexerRules } from './rules/calc/lexRules';
+import { parserRules } from './rules/calc/parserRules';
+
+var text = "3 -65 / 17  -5 * ( 5 / 12 ) * 3";
+
+
+const parserTable = createParser(parserRules);
+
+let lexer = new Lexer(lexerRules, false);
+
+let parser = new Parser(lexer, parserTable);
+
+
+parser.parse(text);
+let a = parser.stack[0].rules;
+console.log('resultado', JSON.stringify(a));
+
+*/
+
+
+
+
+
+
+
+//let sm = RegexToDfa('(\\.[0-9]+|[0-9]+(\\.[0-9]*)?)');
+
+var regex = '(1234)|(1c)|(12r)';
+
+let sm = Object(__WEBPACK_IMPORTED_MODULE_1__classes_RegexToNfa__["a" /* default */])(regex);
+Object(__WEBPACK_IMPORTED_MODULE_0__classes_StateMachineDependency_DotRenderer__["a" /* dotRenderer */])(sm);
+
+let det = Object(__WEBPACK_IMPORTED_MODULE_3__classes_StateMachineDependency_Determinizer__["a" /* determinize */])(sm);
+Object(__WEBPACK_IMPORTED_MODULE_0__classes_StateMachineDependency_DotRenderer__["a" /* dotRenderer */])(det);
+
+let min = Object(__WEBPACK_IMPORTED_MODULE_2__classes_StateMachineDependency_Minimizer__["a" /* minimize */])(det);
+Object(__WEBPACK_IMPORTED_MODULE_0__classes_StateMachineDependency_DotRenderer__["a" /* dotRenderer */])(min);
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = dotRenderer;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getStateList__ = __webpack_require__(0);
+// import Viz from "viz.js/viz.js";
+// globals Viz
+
+
+function getId(name) {
+
+    return name.replace(/,/g, '');
+}
+
+function dotRenderer(stateMachine) {
+
+    let string = `digraph finite_state_machine {
+    rankdir=LR;
+
+    `;
+
+    stateMachine.states = Object(__WEBPACK_IMPORTED_MODULE_0__getStateList__["a" /* default */])(stateMachine.table);
+
+    for (let i = 0; i < stateMachine.states.length; i++) {
+        let shape = 'circle';
+
+        if (stateMachine.end.indexOf(stateMachine.states[i]) !== -1) {
+            shape = 'doublecircle';
+        }
+
+        string += `node [shape = ${shape}, label="${stateMachine.states[i]}"] n${getId(stateMachine.states[i])};\n`;
+
+        if (stateMachine.start.indexOf(stateMachine.states[i]) !== -1) {
+            string += `node [shape = point] point${getId(stateMachine.states[i])};\n`;
+            string += `point${getId(stateMachine.states[i])} -> n${getId(stateMachine.states[i])};\n`;
+        }
+    }
+
+    for (let i = 0; i < stateMachine.table.length; i++) {
+        if (stateMachine.table[i].token) {
+            stateMachine.table[i]._ft_ = stateMachine.table[i].token;
+            stateMachine.table[i]._tt_ = stateMachine.table[i].token;
+        }
+
+        let label = encodeURI(stateMachine.table[i]._ft_ === stateMachine.table[i]._tt_ ? stateMachine.table[i]._ft_ : `[${stateMachine.table[i]._ft_}-${stateMachine.table[i]._tt_}]`);
+
+        label = label.replace('%CE%B5', 'ε');
+        label = label.replace('%5B', '[');
+        label = label.replace('%5D', ']');
+        label = label.replace('%7B', '{');
+        label = label.replace('%7C', '|');
+        label = label.replace('%7D', '}');
+        label = label.replace('%5C', '\\\\');
+        label = label.replace('%20', '\\\\s');
+        label = label.replace('%09', '\\\\t');
+        label = label.replace('%0A', '\\\\n');
+        label = label.replace('%0D', '\\\\r');
+        label = label.replace('%3C', '<');
+        label = label.replace('%3D', '=');
+        label = label.replace('%3E', '>');
+        label = label.replace('%5E', '^');
+        label = label.replace('%25', '%');
+
+        string += `n${getId(stateMachine.table[i].from)} -> n${getId(stateMachine.table[i].to)}[ label="${label}"];\n`;
+    }
+
+    string += '}\n';
+
+    // console.log(string)
+
+    const resultDiv = document.createElement('div');
+    resultDiv.innerHTML = Viz(string, 'svg');
+    document.body.appendChild(resultDiv);
+}
+
+/***/ })
+/******/ ]);

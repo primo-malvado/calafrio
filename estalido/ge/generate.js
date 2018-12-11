@@ -1,4 +1,5 @@
-var relayCount =2;
+
+var relayCount =4;
 
 function print(relays) {
     var text = "";
@@ -24,41 +25,42 @@ function printX(pin) {
 
 
 var xxx = [
-"set", "reset", "old", "B"
+"a", "b", "c", "cout" , "res"
   ];
 
 var list = [
-    [0,0,0,1,0],
-    [0,0,1,1,1],
-    [0,1,0,0,0],
-    [0,1,1,0,0],
-    [1,0,0,1,1],
-    [1,0,1,1,1],
-    [1,1,0,0,0],
-    [1,1,1,0,0],
+    [0,0,0,0,0],
+    [0,0,1,0,1],
+    [0,1,0,0,1],
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [1,0,1,1,0],
+    [1,1,0,1,0],
+    [1,1,1,1,1],
 
 ];
  
  
 var real = list.map(function (item) {
 
-    var set = item[0];
-    var res = item[1];
-    var act = item[2];
-    var A = item[3];
-    var B = item[4];
+    var a = item[0];
+    var b = item[1];
+    var c = item[2];
+    var cout = item[3];
+    var res = item[4];
      
 
  
 
     return {
         i: [
-            set, 
-            res, 
-            act, 
+            a, 
+            b, 
+            c, 
         ],
         o: [
-         B
+         cout, 
+         res
         ]
     }
 })
@@ -101,7 +103,7 @@ function test(relays, values) {
     }
     var ok = true;
     for (var i = 0; i < values.length && ok; i++) {
-        if (values[i].o[0] != ouputs[i][relayCount - 1] /*||  values[i].o[1] !=  ouputs[i][relayCount-2]*/ ) {
+        if (values[i].o[0] != ouputs[i][relayCount - 1] /* ||  values[i].o[1] !=  ouputs[i][relayCount-2] */ ) {
             return;
             ok = false;
         }

@@ -1,1 +1,2936 @@
-!function(e){function t(n){if(r[n])return r[n].exports;var c=r[n]={i:n,l:!1,exports:{}};return e[n].call(c.exports,c,c.exports,t),c.l=!0,c.exports}var r={};t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/assets/",t(t.s=15)}([function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var c=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),o={shift:0,reduce:1,accept:2,goto:2},u=function(){function e(t,r){n(this,e),this.lexer=t,this.table=r.table,this.ignoreTokens=r.ignoreTokens||[],this.states=r.states}return c(e,[{key:0,value:function(e){var t=this.lexer.popToken();this.stack.unshift(t),this._actualState=e}},{key:1,value:function(e){this._reduce(e),this._actualState=this.actualState()}},{key:2,value:function(e){this._reduce(e)}},{key:"_reduce",value:function(e){for(var t=this.states[e],r=t.base.length,n=[],c=0;c<r;c++){var o=this.stack.shift();n.unshift(o)}void 0===t.action&&(t.action=function(e){return"---"});var u=t.action(n);this.stack.unshift({tokenType:t.create,tree:n,rules:u})}},{key:"actualState",value:function(){for(var e=0,t=this.stack.length-1;t>-1;t--)e=this.table[e][this.stack[t].tokenType][1];return e}},{key:"parse",value:function(e){for(this.lexer.setInput(e),this.stack=[],this._actualState=this.actualState();;){var t=this.lexer.readToken();if(-1===this.ignoreTokens.indexOf(t.tokenType)){if(!this.table[this._actualState][t.tokenType])throw console.log("%c"+this.lexer.input.substring(this.lexer.nextToken.startPosition-10,this.lexer.nextToken.startPosition)+"%c"+this.lexer.input.substring(this.lexer.nextToken.startPosition,this.lexer.nextToken.toPos)+"%c"+this.lexer.input.substring(this.lexer.nextToken.toPos,this.lexer.YYCURSOR+10),"background:#fff;color:#000","background:#f00;color:#fff","background:#fff;color:#000"),"unexpeted ";var r=this.table[this._actualState][t.tokenType];if(this[r[0]],this[r[0]](r[1]),r[0]===o.accept)break}else this.lexer.popToken()}}}]),e}();t.default=u},function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var c="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},o=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),u=function(){function e(t){n(this,e),this.states=["INITIAL"],this.YYCURSOR=0,this.grammar=t,this.nextToken=null}return o(e,[{key:"setInput",value:function(e){this.input=e,this.states=["INITIAL"],this.YYCURSOR=0,this.nextToken=null}},{key:"readToken",value:function(){return null===this.nextToken&&(this.nextToken=this.parse()),this.nextToken}},{key:"beginState",value:function(e){this.states.unshift(e)}},{key:"parse",value:function(){var e=this,t=this.YYCURSOR;this.yytext="";var r="0",n=null;this.YYLIMIT=this.input.length;for(;this.YYCURSOR<this.YYLIMIT;){var o=function(){var c=e.input.charAt(e.YYCURSOR),o=e.grammar[e.states[0]].table.filter(function(e){return e.from===r&&e._ft_<=c&&e._tt_>=c});if(!(o.length>0)){if(null!==n){if(n.parseFunction){var u=n.parseFunction(e);return u.startPosition=t,u.toPos=n.pos,{v:u}}return{v:n}}throw console.log("%c"+e.input.substring(t-10,t)+"%c"+e.input.substring(t,e.YYCURSOR+1)+"%c"+e.input.substring(e.YYCURSOR+1,e.YYCURSOR+10),"background:#fff;color:#000","background:#f00;color:#fff","background:#fff;color:#000"),"lexer unexpeted "}if(e.YYCURSOR++,e.yytext+=c,r=o[0].to,void 0!==e.grammar[e.states[0]].endMap[r]){var i=e.grammar[e.states[0]].endMap[r].tokenType;n={tokenType:i,parseFunction:e.grammar[e.states[0]].endMap[r].parseFunction,content:e.yytext,startPosition:t,pos:e.YYCURSOR}}}();if("object"===(void 0===o?"undefined":c(o)))return o.v}if(null!==n){if(n.parseFunction){var u=n.parseFunction(this);return u.startPosition=t,u.toPos=n.pos,u}return n}return{tokenType:"eof"}}},{key:"popToken",value:function(){var e=this.readToken();return this.nextToken=null,e}}]),e}();t.default=u},function(e,t,r){"use strict";function n(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function c(e){var t=e.map(function(e){return e.from}),r=e.map(function(e){return e.to});return[].concat(n(new Set([].concat(n(t),n(r)))))}Object.defineProperty(t,"__esModule",{value:!0}),t.default=c},function(e,t,r){"use strict";function n(e){var t=e.map(function(e){return e._ft_.charCodeAt(0)}),r=e.map(function(e){return e._tt_.charCodeAt(0)+1}),n=t.concat(r).unique().sort(),c=[];return e.forEach(function(e){var t=e._ft_.charCodeAt(0),r=e._tt_.charCodeAt(0),o=!1;n.forEach(function(n){if(o=!1,n>t&&n<=r){var u={_ft_:String.fromCharCode(t),_tt_:String.fromCharCode(n-1),from:e.from,to:e.to};c.push(u),t=n,o=!0}}),o||c.push({_ft_:String.fromCharCode(t),_tt_:String.fromCharCode(r),from:e.from,to:e.to})}),c}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n,Array.prototype.unique=function(){for(var e=[],t=0;t<this.length;t++)-1==e.indexOf(this[t])&&e.push(this[t]);return e}},function(e,t,r){"use strict";function n(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function c(e,t){e.sort(),t.sort();for(var r=0,n=0,c=[];r<e.length&&n<t.length;)e[r]<t[n]?r++:t[n]<e[r]?n++:(c.push(e[r]),r++,n++);return c}function o(){return""+h++}function u(e,t){var r=e.filter(function(e){return e.token?-1!==t.indexOf(e.from)&&"ε"===e.token:-1!==t.indexOf(e.from)&&"ε"===e._ft_&&"ε"===e._tt_}).map(function(e){return e.to}),c=[].concat(n(new Set([].concat(n(r),n(t)))));return t.length===c.length?c:u(e,c)}function i(e,t,r,n){var c=e.table.filter(function(e){return e.token?-1!==t.indexOf(e.from)&&e.token==r:-1!==t.indexOf(e.from)&&e._ft_<=r&&e._tt_>=n}).map(function(e){return e.to});return u(e.table,c)}function a(e){h=0;var t={idMap:{},processed:{}},r={table:(0,f.default)(e.table),start:e.start,endMap:e.endMap,end:e.end},n={table:[],start:[],end:[]};return n.endMap={},l(r,n,u(r.table,r.start),t,!0),n}function l(e,t,r,n){var u=arguments.length>4&&void 0!==arguments[4]&&arguments[4],i=r.sort().join("_");if(void 0===n.processed[i]){if(n.processed[i]={},void 0===n.idMap[i]){var a=o();if(n.idMap[i]=a,u&&t.start.push(a),c(e.end,r).length>0&&(t.end.push(a),e.endMap)){var l=r.map(function(t){return e.endMap[t]}).filter(function(e){return void 0!==e}).sort(function(e,t){return e.priority-t.priority});t.endMap[a]={parseFunction:l[0].parseFunction}}}e.table.filter(function(e){return-1!==r.indexOf(e.from)}).forEach(function(c){"ε"!==c._ft_&&void 0===n.processed[i][c._ft_]&&(n.processed[i][c._ft_]=!0,s(e,t,r,c,n))})}}function s(e,t,r,n,u){var a=i(e,r,n._ft_,n._tt_),s=r.sort().join("_"),d=a.sort().join("_");if(void 0===u.idMap[d]){var f=o();if(u.idMap[d]=f,c(e.end,a).length>0&&(t.end.push(f),e.endMap)){var h=a.map(function(t){return e.endMap[t]}).filter(function(e){return void 0!==e}).sort(function(e,t){return e.priority-t.priority});t.endMap[f]={parseFunction:h[0].parseFunction}}}t.table.push({_ft_:n._ft_,_tt_:n._tt_,from:u.idMap[s],to:u.idMap[d]}),l(e,t,a,u,!1)}Object.defineProperty(t,"__esModule",{value:!0}),t.determinize=a;var d=r(3),f=function(e){return e&&e.__esModule?e:{default:e}}(d),h=0},function(e,t,r){"use strict";function n(e){function t(e){var r=e.map(function(e){return T.filter(function(t){return t.state.create==T[e].state.base[T[e].pos]&&0===t.pos})}),n=r.map(function(e){return e.map(function(e){return e.id})}),c=e.concat(n.reduce(function(e,t){return e.concat(t)},[])).unique().sort(function(e,t){return e-t});return c.length!=e.length?t(c):c}function r(e){var t=[];return e.map(function(e){return T[e].emptyJumps}).forEach(function(e){t=t.concat(e)}),t.unique().sort(function(e,t){return e-t})}function n(e){var t=e,r=t.join("-");if(void 0===O[r]){var n=I++;e.forEach(function(e){T[e].listFinalStates.push(n)}),O[r]={id:n,ids:e,processed:!1},M[n]=e}return{id:O[r].id,key:r}}function o(e){var t=n(e);if(!1===O[t.key].processed){O[t.key].processed=!0;for(var c={},u=e.map(function(e){return T[e].state.base[T[e].pos]}).filter(function(e){return void 0!==e}).unique(),i=0;i<u.length;i++)!function(t){var i=u[t],a=[];e.map(function(e){var t=T[e],r=T.filter(function(e){return e.state.id===t.state.id&&e.pos===t.pos+1&&e.state.base[e.pos-1]===i}).map(function(e){return e.id});a=a.concat(r)});var l=r(a),s=n(l);void 0===c.next&&(c.next={}),c.next[i]=s.id,o(l)}(i);x[t.id]=c}}var u=void 0,i=void 0,a=void 0,l=void 0,s=void 0,d=void 0,f=void 0,h=void 0,p=e.start;Array.prototype.unique=function(){for(var e=[],t=0;t<this.length;t++)-1==e.indexOf(this[t])&&e.push(this[t]);return e},Array.prototype.contains=function(e){for(var t=this.length;t--;)if(-1!==e.indexOf(this[t]))return!0;return!1};for(var _={},y=0;y<e.precedence.length;y++)for(var m=0;m<e.precedence[y].tokens.length;m++)_[e.precedence[y].tokens[m]]={type:e.precedence[y].type,level:y+1};var b={};for(u in e.states)for(b[u]={firsts:[],follows:[],hasEmptyRules:!1,isTerminal:!1},i=0;i<e.states[u].rules.length;i++)for(a=e.states[u].rules[i].rule,l=a.length,0===l&&(b[u].hasEmptyRules=!0),s=0;s<l;s++)f=a[s],void 0===b[f]&&(b[f]={isTerminal:!0,follows:[],firsts:[f]});for(d=!0;d;){d=!1;for(u in e.states){if(h=b[u].firsts.length,!1===b[u].isTerminal){for(i=0;i<e.states[u].rules.length;i++)if(a=e.states[u].rules[i].rule,(l=a.length)>0)for(s=0;s<l&&(f=a[s],b[u].firsts=b[u].firsts.concat(b[f].firsts),!b[f].isTerminal&&!1!==b[f].hasEmptyRules);s++);b[u].firsts=b[u].firsts.unique()}h!==b[u].firsts.length&&(d=!0)}}for(b[p].follows.push("eof"),d=!0;d;){d=!1;for(u in e.states)if(!1===b[u].isTerminal)for(i=0;i<e.states[u].rules.length;i++)if(a=e.states[u].rules[i].rule,(l=a.length)>0){for(s=l-1;s>0;s--)for(var g=s-1;g>=0;g--){f=a[s];var v=a[g];if(h=b[v].follows.length,b[v].follows=b[v].follows.concat(b[f].firsts),b[v].follows=b[v].follows.unique(),h!==b[v].follows.length&&(d=!0),b[v].isTerminal||!1===b[v].hasEmptyRules)break}var k=a[l-1];h=b[k].follows.length,b[k].follows=b[k].follows.concat(b[u].follows),b[k].follows=b[k].follows.unique(),h!==b[k].follows.length&&(d=!0)}}var x={},T=[],I=0,R=0,E=0,S={},O={},M={};for(u in e.states)for(e.states[u].hasEmptyRules=!1,e.states[u].isTerminal=!1,i=0;i<e.states[u].rules.length;i++){var A=E++,F={id:A,create:u,base:e.states[u].rules[i].rule,action:e.states[u].rules[i].action,precedence:null};S[A]=F,0===F.base.length&&(e.states[u].hasEmptyRules=!0);var w=void 0;for(l=e.states[u].rules[i].rule.length,s=0;s<l+1;s++){var C=R++;w=e.states[u].rules[i].rule[s],void 0!==_[w]&&(F.precedence=_[w]),T.push({state:F,id:C,pos:s,reduce:s===l,listFinalStates:[]})}e.states[u].rules[i].prec&&(w=e.states[u].rules[i].prec,F.precedence=_[w])}for(var N=0;N<T.length;N++)T[N].emptyJumps=t([T[N].id]);o(T[0].emptyJumps);var P=Object.keys(b).filter(function(e){return b[e].isTerminal});P.unshift("eof");var j=Object.keys(b).filter(function(e){return!1===b[e].isTerminal}),$={};for(E in x)!function(){$[E]={};var e={};M[E].filter(function(e){return T[e].reduce}).forEach(function(t){var r=T[t].state;b[r.create].follows.forEach(function(r){void 0===e[r]&&(e[r]=[]),e[r].push(t)})});for(var t=0;t<P.length;t++){var r=[],n=P[t];if(x[E].next&&x[E].next[n]){var o=_[n],u={action:c.shift,stateId:E,to:x[E].next[n],prec:{type:o?o.type:"none",level:o?o.level:-1}};r.push(u)}if(void 0!==e[n]){var i=e[n],a=i.map(function(e){var t=T[e].state;return{stateId:t.id,action:t.create===p?c.accept:c.reduce,to:t.create+":= "+t.base.join(" "),prec:{type:t.precedence?t.precedence.type:"none",level:t.precedence?t.precedence.level:-1}}});r=r.concat(a)}if(r.sort(function(e,t){var r=t.prec.level-e.prec.level;return 0===r&&(r=e.stateId-t.stateId),r}),1!==r.length){if(r.length>1&&("left"===r[0].prec.type&&"left"===r[1].prec.type||"none"===r[0].prec.type&&"none"===r[1].prec.type||r[0].prec.type!==r[1].prec.type))$[E][n]=[r[0].action,r[0].action===c.shift?r[0].to:r[0].stateId];else if(r.length>0)throw"conflito"}else $[E][n]=[r[0].action,r[0].action===c.shift?r[0].to:r[0].stateId]}for(var l=0;l<j.length;l++)if(x[E].next&&x[E].next[j[l]]){var s=j[l],d=x[E].next[j[l]];$[E][s]=[c.goto,d]}}();var Y=Object.keys(S).map(function(e){var t=S[e];return{create:t.create,base:t.base,action:t.action}});return{tokens:Object.keys(b),states:Y,ignoreTokens:e.ignoreTokens,table:$}}Object.defineProperty(t,"__esModule",{value:!0}),t.createParser=n;var c={shift:0,reduce:1,accept:2,goto:2}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.lexerRules=void 0;var n=r(7),c=function(e){return e&&e.__esModule?e:{default:e}}(n),o=r(4),u=r(11),i=[];i.push({onState:"INITIAL",regex:"[0-9]+(\\.[0-9]*)?",parseFunction:function(e){return{content:parseFloat(e.yytext),tokenType:"NUMBER"}}}),i.push({onState:"INITIAL",regex:",",parseFunction:function(e){return{tokenType:","}}}),i.push({onState:"INITIAL",regex:"pi",parseFunction:function(e){return{content:"PI",tokenType:"CONST"}}}),i.push({onState:"INITIAL",regex:"sqrt",parseFunction:function(e){return{tokenType:"SQRT"}}}),i.push({onState:"INITIAL",regex:"cos",parseFunction:function(e){return{tokenType:"COS"}}}),i.push({onState:"INITIAL",regex:"sin",parseFunction:function(e){return{tokenType:"SIN"}}}),i.push({onState:"INITIAL",regex:"\\(",parseFunction:function(e){return{tokenType:"("}}}),i.push({onState:"INITIAL",regex:"\\)",parseFunction:function(e){return{tokenType:")"}}}),i.push({onState:"INITIAL",regex:"\\+",parseFunction:function(e){return{tokenType:"+"}}}),i.push({onState:"INITIAL",regex:"\\^",parseFunction:function(e){return{tokenType:"^"}}}),i.push({onState:"INITIAL",regex:"\\-",parseFunction:function(e){return{tokenType:"-"}}}),i.push({onState:"INITIAL",regex:"\\*",parseFunction:function(e){return{tokenType:"*"}}}),i.push({onState:"INITIAL",regex:"/",parseFunction:function(e){return{tokenType:"/"}}}),i.push({onState:"INITIAL",regex:"((\\n|\\r|\\t|\\s))+",parseFunction:function(e){return{tokenType:"WHITESPACE"}}});var a=[].concat(function(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}(new Set(i.map(function(e){return e.onState}))));i.forEach(function(e,t){i[t].sm=(0,c.default)(e.regex)});var l={};a.forEach(function(e){var t=i.filter(function(t){return t.onState===e});l[e]=(0,o.determinize)((0,u.grammarMixer)(t))});t.lexerRules=l},function(e,t,r){"use strict";function n(e){var t=(0,i.default)(e),r=(0,o.determinize)(t);return(0,c.minimize)(r)}Object.defineProperty(t,"__esModule",{value:!0});var c=r(8),o=r(4),u=r(9),i=function(e){return e&&e.__esModule?e:{default:e}}(u);t.default=n},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function c(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function o(e,t){return e.filter(function(e){return-1!==t.indexOf(e)})}function u(e){return[].concat(c(new Set(e)))}function i(e){var t=(0,f.default)(e.table),r=(0,s.default)(t);r.push("sink");for(var n={},c=[],i={},l=0;l<e.table.length;l++){var d=e.table[l];void 0===i[d.from]&&(i[d.from]={}),i[d.from][d._ft_]=d.to}for(var h=0;h<r.length-1;h++){void 0===n[r[h]]&&(n[r[h]]={});for(var p=h+1;p<r.length;p++)void 0===n[r[p]]&&(n[r[p]]={}),-1!==e.end.indexOf(r[h])!=(-1!==e.end.indexOf(r[p]))?(n[r[h]][r[p]]=!0,n[r[p]][r[h]]=!0):c.push([r[h],r[p]])}var _=0;if(_!==c.length){_=c.length;for(var y=0;y<_;y++)a(i,n,c)}for(var m=[],b=0;b!==c.length;){b=c.length;for(var g=void 0;g=c.pop();){for(var v=!1,k=0;!v&&k<m.length;k++)o(m[k],g).length>0&&(console.log(m[k],g),m[k]=u(m[k].concat(g)),v=!0);v||m.push(g)}c=m,m=[]}var x={};c.forEach(function(e){var t=e.join(",");e.forEach(function(e){x[e]=t})}),e.table.forEach(function(e){e.from=x[e.from]?x[e.from]:e.from,e.to=x[e.to]?x[e.to]:e.to});for(var T=0;T<e.end.length;T++)e.end[T]=x[e.end[T]]?x[e.end[T]]:e.end[T];for(var I=0;I<e.start.length;I++)e.start[I]=x[e.start[I]]?x[e.start[I]]:e.start[I];for(var R=[];e.table.length;)!function(){var t=e.table.pop();R.push(t),e.table=e.table.filter(function(e){return e._ft_!==t._ft_||e._tt_!==t._tt_||e.from!==t.from||e.to!==t.to})}();return e.table=R,e}function a(e,t,r){for(var n=r.pop(),c=e[n[0]],o=e[n[1]],i=void 0===c?[]:Object.keys(c),a=void 0===o?[]:Object.keys(o),l=u(i.concat(a)),s=0;s<l.length;s++){var d=l[s],f=e[n[0]]&&e[n[0]][d]?e[n[0]][d]:"sink",h=e[n[1]]&&e[n[1]][d]?e[n[1]][d]:"sink";if(!(!t[f]||!t[f][h]))return t[n[0]][n[1]]=!0,t[n[1]][n[0]]=!0,!0}return r.unshift(n),!1}Object.defineProperty(t,"__esModule",{value:!0}),t.minimize=i;var l=r(2),s=n(l),d=r(3),f=n(d)},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function c(e){var t={lastId:0,getNextId:function(){return""+this.lastId++},structure:{end:[],start:[],table:[]}},r=t.getNextId(t),n=t.getNextId(t);return t.structure.start.push(r),t.structure.end.push(n),o(t,e,r,n),t.structure}function o(e,t,r,n){var c=void 0,u=void 0,i=void 0;switch(t.tokenType){case"char":e.structure.table.push({from:r,to:n,_ft_:t.rules[0],_tt_:t.rules[0]});break;case"range":e.structure.table.push({from:r,to:n,_ft_:t.rules[0].content,_tt_:t.rules[1].content});break;case"star":c=e.getNextId(e),u=e.getNextId(e),e.structure.table.push({from:r,to:n,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:u,to:c,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:r,to:c,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:u,to:n,_ft_:"ε",_tt_:"ε"}),o(e,t.rules[0],c,u);break;case"optional":c=e.getNextId(e),u=e.getNextId(e),e.structure.table.push({from:c,to:u,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:r,to:c,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:u,to:n,_ft_:"ε",_tt_:"ε"}),o(e,t.rules[0],c,u);break;case"plus":c=e.getNextId(e),u=e.getNextId(e),e.structure.table.push({from:u,to:c,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:r,to:c,_ft_:"ε",_tt_:"ε"}),e.structure.table.push({from:u,to:n,_ft_:"ε",_tt_:"ε"}),o(e,t.rules[0],c,u);break;case"concat":for(i=0;i<t.rules.length-1;i++)u=e.getNextId(e),o(e,t.rules[i],r,u),r=u;void 0===n&&console.error("quando é k chega aki?"),o(e,t.rules[i],r,n);break;case"or":for(i=0;i<t.rules.length;i++)o(e,t.rules[i],r,n);break;default:console.error("not parsed",t.tokenType)}}function u(e){var t=new s.default(d.config.lexerTable,!1),r=new a.default(t,d.config.parserTable);return r.parse(e),c(r.stack[0].rules)}Object.defineProperty(t,"__esModule",{value:!0});var i=r(0),a=n(i),l=r(1),s=n(l),d=r(10);t.default=u},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n={shift:0,reduce:1,accept:2,goto:2};t.config={lexerTable:{INITIAL:{table:[{from:"0",_ft_:"?",_tt_:"?",to:"1"},{from:"0",_ft_:"[",_tt_:"[",to:"2"},{from:"0",_ft_:".",_tt_:".",to:"3"},{from:"0",_ft_:"]",_tt_:"]",to:"4"},{from:"0",_ft_:")",_tt_:")",to:"5"},{from:"0",_ft_:"(",_tt_:"(",to:"6"},{from:"0",_ft_:"|",_tt_:"|",to:"7"},{from:"0",_ft_:"*",_tt_:"*",to:"8"},{from:"0",_ft_:"+",_tt_:"+",to:"9"},{from:"0",_ft_:"-",_tt_:"-",to:"10"},{from:"0",_ft_:"\\",_tt_:"\\",to:"11"},{from:"11",_ft_:"x",_tt_:"x",to:"12"},{from:"12",_ft_:"0",_tt_:"9",to:"13"},{from:"13",_ft_:"0",_tt_:"9",to:"14"},{from:"13",_ft_:"a",_tt_:"f",to:"14"},{from:"12",_ft_:"a",_tt_:"f",to:"13"},{from:"11",_ft_:"n",_tt_:"n",to:"14"},{from:"11",_ft_:"?",_tt_:"?",to:"14"},{from:"11",_ft_:"$",_tt_:"$",to:"14"},{from:"11",_ft_:"r",_tt_:"t",to:"14"},{from:"11",_ft_:"-",_tt_:".",to:"14"},{from:"11",_ft_:"{",_tt_:"}",to:"14"},{from:"11",_ft_:"(",_tt_:"+",to:"14"},{from:"11",_ft_:"[",_tt_:"^",to:"14"},{from:"0",_ft_:",",_tt_:",",to:"14"},{from:"0",_ft_:"~",_tt_:"~",to:"14"},{from:"0",_ft_:"_",_tt_:"z",to:"14"},{from:"0",_ft_:"!",_tt_:"#",to:"14"},{from:"0",_ft_:"@",_tt_:"Z",to:"14"},{from:"0",_ft_:"%",_tt_:"'",to:"14"},{from:"0",_ft_:"/",_tt_:">",to:"14"}],endMap:{1:{parseFunction:function(e){return{tokenType:"?"}}},2:{parseFunction:function(e){return{tokenType:"["}}},3:{parseFunction:function(e){return{tokenType:"."}}},4:{parseFunction:function(e){return{tokenType:"]"}}},5:{parseFunction:function(e){return{tokenType:")"}}},6:{parseFunction:function(e){return{tokenType:"("}}},7:{parseFunction:function(e){return{tokenType:"|"}}},8:{parseFunction:function(e){return{tokenType:"*"}}},9:{parseFunction:function(e){return{tokenType:"+"}}},10:{parseFunction:function(e){return{tokenType:"-"}}},14:{parseFunction:function(e){return{content:e.yytext,tokenType:"char"}}}},start:["0"],end:["1","2","3","4","5","6","7","8","9","10","14"]}},parserTable:{table:{0:{".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],"[":[n.shift,22],startx:[n.goto,1],RE:[n.goto,2],or:[n.goto,20],simpleRE:[n.goto,21],concatenation:[n.goto,29],basicRE:[n.goto,30],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},1:{eof:[n.accept,0]},2:{eof:[n.reduce,1],"|":[n.shift,3]},3:{".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],"[":[n.shift,22],simpleRE:[n.goto,4],concatenation:[n.goto,29],basicRE:[n.goto,30],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},4:{eof:[n.reduce,4],"|":[n.reduce,4],".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],")":[n.reduce,4],"[":[n.shift,22],basicRE:[n.goto,5],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},5:{eof:[n.reduce,7],"|":[n.reduce,7],".":[n.reduce,7],$:[n.reduce,7],char:[n.reduce,7],metachar:[n.reduce,7],"(":[n.reduce,7],")":[n.reduce,7],"[":[n.reduce,7]},6:{eof:[n.reduce,8],"|":[n.reduce,8],".":[n.reduce,8],$:[n.reduce,8],char:[n.reduce,8],metachar:[n.reduce,8],"(":[n.reduce,8],")":[n.reduce,8],"[":[n.reduce,8]},7:{eof:[n.reduce,9],"|":[n.reduce,9],".":[n.reduce,9],$:[n.reduce,9],char:[n.reduce,9],metachar:[n.reduce,9],"(":[n.reduce,9],")":[n.reduce,9],"[":[n.reduce,9]},8:{eof:[n.reduce,10],"|":[n.reduce,10],".":[n.reduce,10],$:[n.reduce,10],char:[n.reduce,10],metachar:[n.reduce,10],"(":[n.reduce,10],")":[n.reduce,10],"[":[n.reduce,10]},9:{eof:[n.reduce,11],"|":[n.reduce,11],"*":[n.shift,10],"+":[n.shift,11],"?":[n.shift,12],".":[n.reduce,11],$:[n.reduce,11],char:[n.reduce,11],metachar:[n.reduce,11],"(":[n.reduce,11],")":[n.reduce,11],"[":[n.reduce,11]},10:{eof:[n.reduce,12],"|":[n.reduce,12],".":[n.reduce,12],$:[n.reduce,12],char:[n.reduce,12],metachar:[n.reduce,12],"(":[n.reduce,12],")":[n.reduce,12],"[":[n.reduce,12]},11:{eof:[n.reduce,13],"|":[n.reduce,13],".":[n.reduce,13],$:[n.reduce,13],char:[n.reduce,13],metachar:[n.reduce,13],"(":[n.reduce,13],")":[n.reduce,13],"[":[n.reduce,13]},12:{eof:[n.reduce,14],"|":[n.reduce,14],".":[n.reduce,14],$:[n.reduce,14],char:[n.reduce,14],metachar:[n.reduce,14],"(":[n.reduce,14],")":[n.reduce,14],"[":[n.reduce,14]},13:{eof:[n.reduce,15],"|":[n.reduce,15],"*":[n.reduce,15],"+":[n.reduce,15],"?":[n.reduce,15],".":[n.reduce,15],$:[n.reduce,15],char:[n.reduce,15],metachar:[n.reduce,15],"(":[n.reduce,15],")":[n.reduce,15],"[":[n.reduce,15]},14:{eof:[n.reduce,16],"|":[n.reduce,16],"*":[n.reduce,16],"+":[n.reduce,16],"?":[n.reduce,16],".":[n.reduce,16],$:[n.reduce,16],char:[n.reduce,16],metachar:[n.reduce,16],"(":[n.reduce,16],")":[n.reduce,16],"[":[n.reduce,16]},15:{eof:[n.reduce,17],"|":[n.reduce,17],"*":[n.reduce,17],"+":[n.reduce,17],"?":[n.reduce,17],".":[n.reduce,17],$:[n.reduce,17],char:[n.reduce,17],metachar:[n.reduce,17],"(":[n.reduce,17],")":[n.reduce,17],"[":[n.reduce,17]},16:{eof:[n.reduce,18],"|":[n.reduce,18],"*":[n.reduce,18],"+":[n.reduce,18],"?":[n.reduce,18],".":[n.reduce,18],$:[n.reduce,18],char:[n.reduce,18],metachar:[n.reduce,18],"(":[n.reduce,18],")":[n.reduce,18],"[":[n.reduce,18]},17:{eof:[n.reduce,19],"|":[n.reduce,19],"*":[n.reduce,19],"+":[n.reduce,19],"?":[n.reduce,19],".":[n.reduce,19],$:[n.reduce,19],char:[n.reduce,19],metachar:[n.reduce,19],"(":[n.reduce,19],")":[n.reduce,19],"[":[n.reduce,19]},18:{eof:[n.reduce,20],"|":[n.reduce,20],"*":[n.reduce,20],"+":[n.reduce,20],"?":[n.reduce,20],".":[n.reduce,20],$:[n.reduce,20],char:[n.reduce,20],metachar:[n.reduce,20],"(":[n.reduce,20],")":[n.reduce,20],"[":[n.reduce,20]},19:{".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],"[":[n.shift,22],RE:[n.goto,27],or:[n.goto,20],simpleRE:[n.goto,21],concatenation:[n.goto,29],basicRE:[n.goto,30],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},20:{eof:[n.reduce,2],"|":[n.reduce,2],")":[n.reduce,2]},21:{eof:[n.reduce,3],"|":[n.reduce,3],".":[n.shift,14],$:[n.shift,15],char:[n.shift,16],metachar:[n.shift,17],"(":[n.shift,19],")":[n.reduce,3],"[":[n.shift,22],basicRE:[n.goto,5],star:[n.goto,6],plus:[n.goto,7],optional:[n.goto,8],elementaryRE:[n.goto,9],group:[n.goto,13],range:[n.goto,18]},22:{char:[n.shift,23]},23:{"-":[n.shift,24]},24:{char:[n.shift,25]},25:{"]":[n.shift,26]},26:{eof:[n.reduce,22],"|":[n.reduce,22],"*":[n.reduce,22],"+":[n.reduce,22],"?":[n.reduce,22],".":[n.reduce,22],$:[n.reduce,22],char:[n.reduce,22],metachar:[n.reduce,22],"(":[n.reduce,22],")":[n.reduce,22],"[":[n.reduce,22]},27:{"|":[n.shift,3],")":[n.shift,28]},28:{eof:[n.reduce,21],"|":[n.reduce,21],"*":[n.reduce,21],"+":[n.reduce,21],"?":[n.reduce,21],".":[n.reduce,21],$:[n.reduce,21],char:[n.reduce,21],metachar:[n.reduce,21],"(":[n.reduce,21],")":[n.reduce,21],"[":[n.reduce,21]},29:{eof:[n.reduce,5],"|":[n.reduce,5],".":[n.reduce,5],$:[n.reduce,5],char:[n.reduce,5],metachar:[n.reduce,5],"(":[n.reduce,5],")":[n.reduce,5],"[":[n.reduce,5]},30:{eof:[n.reduce,6],"|":[n.reduce,6],".":[n.reduce,6],$:[n.reduce,6],char:[n.reduce,6],metachar:[n.reduce,6],"(":[n.reduce,6],")":[n.reduce,6],"[":[n.reduce,6]}},states:[{create:"G",base:["startx"],action:function(e){return e[0].rules}},{create:"startx",base:["RE"],action:function(e){return e[0].rules}},{create:"RE",base:["or"],action:function(e){return e[0].rules}},{create:"RE",base:["simpleRE"],action:function(e){return e[0].rules}},{create:"or",base:["RE","|","simpleRE"],action:function(e){return{tokenType:"or",rules:[e[0].rules,e[2].rules]}}},{create:"simpleRE",base:["concatenation"],action:function(e){return{tokenType:"concat",rules:[e[0].rules]}}},{create:"simpleRE",base:["basicRE"],action:function(e){return{tokenType:"concat",rules:[e[0].rules]}}},{create:"concatenation",base:["simpleRE","basicRE"],action:function(e){return{tokenType:"concat",rules:[e[0].rules,e[1].rules]}}},{create:"basicRE",base:["star"],action:function(e){return e[0].rules}},{create:"basicRE",base:["plus"],action:function(e){return e[0].rules}},{create:"basicRE",base:["optional"],action:function(e){return e[0].rules}},{create:"basicRE",base:["elementaryRE"],action:function(e){return e[0].rules}},{create:"star",base:["elementaryRE","*"],action:function(e){return{tokenType:"star",rules:[e[0].rules]}}},{create:"plus",base:["elementaryRE","+"],action:function(e){return{tokenType:"plus",rules:[e[0].rules]}}},{create:"optional",base:["elementaryRE","?"],action:function(e){return{tokenType:"optional",rules:[e[0].rules]}}},{create:"elementaryRE",base:["group"],action:function(e){return e[0].rules}},{create:"elementaryRE",base:["."],action:function(e){return{tokenType:".",rules:e[0].content}}},{create:"elementaryRE",base:["$"],action:function(e){return{tokenType:"$",rules:e[0].content}}},{create:"elementaryRE",base:["char"],action:function(e){return 0===e[0].content.indexOf("\\s")&&(e[0].content=" "),0===e[0].content.indexOf("\\t")&&(e[0].content="\t"),0===e[0].content.indexOf("\\r")&&(e[0].content="\r"),0===e[0].content.indexOf("\\n")&&(e[0].content="\n"),0===e[0].content.indexOf("\\x")&&(e[0].content=String.fromCharCode(parseInt(e[0].content.replace("\\x","0x")))),0===e[0].content.indexOf("\\")&&(e[0].content=e[0].content.replace("\\","")),{tokenType:"char",rules:e[0].content}}},{create:"elementaryRE",base:["metachar"],action:function(e){return{tokenType:"char",rules:":"}}},{create:"elementaryRE",base:["range"],action:function(e){return e[0].rules}},{create:"group",base:["(","RE",")"],action:function(e){return e[1].rules}},{create:"range",base:["[","char","-","char","]"],action:function(e){return 0===e[1].content.indexOf("\\x")&&(e[1].content=String.fromCharCode(parseInt(e[1].content.replace("\\x","0x")))),0===e[3].content.indexOf("\\x")&&(e[3].content=String.fromCharCode(parseInt(e[3].content.replace("\\x","0x")))),0===e[1].content.indexOf("\\")&&(e[1].content=e[1].content.replace("\\","")),0===e[3].content.indexOf("\\")&&(e[3].content=e[3].content.replace("\\","")),{tokenType:"range",rules:[e[1],e[3]]}}}]}}},function(e,t,r){"use strict";function n(e){function t(){return""+n++}for(var r={endMap:{},end:[],start:[],table:[]},n=0,c={},u=0;u<e.length;u++)!function(n){var u=e[n];u.priority=n,c[u.tokenType]={},(0,o.default)(u.sm.table).forEach(function(e){return c[u.tokenType][e]=t()}),u.sm.table.forEach(function(e){r.table.push({from:c[u.tokenType][e.from],to:c[u.tokenType][e.to],_ft_:e._ft_,_tt_:e._tt_})}),u.sm.start.forEach(function(e){r.start.push(c[u.tokenType][e])}),u.sm.end.forEach(function(e){var t=c[u.tokenType][e];r.end.push(t),void 0===r.endMap[t]?r.endMap[t]={tokenType:u.tokenType,parseFunction:u.parseFunction,priority:u.priority}:r.endMap[t].priority>u.priority&&(r.endMap[t]={tokenType:u.tokenType,parseFunction:u.parseFunction,priority:u.priority})})}(u);return r}Object.defineProperty(t,"__esModule",{value:!0}),t.grammarMixer=n;var c=r(2),o=function(e){return e&&e.__esModule?e:{default:e}}(c)},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.parserRules={start:"G",ignoreTokens:["WHITESPACE"],precedence:[{type:"left",tokens:["+","-"]},{type:"left",tokens:["*","/"]},{type:"left",tokens:["^"]},{type:"left",tokens:["UMINUS"]}],states:{G:{rules:[{rule:["expr"],action:function(e){return e[0].rules}}]},expr:{rules:[{rule:["NUMBER"],action:function(e){return{type:"number",child:[e[0].content]}}},{rule:["SQRT","(","expr",")"],action:function(e){return{type:"SQRT",child:[e[2].rules]}}},{rule:["SIN","(","expr",")"],action:function(e){return{type:"SIN",child:[e[2].rules]}}},{rule:["COS","(","expr",")"],action:function(e){return{type:"COS",child:[e[2].rules]}}},{rule:["expr","*","expr"],action:function(e){return{type:"product",child:[e[0].rules,e[2].rules]}}},{rule:["expr","/","expr"],action:function(e){return{type:"/",child:[e[0].rules,e[2].rules]}}},{rule:["expr","+","expr"],action:function(e){return{type:"sum",child:[e[0].rules,e[2].rules]}}},{rule:["expr","-","expr"],action:function(e){return{type:"-",child:[e[0].rules,e[2].rules]}}},{rule:["expr","^","expr"],action:function(e){return{type:"power",child:[e[0].rules,e[2].rules]}}},{rule:["(","expr",")"],action:function(e){return e[1].rules}},{rule:["-","expr"],prec:"UMINUS",action:function(e){return{type:"negative",child:[e[1].rules]}}}]}}}},,,function(e,t,r){e.exports=r(16)},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function c(e,t){var r=e%t;return 0===r?t:c(t,r)}function o(e){switch(e.type){case"number":return!1;case"sum":if("number"===e.child[0].type&&"number"===e.child[1].type)return e.type="number",e.child=[e.child[0].child[0]+e.child[1].child[0]],!0;if("number"===e.child[0].type&&"sum"===e.child[1].type){if("number"===e.child[1].child[0].type)return e.child=[e.child[0].child[0]+e.child[1].child[0].child[0],e.child[1].child[1]],!0;if("number"===e.child[1].child[1].type)return e.child=[e.child[0].child[0]+e.child[1].child[1].child[0],e.child[1].child[0]],!0}if("/"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[0].child[1].type&&"number"===e.child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0].child[0]+e.child[1].child[0]*e.child[0].child[1].child[0]]},e.child[0].child[1]],!0;if("/"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[0].child[1].type&&"/"===e.child[1].type&&"number"===e.child[1].child[0].type&&"number"===e.child[1].child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0].child[0]*e.child[1].child[1].child[0]+e.child[1].child[0].child[0]*e.child[0].child[1].child[0]]},{type:"number",child:[e.child[0].child[1].child[0]*e.child[1].child[1].child[0]]}],!0;break;case"-":if("number"===e.child[0].type&&"number"===e.child[1].type)return e.type="number",e.child=[e.child[0].child[0]-e.child[1].child[0]],!0;if("/"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[0].child[1].type&&"/"===e.child[1].type&&"number"===e.child[1].child[0].type&&"number"===e.child[1].child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0].child[0]*e.child[1].child[1].child[0]-e.child[1].child[0].child[0]*e.child[0].child[1].child[0]]},{type:"number",child:[e.child[0].child[1].child[0]*e.child[1].child[1].child[0]]}],!0;if("number"===e.child[0].type&&"/"===e.child[1].type&&"number"===e.child[1].child[0].type&&"number"===e.child[1].child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0]*e.child[1].child[1].child[0]-e.child[1].child[0].child[0]]},e.child[1].child[1]],!0;if("number"===e.child[1].type&&"/"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[0].child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0].child[0]-e.child[1].child[0]*e.child[0].child[1].child[0]]},e.child[0].child[1]],!0;break;case"product":if("number"===e.child[0].type&&"number"===e.child[1].type)return e.type="number",e.child=[e.child[0].child[0]*e.child[1].child[0]],!0;if("product"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[1].type)return e.type="product",e.child=[{type:"number",child:[e.child[0].child[0].child[0]*e.child[1].child[0]]},e.child[0].child[1]],!0;if("number"===e.child[0].type&&"/"===e.child[1].type&&"number"===e.child[1].child[0].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0]*e.child[1].child[0].child[0]]},e.child[1].child[1]],!1;if("/"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[1].child[0]*e.child[0].child[0].child[0]]},e.child[0].child[1]],!0;if("/"===e.child[0].type&&"number"===e.child[0].child[0].type&&"number"===e.child[0].child[1].type&&"/"===e.child[1].type&&"number"===e.child[1].child[0].type&&"number"===e.child[1].child[1].type)return e.type="/",e.child=[{type:"number",child:[e.child[0].child[0].child[0]*e.child[1].child[0].child[0]]},{type:"number",child:[e.child[0].child[1].child[0]*e.child[1].child[1].child[0]]}],!0;break;case"/":if("number"===e.child[0].type&&"number"===e.child[1].type){var t=c(Math.max(e.child[0].child[0],e.child[1].child[0]),Math.min(e.child[0].child[0],e.child[1].child[0]));return 1!==t&&(t===e.child[1].child[0]?(e.type="number",e.child=[e.child[0].child[0]/t],!0):(e.child=[{type:"number",child:[e.child[0].child[0]/t]},{type:"number",child:[e.child[1].child[0]/t]}],!0))}}for(var r=!1,n=0;n<e.child.length;n++)r=r||o(e.child[n]);return r}function u(e){switch(e.type){case"number":return e.child[0];case"sum":return"("+u(e.child[0])+" + "+u(e.child[1])+" ) ";case"-":return"("+u(e.child[0])+" - "+u(e.child[1])+" ) ";case"product":return"("+u(e.child[0])+" * "+u(e.child[1])+" ) ";case"/":return"("+u(e.child[0])+" / "+u(e.child[1])+" ) "}for(var t=0;t<e.child.length;t++)e.child[t]=o(e.child[t]);return e}var i=r(0),a=n(i),l=r(1),s=n(l),d=r(5),f=r(6),h=r(12),p=(0,d.createParser)(h.parserRules);for(var _ in f.lexerRules){var y=f.lexerRules[_];for(var m in y.endMap){var b=y.endMap[m];delete b.tokenType,delete b.priority}}var g=new s.default(f.lexerRules,!1),v=new a.default(g,p);v.parse("3 -65 / 17  -5 * ( 5 / 12 ) * 3");var k=v.stack[0].rules;for(console.log(u(k));o(k);)console.log(u(k))}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/assets/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getStateList;
+function getStateList(table) {
+
+    const fromList = table.map(item => item.from);
+    const toList = table.map(item => item.to);
+
+    return [...new Set([...fromList, ...toList])];
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = expandTable;
+Array.prototype.unique = function () {
+    const unique = [];
+    for (let i = 0; i < this.length; i++) {
+        if (unique.indexOf(this[i]) == -1) {
+            unique.push(this[i]);
+        }
+    }
+    return unique;
+};
+
+function expandTable(table) {
+    const froms = table.map(item => item._ft_.charCodeAt(0));
+
+    const tos = table.map(item => item._tt_.charCodeAt(0) + 1);
+
+    const breaks = froms.concat(tos).unique().sort();
+
+    const newTable = [];
+
+    table.forEach(item => {
+        let f = item._ft_.charCodeAt(0);
+        const t = item._tt_.charCodeAt(0);
+
+        let changed = false;
+        breaks.forEach(_break => {
+            changed = false;
+            if (_break > f && _break <= t) {
+                const _new = {
+                    _ft_: String.fromCharCode(f),
+                    _tt_: String.fromCharCode(_break - 1),
+                    from: item.from,
+                    to: item.to
+                };
+                newTable.push(_new);
+
+                f = _break;
+                changed = true;
+            }
+        });
+
+        if (!changed) {
+            newTable.push({
+                _ft_: String.fromCharCode(f),
+                _tt_: String.fromCharCode(t),
+                from: item.from,
+                to: item.to
+            });
+        }
+    });
+
+    return newTable;
+}
+;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+let Actions = {
+    'shift': 0,
+    'reduce': 1,
+    'accept': 2,
+    'goto': 2
+};
+
+class Parser {
+
+    constructor(lexer, config) {
+        this.lexer = lexer;
+        this.table = config.table;
+        this.ignoreTokens = config.ignoreTokens || [];
+        this.states = config.states;
+    }
+
+    0 /* shift*/(stateId) {
+        const next = this.lexer.popToken();
+        // console.log(next);
+        this.stack.unshift(next);
+
+        this._actualState = stateId;
+    }
+
+    1 /* reduce*/(stateId) {
+        this._reduce(stateId);
+        this._actualState = this.actualState();
+    }
+
+    2 /* accept*/(stateId) {
+        this._reduce(stateId);
+    }
+
+    _reduce(stateId) {
+        const reducer = this.states[stateId];
+
+        const baseLen = reducer.base.length;
+        const tree = [];
+        for (let i = 0; i < baseLen; i++) {
+            const a = this.stack.shift();
+            tree.unshift(a);
+        }
+        if (reducer.action === undefined) {
+            reducer.action = function (args) {
+                return '---';
+            };
+        }
+        const value = reducer.action(tree);
+
+        this.stack.unshift({
+            tokenType: reducer.create,
+            tree,
+            rules: value
+        });
+    }
+
+    actualState() {
+        let actualState = 0;
+
+        for (let pos = this.stack.length - 1; pos > -1; pos--) {
+
+            actualState = this.table[actualState][this.stack[pos].tokenType][1];
+        }
+        return actualState;
+    }
+    parse(text) {
+
+        this.lexer.setInput(text);
+
+        this.stack = [];
+
+        this._actualState = this.actualState();
+
+        while (true) {
+            const token = this.lexer.readToken();
+
+            if (this.ignoreTokens.indexOf(token.tokenType) !== -1) {
+                this.lexer.popToken();
+                continue;
+            }
+
+            if (this.table[this._actualState][token.tokenType]) {
+                const nextAction = this.table[this._actualState][token.tokenType];
+                // console.log(nextAction.t, nextAction[1])
+
+
+                if (typeof this[nextAction[0]] !== 'function') {
+                    debugger;
+                }
+
+                this[nextAction[0]](nextAction[1]);
+
+                if (nextAction[0] === Actions.accept) {
+                    break;
+                }
+            } else {
+
+                console.log(`%c${this.lexer.input.substring(this.lexer.nextToken.startPosition - 10, this.lexer.nextToken.startPosition)}%c${this.lexer.input.substring(this.lexer.nextToken.startPosition, this.lexer.nextToken.toPos)}%c${this.lexer.input.substring(this.lexer.nextToken.toPos, this.lexer.YYCURSOR + 10)}`, 'background:#fff;color:#000', 'background:#f00;color:#fff', 'background:#fff;color:#000');
+
+                throw 'unexpeted ';
+            }
+        }
+    }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Parser);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Lexer {
+    constructor(grammar) {
+        this.states = ['INITIAL'];
+        this.YYCURSOR = 0;
+        this.grammar = grammar;
+        this.nextToken = null;
+    }
+
+    setInput(exp) {
+        this.input = exp;
+        this.states = ['INITIAL'];
+        this.YYCURSOR = 0;
+        this.nextToken = null;
+    }
+
+    readToken() {
+        if (this.nextToken === null) {
+            this.nextToken = this.parse();
+        }
+
+        return this.nextToken;
+    }
+
+    beginState(state) {
+        this.states.unshift(state);
+    }
+
+    parse() {
+        const startPosition = this.YYCURSOR;
+
+        this.yytext = '';
+        let stateId = '0';
+
+        let buffer = null;
+
+        this.YYLIMIT = this.input.length;
+
+        while (this.YYCURSOR < this.YYLIMIT) {
+            const current_read = this.input.charAt(this.YYCURSOR);
+
+            const states = this.grammar[this.states[0]].table.filter(jump => jump.from === stateId && jump._ft_ <= current_read && jump._tt_ >= current_read);
+
+            if (states.length > 0) {
+                this.YYCURSOR++;
+                this.yytext += current_read;
+                stateId = states[0].to;
+
+                if (this.grammar[this.states[0]].endMap[stateId] !== undefined) {
+                    const tokenType = this.grammar[this.states[0]].endMap[stateId].tokenType;
+
+                    buffer = {
+                        tokenType,
+                        parseFunction: this.grammar[this.states[0]].endMap[stateId].parseFunction,
+                        content: this.yytext,
+                        startPosition,
+                        pos: this.YYCURSOR
+                    };
+                }
+            } else if (buffer !== null) {
+                if (buffer.parseFunction) {
+                    const t = buffer.parseFunction(this);
+                    t.startPosition = startPosition;
+                    t.toPos = buffer.pos;
+
+                    return t;
+                }
+                return buffer;
+            } else {
+                console.log(`%c${this.input.substring(startPosition - 10, startPosition)}%c${this.input.substring(startPosition, this.YYCURSOR + 1)}%c${this.input.substring(this.YYCURSOR + 1, this.YYCURSOR + 10)}`, 'background:#fff;color:#000', 'background:#f00;color:#fff', 'background:#fff;color:#000');
+
+                throw 'lexer unexpeted ';
+            }
+        }
+
+        if (buffer !== null) {
+            if (buffer.parseFunction) {
+                const tx = buffer.parseFunction(this);
+                tx.startPosition = startPosition;
+                tx.toPos = buffer.pos;
+
+                return tx;
+            }
+            return buffer;
+        }
+
+        return {
+            tokenType: 'eof'
+        };
+    }
+
+    popToken() {
+        const token = this.readToken();
+        this.nextToken = null;
+        return token;
+    }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Lexer);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = determinize;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__expandTable__ = __webpack_require__(1);
+
+
+
+
+function intersection(x, y) {
+    x.sort();y.sort();
+    let i = 0;
+    let j = 0;
+    const ret = [];
+    while (i < x.length && j < y.length) {
+        if (x[i] < y[j]) {
+            i++;
+        } else if (y[j] < x[i]) {
+            j++;
+        } else {
+            ret.push(x[i]);
+            i++, j++;
+        }
+    }
+    return ret;
+}
+
+let lastId = 0;
+function getNextId() {
+    const n = lastId++;
+    return `${n}`;
+}
+
+function getReachableStates(table, states) {
+    const lista = table.filter(item => {
+        if (item.token) {
+            return states.indexOf(item.from) !== -1 && item.token === 'ε';
+        }
+
+        return states.indexOf(item.from) !== -1 && item._ft_ === 'ε' && item._tt_ === 'ε';
+    }).map(item => item.to);
+
+    const newList = [...new Set([...lista, ...states])];
+    if (states.length === newList.length) {
+        return newList;
+    }
+    return getReachableStates(table, newList);
+}
+
+function getReachableStatesWithToken(config, states, _ft_, _tt_) {
+    const lista = config.table.filter(item => {
+        if (item.token) {
+            return states.indexOf(item.from) !== -1 && item.token == _ft_;
+        }
+
+        return states.indexOf(item.from) !== -1 && item._ft_ <= _ft_ && item._tt_ >= _tt_;
+    }).map(item => item.to);
+
+    return getReachableStates(config.table, lista);
+}
+
+function determinize(structure) {
+    lastId = 0;
+    const monitor = {
+        idMap: {},
+        processed: {}
+    };
+
+    const configOriginal = {
+        table: Object(__WEBPACK_IMPORTED_MODULE_0__expandTable__["a" /* default */])(structure.table),
+        start: structure.start,
+        endMap: structure.endMap,
+        end: structure.end
+    };
+
+    const configDfa = {
+        table: [],
+        start: [],
+        end: []
+
+    };
+    configDfa.endMap = {};
+
+    const prev = getReachableStates(configOriginal.table, configOriginal.start);
+
+    helper(configOriginal, configDfa, prev, monitor, true);
+
+    return configDfa;
+}
+
+function helper(configOriginal, configDfa, prev, monitor, isStart = false) {
+    const prevKey = prev.sort().join('_');
+
+    if (monitor.processed[prevKey] === undefined) {
+        monitor.processed[prevKey] = {};
+
+        if (monitor.idMap[prevKey] === undefined) {
+            const nextId = getNextId();
+            monitor.idMap[prevKey] = nextId;
+
+            if (isStart) {
+                configDfa.start.push(nextId);
+            }
+            if (intersection(configOriginal.end, prev).length > 0) {
+                configDfa.end.push(nextId);
+
+                if (configOriginal.endMap) {
+                    const func = prev.map(id => configOriginal.endMap[id]).filter(item => item !== undefined).sort((a, b) => a.priority - b.priority);
+
+                    configDfa.endMap[nextId] = {
+                        parseFunction: func[0].parseFunction
+                    };
+                }
+            }
+        }
+
+        const jumps = configOriginal.table.filter(item => prev.indexOf(item.from) !== -1);
+
+        jumps.forEach(jump => {
+            if (jump._ft_ !== 'ε' && monitor.processed[prevKey][jump._ft_] === undefined) {
+                monitor.processed[prevKey][jump._ft_] = true;
+                _determinize(configOriginal, configDfa, prev, jump, monitor);
+            }
+        });
+    }
+}
+
+function _determinize(configOriginal, configDfa, prev, _jump, monitor) {
+    const next = getReachableStatesWithToken(configOriginal, prev, _jump._ft_, _jump._tt_);
+
+    const prevKey = prev.sort().join('_');
+    const nextKey = next.sort().join('_');
+
+    if (monitor.idMap[nextKey] === undefined) {
+        const nextId = getNextId();
+        monitor.idMap[nextKey] = nextId;
+
+        if (intersection(configOriginal.end, next).length > 0) {
+            configDfa.end.push(nextId);
+
+            if (configOriginal.endMap) {
+                const func = next.map(id => configOriginal.endMap[id]).filter(item => item !== undefined).sort((a, b) => a.priority - b.priority);
+
+                configDfa.endMap[nextId] = {
+                    parseFunction: func[0].parseFunction
+                };
+            }
+        }
+    }
+
+    configDfa.table.push({
+        _ft_: _jump._ft_,
+        _tt_: _jump._tt_,
+        from: monitor.idMap[prevKey],
+        to: monitor.idMap[nextKey]
+
+    });
+
+    helper(configOriginal, configDfa, next, monitor, false);
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Parser__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Lexer__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rules_regexRules_groupProd__ = __webpack_require__(6);
+
+
+
+function _parseTree(regexStructure) {
+    const config = {
+        lastId: 0,
+        getNextId() {
+            const n = this.lastId++;
+            return `${n}`;
+        },
+        structure: {
+            end: [],
+            start: [],
+            table: []
+
+        }
+    };
+
+    const startId = config.getNextId(config);
+    const endId = config.getNextId(config);
+
+    config.structure.start.push(startId);
+    config.structure.end.push(endId);
+
+    _parseNode(config, regexStructure, startId, endId);
+    return config.structure;
+}
+
+function _parseNode(config, rule, previous, next) {
+    let newPrev, newNext, i;
+
+    switch (rule.tokenType) {
+
+        case 'char':
+            config.structure.table.push({
+                from: previous,
+                to: next,
+                _ft_: rule.rules[0],
+                _tt_: rule.rules[0]
+
+            });
+
+            break;
+
+        case 'range':
+
+            config.structure.table.push({
+                from: previous,
+                to: next,
+                _ft_: rule.rules[0].content,
+                _tt_: rule.rules[1].content
+
+            });
+
+            break;
+
+        case 'star':
+            newPrev = config.getNextId(config);
+            newNext = config.getNextId(config);
+
+            config.structure.table.push({
+                from: previous,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: previous,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            _parseNode(config, rule.rules[0], newPrev, newNext);
+
+            break;
+
+        case 'optional':
+
+            newPrev = config.getNextId(config);
+
+            newNext = config.getNextId(config);
+
+            config.structure.table.push({
+                from: newPrev,
+                to: newNext,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: previous,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            _parseNode(config, rule.rules[0], newPrev, newNext);
+
+            break;
+
+        case 'plus':
+            newPrev = config.getNextId(config);
+
+            newNext = config.getNextId(config);
+
+            config.structure.table.push({
+                from: newNext,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: previous,
+                to: newPrev,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            config.structure.table.push({
+                from: newNext,
+                to: next,
+                _ft_: 'ε',
+                _tt_: 'ε'
+
+            });
+
+            _parseNode(config, rule.rules[0], newPrev, newNext);
+
+            break;
+
+        case 'concat':
+
+            for (i = 0; i < rule.rules.length - 1; i++) {
+                newNext = config.getNextId(config);
+
+                _parseNode(config, rule.rules[i], previous, newNext);
+
+                previous = newNext;
+            }
+
+            if (next === undefined) {
+                console.error('quando é k chega aki?');
+            }
+
+            _parseNode(config, rule.rules[i], previous, next);
+
+            break;
+
+        case 'or':
+
+            for (i = 0; i < rule.rules.length; i++) {
+                _parseNode(config, rule.rules[i], previous, next);
+            }
+
+            break;
+
+        default:
+
+            console.error('not parsed', rule.tokenType);
+
+    }
+}
+
+
+
+function RegexToNfa(inputText) {
+    const lexer = new __WEBPACK_IMPORTED_MODULE_1__Lexer__["a" /* default */](__WEBPACK_IMPORTED_MODULE_2__rules_regexRules_groupProd__["a" /* config */].lexerTable, false);
+    const parser = new __WEBPACK_IMPORTED_MODULE_0__Parser__["a" /* default */](lexer, __WEBPACK_IMPORTED_MODULE_2__rules_regexRules_groupProd__["a" /* config */].parserTable);
+
+    parser.parse(inputText);
+    const a = parser.stack[0].rules;
+
+    const sm = _parseTree(a);
+    return sm;
+    /*
+    let det = determinize(sm)
+    // return det;
+    let min = minimize(det)
+     return min
+    */
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (RegexToNfa);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/*
+let Actions = {
+    'shift': 0,
+    'reduce': 1,
+    'accept': 2,
+    'goto': 2
+};
+*/
+
+const config = {
+    lexerTable: {
+        INITIAL: {
+            table: [{
+                'from': '0',
+                '_ft_': '?',
+                '_tt_': '?',
+                'to': '1'
+            }, {
+                'from': '0',
+                '_ft_': '[',
+                '_tt_': '[',
+                'to': '2'
+            }, {
+                'from': '0',
+                '_ft_': '.',
+                '_tt_': '.',
+                'to': '3'
+            }, {
+                'from': '0',
+                '_ft_': ']',
+                '_tt_': ']',
+                'to': '4'
+            }, {
+                'from': '0',
+                '_ft_': ')',
+                '_tt_': ')',
+                'to': '5'
+            }, {
+                'from': '0',
+                '_ft_': '(',
+                '_tt_': '(',
+                'to': '6'
+            }, {
+                'from': '0',
+                '_ft_': '|',
+                '_tt_': '|',
+                'to': '7'
+            }, {
+                'from': '0',
+                '_ft_': '*',
+                '_tt_': '*',
+                'to': '8'
+            }, {
+                'from': '0',
+                '_ft_': '+',
+                '_tt_': '+',
+                'to': '9'
+            }, {
+                'from': '0',
+                '_ft_': '-',
+                '_tt_': '-',
+                'to': '10'
+            }, {
+                'from': '0',
+                '_ft_': '\\',
+                '_tt_': '\\',
+                'to': '11'
+            }, {
+                'from': '11',
+                '_ft_': 'x',
+                '_tt_': 'x',
+                'to': '12'
+            }, {
+                'from': '12',
+                '_ft_': '0',
+                '_tt_': '9',
+                'to': '13'
+            }, {
+                'from': '13',
+                '_ft_': '0',
+                '_tt_': '9',
+                'to': '14'
+            }, {
+                'from': '13',
+                '_ft_': 'a',
+                '_tt_': 'f',
+                'to': '14'
+            }, {
+                'from': '12',
+                '_ft_': 'a',
+                '_tt_': 'f',
+                'to': '13'
+            }, {
+                'from': '11',
+                '_ft_': 'n',
+                '_tt_': 'n',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '?',
+                '_tt_': '?',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '$',
+                '_tt_': '$',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': 'r',
+                '_tt_': 't',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '-',
+                '_tt_': '.',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '{',
+                '_tt_': '}',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '(',
+                '_tt_': '+',
+                'to': '14'
+            }, {
+                'from': '11',
+                '_ft_': '[',
+                '_tt_': '^',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': ',',
+                '_tt_': ',',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '~',
+                '_tt_': '~',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '_',
+                '_tt_': 'z',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '!',
+                '_tt_': '#',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '@',
+                '_tt_': 'Z',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '%',
+                '_tt_': '\'',
+                'to': '14'
+            }, {
+                'from': '0',
+                '_ft_': '/',
+                '_tt_': '>',
+                'to': '14'
+            }],
+            endMap: {
+                1: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '?'
+                        };
+                    }
+                },
+                2: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '['
+                        };
+                    }
+                },
+                3: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '.'
+                        };
+                    }
+                },
+                4: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: ']'
+                        };
+                    }
+                },
+                5: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: ')'
+                        };
+                    }
+                },
+                6: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '('
+                        };
+                    }
+                },
+                7: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '|'
+                        };
+                    }
+                },
+                8: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '*'
+                        };
+                    }
+                },
+                9: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '+'
+                        };
+                    }
+                },
+                10: {
+                    parseFunction: function parseFunction(lexer) {
+                        return {
+                            tokenType: '-'
+                        };
+                    }
+                },
+                14: {
+                    parseFunction: function parseFunction(lexer) {
+
+                        return {
+                            content: lexer.yytext,
+                            tokenType: 'char'
+                        };
+                    }
+                }
+            },
+            start: ['0'],
+            end: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '14']
+
+        }
+    },
+    parserTable: {
+        table: {
+            '0': {
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                '[': [0, 22],
+                'startx': [2, 1],
+                'RE': [2, 2],
+                'or': [2, 20],
+                'simpleRE': [2, 21],
+                'concatenation': [2, 29],
+                'basicRE': [2, 30],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '1': {
+                'eof': [2, 0]
+            },
+            '2': {
+                'eof': [1, 1],
+                '|': [0, 3]
+            },
+            '3': {
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                '[': [0, 22],
+                'simpleRE': [2, 4],
+                'concatenation': [2, 29],
+                'basicRE': [2, 30],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '4': {
+                'eof': [1, 4],
+                '|': [1, 4],
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                ')': [1, 4],
+                '[': [0, 22],
+                'basicRE': [2, 5],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '5': {
+                'eof': [1, 7],
+                '|': [1, 7],
+                '.': [1, 7],
+                '$': [1, 7],
+                'char': [1, 7],
+                'metachar': [1, 7],
+                '(': [1, 7],
+                ')': [1, 7],
+                '[': [1, 7]
+            },
+            '6': {
+                'eof': [1, 8],
+                '|': [1, 8],
+                '.': [1, 8],
+                '$': [1, 8],
+                'char': [1, 8],
+                'metachar': [1, 8],
+                '(': [1, 8],
+                ')': [1, 8],
+                '[': [1, 8]
+            },
+            '7': {
+                'eof': [1, 9],
+                '|': [1, 9],
+                '.': [1, 9],
+                '$': [1, 9],
+                'char': [1, 9],
+                'metachar': [1, 9],
+                '(': [1, 9],
+                ')': [1, 9],
+                '[': [1, 9]
+            },
+            '8': {
+                'eof': [1, 10],
+                '|': [1, 10],
+                '.': [1, 10],
+                '$': [1, 10],
+                'char': [1, 10],
+                'metachar': [1, 10],
+                '(': [1, 10],
+                ')': [1, 10],
+                '[': [1, 10]
+            },
+            '9': {
+                'eof': [1, 11],
+                '|': [1, 11],
+                '*': [0, 10],
+                '+': [0, 11],
+                '?': [0, 12],
+                '.': [1, 11],
+                '$': [1, 11],
+                'char': [1, 11],
+                'metachar': [1, 11],
+                '(': [1, 11],
+                ')': [1, 11],
+                '[': [1, 11]
+            },
+            '10': {
+                'eof': [1, 12],
+                '|': [1, 12],
+                '.': [1, 12],
+                '$': [1, 12],
+                'char': [1, 12],
+                'metachar': [1, 12],
+                '(': [1, 12],
+                ')': [1, 12],
+                '[': [1, 12]
+            },
+            '11': {
+                'eof': [1, 13],
+                '|': [1, 13],
+                '.': [1, 13],
+                '$': [1, 13],
+                'char': [1, 13],
+                'metachar': [1, 13],
+                '(': [1, 13],
+                ')': [1, 13],
+                '[': [1, 13]
+            },
+            '12': {
+                'eof': [1, 14],
+                '|': [1, 14],
+                '.': [1, 14],
+                '$': [1, 14],
+                'char': [1, 14],
+                'metachar': [1, 14],
+                '(': [1, 14],
+                ')': [1, 14],
+                '[': [1, 14]
+            },
+            '13': {
+                'eof': [1, 15],
+                '|': [1, 15],
+                '*': [1, 15],
+                '+': [1, 15],
+                '?': [1, 15],
+                '.': [1, 15],
+                '$': [1, 15],
+                'char': [1, 15],
+                'metachar': [1, 15],
+                '(': [1, 15],
+                ')': [1, 15],
+                '[': [1, 15]
+            },
+            '14': {
+                'eof': [1, 16],
+                '|': [1, 16],
+                '*': [1, 16],
+                '+': [1, 16],
+                '?': [1, 16],
+                '.': [1, 16],
+                '$': [1, 16],
+                'char': [1, 16],
+                'metachar': [1, 16],
+                '(': [1, 16],
+                ')': [1, 16],
+                '[': [1, 16]
+            },
+            '15': {
+                'eof': [1, 17],
+                '|': [1, 17],
+                '*': [1, 17],
+                '+': [1, 17],
+                '?': [1, 17],
+                '.': [1, 17],
+                '$': [1, 17],
+                'char': [1, 17],
+                'metachar': [1, 17],
+                '(': [1, 17],
+                ')': [1, 17],
+                '[': [1, 17]
+            },
+            '16': {
+                'eof': [1, 18],
+                '|': [1, 18],
+                '*': [1, 18],
+                '+': [1, 18],
+                '?': [1, 18],
+                '.': [1, 18],
+                '$': [1, 18],
+                'char': [1, 18],
+                'metachar': [1, 18],
+                '(': [1, 18],
+                ')': [1, 18],
+                '[': [1, 18]
+            },
+            '17': {
+                'eof': [1, 19],
+                '|': [1, 19],
+                '*': [1, 19],
+                '+': [1, 19],
+                '?': [1, 19],
+                '.': [1, 19],
+                '$': [1, 19],
+                'char': [1, 19],
+                'metachar': [1, 19],
+                '(': [1, 19],
+                ')': [1, 19],
+                '[': [1, 19]
+            },
+            '18': {
+                'eof': [1, 20],
+                '|': [1, 20],
+                '*': [1, 20],
+                '+': [1, 20],
+                '?': [1, 20],
+                '.': [1, 20],
+                '$': [1, 20],
+                'char': [1, 20],
+                'metachar': [1, 20],
+                '(': [1, 20],
+                ')': [1, 20],
+                '[': [1, 20]
+            },
+            '19': {
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                '[': [0, 22],
+                'RE': [2, 27],
+                'or': [2, 20],
+                'simpleRE': [2, 21],
+                'concatenation': [2, 29],
+                'basicRE': [2, 30],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '20': {
+                'eof': [1, 2],
+                '|': [1, 2],
+                ')': [1, 2]
+            },
+            '21': {
+                'eof': [1, 3],
+                '|': [1, 3],
+                '.': [0, 14],
+                '$': [0, 15],
+                'char': [0, 16],
+                'metachar': [0, 17],
+                '(': [0, 19],
+                ')': [1, 3],
+                '[': [0, 22],
+                'basicRE': [2, 5],
+                'star': [2, 6],
+                'plus': [2, 7],
+                'optional': [2, 8],
+                'elementaryRE': [2, 9],
+                'group': [2, 13],
+                'range': [2, 18]
+            },
+            '22': {
+                'char': [0, 23]
+            },
+            '23': {
+                '-': [0, 24]
+            },
+            '24': {
+                'char': [0, 25]
+            },
+            '25': {
+                ']': [0, 26]
+            },
+            '26': {
+                'eof': [1, 22],
+                '|': [1, 22],
+                '*': [1, 22],
+                '+': [1, 22],
+                '?': [1, 22],
+                '.': [1, 22],
+                '$': [1, 22],
+                'char': [1, 22],
+                'metachar': [1, 22],
+                '(': [1, 22],
+                ')': [1, 22],
+                '[': [1, 22]
+            },
+            '27': {
+                '|': [0, 3],
+                ')': [0, 28]
+            },
+            '28': {
+                'eof': [1, 21],
+                '|': [1, 21],
+                '*': [1, 21],
+                '+': [1, 21],
+                '?': [1, 21],
+                '.': [1, 21],
+                '$': [1, 21],
+                'char': [1, 21],
+                'metachar': [1, 21],
+                '(': [1, 21],
+                ')': [1, 21],
+                '[': [1, 21]
+            },
+            '29': {
+                'eof': [1, 5],
+                '|': [1, 5],
+                '.': [1, 5],
+                '$': [1, 5],
+                'char': [1, 5],
+                'metachar': [1, 5],
+                '(': [1, 5],
+                ')': [1, 5],
+                '[': [1, 5]
+            },
+            '30': {
+                'eof': [1, 6],
+                '|': [1, 6],
+                '.': [1, 6],
+                '$': [1, 6],
+                'char': [1, 6],
+                'metachar': [1, 6],
+                '(': [1, 6],
+                ')': [1, 6],
+                '[': [1, 6]
+            }
+        },
+        states: [{
+            create: 'G',
+            base: ['startx'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'startx',
+            base: ['RE'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'RE',
+            base: ['or'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'RE',
+            base: ['simpleRE'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'or',
+            base: ['RE', '|', 'simpleRE'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'or',
+                    rules: [args[0].rules, args[2].rules]
+                };
+            }
+        }, {
+            create: 'simpleRE',
+            base: ['concatenation'],
+            action: function action(args) {
+                return {
+                    'tokenType': 'concat',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'simpleRE',
+            base: ['basicRE'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'concat',
+
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'concatenation',
+            base: ['simpleRE', 'basicRE'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'concat',
+
+                    rules: [args[0].rules, args[1].rules]
+                };
+            }
+        }, {
+            create: 'basicRE',
+            base: ['star'],
+            action: function action(args) {
+
+                return args[0].rules;
+            }
+        }, {
+            create: 'basicRE',
+            base: ['plus'],
+            action: function action(args) {
+
+                return args[0].rules;
+            }
+        }, {
+            create: 'basicRE',
+            base: ['optional'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'basicRE',
+            base: ['elementaryRE'],
+            action: function action(args) {
+
+                return args[0].rules;
+            }
+        }, {
+            create: 'star',
+            base: ['elementaryRE', '*'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'star',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'plus',
+            base: ['elementaryRE', '+'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'plus',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'optional',
+            base: ['elementaryRE', '?'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'optional',
+                    rules: [args[0].rules]
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['group'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['.'],
+            action: function action(args) {
+                return {
+                    'tokenType': '.',
+                    rules: args[0].content
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['$'],
+            action: function action(args) {
+                return {
+                    'tokenType': '$',
+                    rules: args[0].content
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['char'],
+            action: function action(args) {
+
+                if (args[0].content.indexOf('\\s') === 0) {
+
+                    args[0].content = ' ';
+                }
+
+                if (args[0].content.indexOf('\\t') === 0) {
+
+                    args[0].content = '\t';
+                }
+
+                if (args[0].content.indexOf('\\r') === 0) {
+
+                    args[0].content = '\r';
+                }
+
+                if (args[0].content.indexOf('\\n') === 0) {
+
+                    args[0].content = '\n';
+                }
+
+                if (args[0].content.indexOf('\\x') === 0) {
+
+                    args[0].content = String.fromCharCode(parseInt(args[0].content.replace('\\x', '0x')));
+                }
+                if (args[0].content.indexOf('\\') === 0) {
+
+                    args[0].content = args[0].content.replace('\\', '');
+                }
+
+                return {
+                    'tokenType': 'char',
+                    rules: args[0].content
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['metachar'],
+            action: function action(args) {
+
+                return {
+                    'tokenType': 'char',
+                    rules: ':' // args[0].content,
+                };
+            }
+        }, {
+            create: 'elementaryRE',
+            base: ['range'],
+            action: function action(args) {
+                return args[0].rules;
+            }
+        }, {
+            create: 'group',
+            base: ['(', 'RE', ')'],
+            action: function action(args) {
+                return args[1].rules;
+            }
+        }, {
+            create: 'range',
+            base: ['[', 'char', '-', 'char', ']'],
+            action: function action(args) {
+                if (args[1].content.indexOf('\\x') === 0) {
+
+                    args[1].content = String.fromCharCode(parseInt(args[1].content.replace('\\x', '0x')));
+                }
+
+                if (args[3].content.indexOf('\\x') === 0) {
+
+                    args[3].content = String.fromCharCode(parseInt(args[3].content.replace('\\x', '0x')));
+                }
+
+                if (args[1].content.indexOf('\\') === 0) {
+
+                    args[1].content = args[1].content.replace('\\', '');
+                }
+
+                if (args[3].content.indexOf('\\') === 0) {
+
+                    args[3].content = args[3].content.replace('\\', '');
+                }
+
+                return {
+                    'tokenType': 'range',
+                    rules: [args[1], args[3]]
+                };
+            }
+        }]
+    }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = config;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = minimize;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getStateList__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__expandTable__ = __webpack_require__(1);
+
+
+
+function intersept(array1, array2) {
+    return array1.filter(function (n) {
+        return array2.indexOf(n) !== -1;
+    });
+}
+
+function unicos(myArray) {
+    return [...new Set(myArray)];
+}
+
+function minimize(originalStructure) {
+
+    const expandedTable = Object(__WEBPACK_IMPORTED_MODULE_1__expandTable__["a" /* default */])(originalStructure.table);
+    const statesList = Object(__WEBPACK_IMPORTED_MODULE_0__getStateList__["a" /* default */])(expandedTable);
+
+    statesList.push('sink');
+
+    let theListUnique = {};
+
+    let unprocessed = [];
+
+    let theTable = {};
+
+    // extend table to be easyly walked
+    for (let i = 0; i < originalStructure.table.length; i++) {
+        let n = originalStructure.table[i];
+
+        if (theTable[n.from] === undefined) {
+            theTable[n.from] = {};
+        }
+        theTable[n.from][n._ft_] = n.to;
+    }
+
+    // criar a lista inicial com os pares unicos, e nao processados
+    for (let i = 0; i < statesList.length - 1; i++) {
+        if (theListUnique[statesList[i]] === undefined) {
+
+            theListUnique[statesList[i]] = {};
+        }
+
+        for (let j = i + 1; j < statesList.length; j++) {
+
+            if (theListUnique[statesList[j]] === undefined) {
+
+                theListUnique[statesList[j]] = {};
+            }
+
+            if (originalStructure.end.indexOf(statesList[i]) !== -1 !== (originalStructure.end.indexOf(statesList[j]) !== -1)) {
+
+                theListUnique[statesList[i]][statesList[j]] = true;
+                theListUnique[statesList[j]][statesList[i]] = true;
+            } else {
+                unprocessed.push([statesList[i], statesList[j]]);
+            }
+        }
+    }
+
+    let lastCount = 0;
+    if (lastCount !== unprocessed.length) {
+        lastCount = unprocessed.length;
+
+        for (let x = 0; x < lastCount; x++) {
+            isUniqueAll(theTable, theListUnique, unprocessed);
+        }
+    }
+
+    // unprocessed = [[2, 3], [2, 5], [5, 4], [8, 1]]
+    let processed = [];
+
+    let unprocessedLen = 0; // unprocessed.length;
+
+
+    while (unprocessedLen !== unprocessed.length) {
+
+        unprocessedLen = unprocessed.length;
+
+        let current;
+        while (current = unprocessed.pop()) {
+
+            let find = false;
+            for (let i = 0; !find && i < processed.length; i++) {
+                if (intersept(processed[i], current).length > 0) {
+                    console.log(processed[i], current);
+
+                    processed[i] = unicos(processed[i].concat(current));
+
+                    find = true;
+                }
+            }
+
+            if (!find) {
+                processed.push(current);
+            }
+        }
+
+        unprocessed = processed;
+        processed = [];
+    }
+
+    let map = {};
+
+    unprocessed.forEach(function (item) {
+        let name = item.join(',');
+        item.forEach(function (stat) {
+
+            map[stat] = name;
+        });
+    });
+
+    originalStructure.table.forEach(function (xx) {
+        xx.from = map[xx.from] ? map[xx.from] : xx.from;
+        xx.to = map[xx.to] ? map[xx.to] : xx.to;
+    });
+
+    for (let i = 0; i < originalStructure.end.length; i++) {
+        originalStructure.end[i] = map[originalStructure.end[i]] ? map[originalStructure.end[i]] : originalStructure.end[i];
+    }
+
+    for (let i = 0; i < originalStructure.start.length; i++) {
+        originalStructure.start[i] = map[originalStructure.start[i]] ? map[originalStructure.start[i]] : originalStructure.start[i];
+    }
+
+    let table = [];
+
+    while (originalStructure.table.length) {
+        let temp = originalStructure.table.pop();
+        table.push(temp);
+
+        originalStructure.table = originalStructure.table.filter(function (item) {
+            return item._ft_ !== temp._ft_ || item._tt_ !== temp._tt_ || item.from !== temp.from || item.to !== temp.to;
+        });
+    }
+
+    originalStructure.table = table;
+
+    return originalStructure;
+}
+
+function isUniqueAll(theTable, theListUnique, unprocessed) {
+
+    let item = unprocessed.pop();
+
+    let l1 = theTable[item[0]];
+
+    let l2 = theTable[item[1]];
+
+    let tokens1 = l1 === undefined ? [] : Object.keys(l1);
+    let tokens2 = l2 === undefined ? [] : Object.keys(l2);
+    let tokenList = unicos(tokens1.concat(tokens2));
+
+    for (let i = 0; i < tokenList.length; i++) {
+
+        let token = tokenList[i];
+
+        let to1 = theTable[item[0]] && theTable[item[0]][token] ? theTable[item[0]][token] : 'sink';
+        let to2 = theTable[item[1]] && theTable[item[1]][token] ? theTable[item[1]][token] : 'sink';
+
+        let isUniqueX = theListUnique[to1] && theListUnique[to1][to2] ? true : false;
+
+        if (isUniqueX) {
+
+            theListUnique[item[0]][item[1]] = true;
+            theListUnique[item[1]][item[0]] = true;
+            return true;
+        }
+    }
+
+    unprocessed.unshift(item);
+
+    return false;
+}
+
+/***/ }),
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(12);
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_Parser__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Lexer__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_GenerateLalrParser__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__rules_calc_lexRules__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__rules_calc_parserRules__ = __webpack_require__(17);
+
+
+
+
+
+
+
+
+const parserTable = Object(__WEBPACK_IMPORTED_MODULE_2__classes_GenerateLalrParser__["a" /* createParser */])(__WEBPACK_IMPORTED_MODULE_4__rules_calc_parserRules__["a" /* parserRules */]);
+
+for (let i in __WEBPACK_IMPORTED_MODULE_3__rules_calc_lexRules__["a" /* lexerRules */]) {
+    let item = __WEBPACK_IMPORTED_MODULE_3__rules_calc_lexRules__["a" /* lexerRules */][i];
+
+    for (let j in item.endMap) {
+        let item2 = item.endMap[j];
+        delete item2.tokenType;
+        delete item2.priority;
+    }
+}
+
+let lexer = new __WEBPACK_IMPORTED_MODULE_1__classes_Lexer__["a" /* default */](__WEBPACK_IMPORTED_MODULE_3__rules_calc_lexRules__["a" /* lexerRules */], false);
+
+let parser = new __WEBPACK_IMPORTED_MODULE_0__classes_Parser__["a" /* default */](lexer, parserTable);
+
+parser.parse('3 -65 / 17  -5 * ( 5 / 12 ) * 3');
+let ast = parser.stack[0].rules;
+
+function mdc(a, b) {
+    let resto = a % b;
+    if (resto === 0) {
+        return b;
+    } else {
+
+        return mdc(b, resto);
+    }
+}
+
+function simplify(tree) {
+    switch (tree.type) {
+
+        case 'number':
+            return false;
+            break;
+
+        case 'sum':
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === 'number') {
+
+                tree.type = 'number';
+                tree.child = [tree.child[0].child[0] + tree.child[1].child[0]];
+                return true;
+            }
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === 'sum') {
+
+                if (tree.child[1].child[0].type === 'number') {
+
+                    tree.child = [tree.child[0].child[0] + tree.child[1].child[0].child[0], tree.child[1].child[1]];
+
+                    return true;
+                }
+
+                if (tree.child[1].child[1].type === 'number') {
+
+                    tree.child = [tree.child[0].child[0] + tree.child[1].child[1].child[0], tree.child[1].child[0]];
+
+                    return true;
+                }
+            }
+
+            if (tree.child[0].type === '/' && tree.child[0].child[0].type === 'number' && tree.child[0].child[1].type === 'number' && tree.child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0].child[0] + tree.child[1].child[0] * tree.child[0].child[1].child[0]] }, tree.child[0].child[1]];
+
+                return true;
+            }
+
+            if (tree.child[0].type === '/' && tree.child[0].child[0].type === 'number' && tree.child[0].child[1].type === 'number' && tree.child[1].type === '/' && tree.child[1].child[0].type === 'number' && tree.child[1].child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0].child[0] * tree.child[1].child[1].child[0] + tree.child[1].child[0].child[0] * tree.child[0].child[1].child[0]] }, { type: 'number', child: [tree.child[0].child[1].child[0] * tree.child[1].child[1].child[0]] }];
+                return true;
+            }
+
+            break;
+
+        case '-':
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === 'number') {
+
+                tree.type = 'number';
+                tree.child = [tree.child[0].child[0] - tree.child[1].child[0]];
+
+                return true;
+            }
+
+            if (tree.child[0].type === '/' && tree.child[0].child[0].type === 'number' && tree.child[0].child[1].type === 'number' && tree.child[1].type === '/' && tree.child[1].child[0].type === 'number' && tree.child[1].child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0].child[0] * tree.child[1].child[1].child[0] - tree.child[1].child[0].child[0] * tree.child[0].child[1].child[0]] }, { type: 'number', child: [tree.child[0].child[1].child[0] * tree.child[1].child[1].child[0]] }];
+
+                return true;
+            }
+
+            //    3  - (2 /3)
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === '/' && tree.child[1].child[0].type === 'number' && tree.child[1].child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0] * tree.child[1].child[1].child[0] - tree.child[1].child[0].child[0]] }, tree.child[1].child[1]];
+                return true;
+            }
+
+            // (23 / 42 )  - 23
+            if (tree.child[1].type === 'number' && tree.child[0].type === '/' && tree.child[0].child[0].type === 'number' && tree.child[0].child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0].child[0] - tree.child[1].child[0] * tree.child[0].child[1].child[0]] }, tree.child[0].child[1]];
+                return true;
+            }
+
+            break;
+
+        case 'product':
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === 'number') {
+                tree.type = 'number';
+                tree.child = [tree.child[0].child[0] * tree.child[1].child[0]];
+                return true;
+            }
+
+            if (tree.child[0].type === 'product' && tree.child[0].child[0].type === 'number' && tree.child[1].type === 'number') {
+
+                tree.type = 'product';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0].child[0] * tree.child[1].child[0]] }, tree.child[0].child[1]];
+                return true;
+            }
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === '/' && tree.child[1].child[0].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0] * tree.child[1].child[0].child[0]] }, tree.child[1].child[1]];
+                return false;
+            }
+
+            if (tree.child[0].type === '/' && tree.child[0].child[0].type === 'number' && tree.child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[1].child[0] * tree.child[0].child[0].child[0]] }, tree.child[0].child[1]];
+                return true;
+            }
+
+            if (tree.child[0].type === '/' && tree.child[0].child[0].type === 'number' && tree.child[0].child[1].type === 'number' && tree.child[1].type === '/' && tree.child[1].child[0].type === 'number' && tree.child[1].child[1].type === 'number') {
+
+                tree.type = '/';
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0].child[0] * tree.child[1].child[0].child[0]] }, { type: 'number', child: [tree.child[0].child[1].child[0] * tree.child[1].child[1].child[0]] }];
+                return true;
+            }
+
+            break;
+
+        case '/':
+
+            if (tree.child[0].type === 'number' && tree.child[1].type === 'number') {
+
+                let d = mdc(Math.max(tree.child[0].child[0], tree.child[1].child[0]), Math.min(tree.child[0].child[0], tree.child[1].child[0]));
+
+                if (d === 1) {
+                    return false;
+                }
+
+                if (d === tree.child[1].child[0]) {
+                    tree.type = 'number';
+                    tree.child = [tree.child[0].child[0] / d];
+                    return true;
+                }
+
+                tree.child = [{ type: 'number', child: [tree.child[0].child[0] / d] }, { type: 'number', child: [tree.child[1].child[0] / d] }];
+                return true;
+            }
+            break;
+
+    }
+
+    let changed = false;
+    // console.log(tree);
+    for (let i = 0; i < tree.child.length; i++) {
+        changed = changed || simplify(tree.child[i]);
+    }
+
+    return changed;
+}
+
+function printExp(tree) {
+    switch (tree.type) {
+        case 'number':
+            return tree.child[0];
+            break;
+
+        case 'sum':
+
+            return '(' + printExp(tree.child[0]) + ' + ' + printExp(tree.child[1]) + ' ) ';
+            break;
+
+        case '-':
+
+            return '(' + printExp(tree.child[0]) + ' - ' + printExp(tree.child[1]) + ' ) ';
+            break;
+
+        case 'product':
+
+            return '(' + printExp(tree.child[0]) + ' * ' + printExp(tree.child[1]) + ' ) ';
+            break;
+
+        case '/':
+            return '(' + printExp(tree.child[0]) + ' / ' + printExp(tree.child[1]) + ' ) ';
+            break;
+
+    }
+
+    for (let i = 0; i < tree.child.length; i++) {
+        tree.child[i] = simplify(tree.child[i]);
+    }
+
+    return tree;
+}
+
+console.log(printExp(ast));
+
+while (simplify(ast)) {
+    console.log(printExp(ast));
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = createParser;
+
+let Actions = {
+    'shift': 0,
+    'reduce': 1,
+    'accept': 2,
+    'goto': 2
+};
+
+function createParser(parserRules) {
+    let create;
+    let ruleIdx;
+    let rule;
+    let ruleLen;
+    let dotPos;
+    let changed;
+    let term;
+    let lastLen;
+    const goal = parserRules.start;
+
+    Array.prototype.unique = function () {
+        const unique = [];
+        for (let i = 0; i < this.length; i++) {
+            if (unique.indexOf(this[i]) == -1) {
+                unique.push(this[i]);
+            }
+        }
+        return unique;
+    };
+
+    Array.prototype.contains = function (values) {
+        let i = this.length;
+        while (i--) {
+            if (values.indexOf(this[i]) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const precedence = {};
+
+    for (let i = 0; i < parserRules.precedence.length; i++) {
+        for (let j = 0; j < parserRules.precedence[i].tokens.length; j++) {
+            precedence[parserRules.precedence[i].tokens[j]] = {
+                type: parserRules.precedence[i].type,
+                level: i + 1
+            };
+        }
+    }
+
+    const firstMap = {};
+
+    for (create in parserRules.states) {
+        firstMap[create] = {
+
+            firsts: [],
+            follows: [],
+            hasEmptyRules: false,
+            isTerminal: false
+        };
+
+        for (ruleIdx = 0; ruleIdx < parserRules.states[create].rules.length; ruleIdx++) {
+            rule = parserRules.states[create].rules[ruleIdx].rule;
+            ruleLen = rule.length;
+            if (ruleLen === 0) {
+                firstMap[create].hasEmptyRules = true;
+            }
+
+            for (dotPos = 0; dotPos < ruleLen; dotPos++) {
+                term = rule[dotPos];
+                if (firstMap[term] === undefined) {
+                    firstMap[term] = {
+
+                        isTerminal: true,
+                        follows: [],
+                        firsts: [term]
+                    };
+                }
+            }
+        }
+    }
+
+    changed = true;
+
+    while (changed) {
+        changed = false;
+
+        for (create in parserRules.states) {
+            lastLen = firstMap[create].firsts.length;
+
+            if (firstMap[create].isTerminal === false) {
+                for (ruleIdx = 0; ruleIdx < parserRules.states[create].rules.length; ruleIdx++) {
+                    rule = parserRules.states[create].rules[ruleIdx].rule;
+                    ruleLen = rule.length;
+                    if (ruleLen > 0) {
+                        for (dotPos = 0; dotPos < ruleLen; dotPos++) {
+                            term = rule[dotPos];
+                            firstMap[create].firsts = firstMap[create].firsts.concat(firstMap[term].firsts);
+
+                            if (firstMap[term].isTerminal || firstMap[term].hasEmptyRules === false) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                firstMap[create].firsts = firstMap[create].firsts.unique();
+            }
+
+            if (lastLen !== firstMap[create].firsts.length) {
+                changed = true;
+            }
+        }
+    }
+
+    firstMap[goal].follows.push('eof');
+
+    changed = true;
+
+    while (changed) {
+        changed = false;
+
+        for (create in parserRules.states) {
+            if (firstMap[create].isTerminal === false) {
+                for (ruleIdx = 0; ruleIdx < parserRules.states[create].rules.length; ruleIdx++) {
+                    rule = parserRules.states[create].rules[ruleIdx].rule;
+                    ruleLen = rule.length;
+                    if (ruleLen > 0) {
+                        for (dotPos = ruleLen - 1; dotPos > 0; dotPos--) {
+                            for (let dotPosPrev = dotPos - 1; dotPosPrev >= 0; dotPosPrev--) {
+                                term = rule[dotPos];
+                                const termPrev = rule[dotPosPrev];
+
+                                lastLen = firstMap[termPrev].follows.length;
+                                firstMap[termPrev].follows = firstMap[termPrev].follows.concat(firstMap[term].firsts);
+                                firstMap[termPrev].follows = firstMap[termPrev].follows.unique();
+
+                                if (lastLen !== firstMap[termPrev].follows.length) {
+                                    changed = true;
+                                }
+
+                                if (firstMap[termPrev].isTerminal || firstMap[termPrev].hasEmptyRules === false) {
+                                    break;
+                                }
+                            }
+                        }
+                        const lastTerm = rule[ruleLen - 1];
+
+                        lastLen = firstMap[lastTerm].follows.length;
+
+                        firstMap[lastTerm].follows = firstMap[lastTerm].follows.concat(firstMap[create].follows);
+                        firstMap[lastTerm].follows = firstMap[lastTerm].follows.unique();
+
+                        if (lastLen !== firstMap[lastTerm].follows.length) {
+                            changed = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function getEmptyJumpsDest(stateArray) {
+        const listaDeCoisas = stateArray.map(id => list.filter(item => item.state.create == list[id].state.base[list[id].pos] && item.pos === 0));
+
+        const xxx = listaDeCoisas.map(a => a.map(b => b.id));
+
+        const flattened = stateArray.concat(xxx.reduce((a, b) => a.concat(b), [])).unique().sort((a, b) => a - b);
+
+        if (flattened.length != stateArray.length) {
+            return getEmptyJumpsDest(flattened);
+        }
+        return flattened;
+    }
+
+    const table = {};
+
+    let list = [];
+    let lastId = 0;
+    let id = 0;
+    let stateId = 0;
+
+    const stateList = {};
+
+    const monitor = {};
+    const newIdToNfa = {};
+
+    for (create in parserRules.states) {
+        parserRules.states[create].hasEmptyRules = false;
+        parserRules.states[create].isTerminal = false;
+
+        for (ruleIdx = 0; ruleIdx < parserRules.states[create].rules.length; ruleIdx++) {
+            const _stateId = stateId++;
+
+            const state = {
+                id: _stateId,
+                create,
+                base: parserRules.states[create].rules[ruleIdx].rule,
+                action: parserRules.states[create].rules[ruleIdx].action,
+                precedence: null
+            };
+
+            stateList[_stateId] = state;
+
+            if (state.base.length === 0) {
+                parserRules.states[create].hasEmptyRules = true;
+            }
+
+            let lexeme;
+            ruleLen = parserRules.states[create].rules[ruleIdx].rule.length;
+            for (dotPos = 0; dotPos < ruleLen + 1; dotPos++) {
+                const _id = id++;
+
+                lexeme = parserRules.states[create].rules[ruleIdx].rule[dotPos];
+                if (precedence[lexeme] !== undefined) {
+                    state.precedence = precedence[lexeme];
+                }
+
+                list.push({
+                    state,
+                    id: _id,
+                    pos: dotPos,
+                    reduce: dotPos === ruleLen,
+                    listFinalStates: []
+
+                });
+            }
+
+            if (parserRules.states[create].rules[ruleIdx].prec) {
+                lexeme = parserRules.states[create].rules[ruleIdx].prec;
+                state.precedence = precedence[lexeme];
+            }
+        }
+    }
+
+    for (let i = 0; i < list.length; i++) {
+        list[i].emptyJumps = getEmptyJumpsDest([list[i].id]);
+    }
+
+    const origens = list[0].emptyJumps;
+
+    parseTree(origens);
+
+    function getSimpleEmptyJumpsDest(stateArrayParam) {
+        let simple = [];
+
+        stateArrayParam.map(id => list[id].emptyJumps).forEach(l => {
+            simple = simple.concat(l);
+        });
+
+        return simple.unique().sort((a, b) => a - b);
+    }
+
+    function addToMonitor(stateArray) {
+        const _idsDestino = stateArray;
+
+        const stateArrayKey = _idsDestino.join('-');
+
+        if (monitor[stateArrayKey] === undefined) {
+            const xxID = lastId++;
+
+            stateArray.forEach(i => {
+                list[i].listFinalStates.push(xxID);
+            });
+
+            monitor[stateArrayKey] = {
+
+                id: xxID,
+                ids: stateArray,
+                processed: false
+            };
+
+            newIdToNfa[xxID] = stateArray;
+        }
+
+        return {
+            id: monitor[stateArrayKey].id,
+            key: stateArrayKey
+        };
+    }
+
+    function parseTree(origens) {
+        const origensStatesId = addToMonitor(origens);
+
+        if (monitor[origensStatesId.key].processed === false) {
+            monitor[origensStatesId.key].processed = true;
+
+            const theState = {};
+
+            const tokens = origens.map(id => list[id].state.base[list[id].pos]).filter(item => item !== undefined).unique();
+
+            for (let tokenIdx = 0; tokenIdx < tokens.length; tokenIdx++) {
+                const token = tokens[tokenIdx];
+
+                let dest = [];
+
+                origens.map(origensId => {
+                    const origem = list[origensId];
+
+                    const p = list.filter(st => st.state.id === origem.state.id && st.pos === origem.pos + 1 && st.state.base[st.pos - 1] === token).map(s => s.id);
+
+                    dest = dest.concat(p);
+                });
+
+                const idsDestino = getSimpleEmptyJumpsDest(dest);
+
+                const destinoStatesId = addToMonitor(idsDestino);
+
+                if (theState.next === undefined) {
+                    theState.next = {};
+                }
+
+                theState.next[token] = destinoStatesId.id;
+
+                parseTree(idsDestino);
+            }
+
+            table[origensStatesId.id] = theState;
+        }
+    }
+
+    const terminals = Object.keys(firstMap).filter(item => firstMap[item].isTerminal);
+    terminals.unshift('eof');
+
+    const nonTerminals = Object.keys(firstMap).filter(item => firstMap[item].isTerminal === false);
+
+    const result = {};
+
+    for (stateId in table) {
+        result[stateId] = {};
+
+        const reduceList = {};
+
+        newIdToNfa[stateId].filter(stateId => list[stateId].reduce).forEach(stateId => {
+            const state = list[stateId].state;
+
+            firstMap[state.create].follows.forEach(follow => {
+                if (reduceList[follow] === undefined) {
+                    reduceList[follow] = [];
+                }
+
+                reduceList[follow].push(stateId);
+            });
+        });
+
+        for (let terminalIdx = 0; terminalIdx < terminals.length; terminalIdx++) {
+            let _list = [];
+            const token = terminals[terminalIdx];
+
+            if (table[stateId].next && table[stateId].next[token]) {
+                const tokenPrec = precedence[token];
+                const obj = {
+                    action: Actions.shift,
+                    stateId,
+                    to: table[stateId].next[token],
+                    prec: {
+                        type: tokenPrec ? tokenPrec.type : 'none',
+                        level: tokenPrec ? tokenPrec.level : -1
+                    }
+
+                };
+
+                _list.push(obj);
+            }
+
+            if (reduceList[token] !== undefined) {
+                const stateIds = reduceList[token];
+
+                const xxx = stateIds.map(stateId => {
+                    const state = list[stateId].state;
+                    const obj = {
+                        stateId: state.id,
+                        action: state.create === goal ? Actions.accept : Actions.reduce,
+                        to: `${state.create}:= ${state.base.join(' ')}`,
+                        prec: {
+                            type: state.precedence ? state.precedence.type : 'none',
+                            level: state.precedence ? state.precedence.level : -1
+                        }
+
+                    };
+                    return obj;
+                });
+
+                _list = _list.concat(xxx);
+            }
+
+            _list.sort((a, b) => {
+                let diff = b.prec.level - a.prec.level;
+
+                if (diff === 0) {
+                    diff = a.stateId - b.stateId;
+                }
+
+                return diff;
+            });
+
+            if (_list.length === 1) {
+                result[stateId][token] = [_list[0].action, _list[0].action === Actions.shift ? _list[0].to : _list[0].stateId // list[stateId].state
+                ];
+
+                continue;
+            }
+
+            if (_list.length > 1) {
+                if (_list[0].prec.type === 'left' && _list[1].prec.type === 'left' || _list[0].prec.type === 'none' && _list[1].prec.type === 'none' || _list[0].prec.type !== _list[1].prec.type) {
+                    result[stateId][token] = [_list[0].action, _list[0].action === Actions.shift ? _list[0].to : _list[0].stateId // list[stateId].state
+                    ];
+
+                    continue;
+                }
+            }
+
+            if (_list.length > 0) {
+                throw 'conflito';
+            }
+        }
+
+        for (let nonTerminalIdx = 0; nonTerminalIdx < nonTerminals.length; nonTerminalIdx++) {
+            if (table[stateId].next && table[stateId].next[nonTerminals[nonTerminalIdx]]) {
+                const _token = nonTerminals[nonTerminalIdx];
+
+                const _goto = table[stateId].next[nonTerminals[nonTerminalIdx]];
+                result[stateId][_token] = [Actions.goto, _goto];
+            }
+        }
+    }
+
+    const states = Object.keys(stateList).map(stateId => {
+        const state = stateList[stateId];
+
+        return {
+            create: state.create,
+            base: state.base,
+            action: state.action // .toString()
+
+        };
+    });
+
+    return {
+        tokens: Object.keys(firstMap),
+        states,
+        ignoreTokens: parserRules.ignoreTokens,
+        table: result
+    };
+}
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_RegexToDfa__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_StateMachineDependency_Determinizer__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_GrammarMixer__ = __webpack_require__(16);
+
+
+let lexerRulesList = [];
+let WHITESPACE = '(\\n|\\r|\\t|\\s)';
+
+function defaultRuleType(lexer) {
+    return {
+        tokenType: lexer.yytext
+    };
+}
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '[0-9]+(\\.[0-9]*)?',
+    parseFunction: function (lexer) {
+
+        return {
+            content: parseFloat(lexer.yytext),
+            tokenType: 'NUMBER'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: ',',
+    parseFunction: defaultRuleType
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: 'pi',
+    parseFunction: function (lexer) {
+        return {
+            // tokenType: 'PI'
+            content: 'PI',
+            tokenType: 'CONST'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: 'sqrt',
+    parseFunction: function (lexer) {
+        return {
+            tokenType: 'SQRT'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: 'cos',
+    parseFunction: function (lexer) {
+        return {
+            tokenType: 'COS'
+        };
+    }
+});
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: 'sin',
+    parseFunction: function (lexer) {
+        return {
+            tokenType: 'SIN'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '\\(',
+    parseFunction: function (lexer) {
+
+        return {
+            tokenType: '('
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '\\)',
+    parseFunction: function (lexer) {
+
+        return {
+            tokenType: ')'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '\\+',
+    parseFunction: function (lexer) {
+
+        return {
+            tokenType: '+'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '\\^',
+    parseFunction: function (lexer) {
+
+        return {
+            tokenType: '^'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '\\-',
+    parseFunction: function (lexer) {
+
+        return {
+            tokenType: '-'
+        };
+    }
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '\\*',
+    parseFunction: function (lexer) {
+
+        return {
+            tokenType: '*'
+        };
+    }
+});
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: '/',
+    parseFunction: defaultRuleType
+});
+
+lexerRulesList.push({
+    onState: 'INITIAL',
+    regex: `(${WHITESPACE})+`,
+    parseFunction: function (lexer) {
+        return {
+            tokenType: 'WHITESPACE'
+        };
+    }
+});
+
+
+
+
+let onStates = [...new Set(lexerRulesList.map(function (item) {
+    return item.onState;
+}))];
+
+lexerRulesList.forEach(function (state, index) {
+    lexerRulesList[index].sm = Object(__WEBPACK_IMPORTED_MODULE_0__classes_RegexToDfa__["a" /* default */])(state.regex);
+});
+
+let lista = {};
+
+onStates.forEach(function (onState) {
+
+    let l = lexerRulesList.filter(function (item) {
+        return item.onState === onState;
+    });
+
+    lista[onState] = Object(__WEBPACK_IMPORTED_MODULE_1__classes_StateMachineDependency_Determinizer__["a" /* determinize */])(Object(__WEBPACK_IMPORTED_MODULE_2__classes_GrammarMixer__["a" /* grammarMixer */])(l));
+});
+
+const lexerRules = lista;
+/* harmony export (immutable) */ __webpack_exports__["a"] = lexerRules;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__StateMachineDependency_Minimizer__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__StateMachineDependency_Determinizer__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RegexToNfa__ = __webpack_require__(5);
+
+
+
+// import { dotRenderer } from './StateMachineDependency/DotRenderer';
+
+
+
+function RegexToDfa(regex) {
+
+    let sm = Object(__WEBPACK_IMPORTED_MODULE_2__RegexToNfa__["a" /* default */])(regex);
+
+    // dotRenderer(sm);
+
+
+    let det = Object(__WEBPACK_IMPORTED_MODULE_1__StateMachineDependency_Determinizer__["a" /* determinize */])(sm);
+
+    // dotRenderer(det);
+
+
+    let min = Object(__WEBPACK_IMPORTED_MODULE_0__StateMachineDependency_Minimizer__["a" /* minimize */])(det);
+
+    return min;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (RegexToDfa);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = grammarMixer;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getStateList__ = __webpack_require__(0);
+
+
+function grammarMixer(lexerList) {
+    const structure = {
+        endMap: {},
+        end: [],
+        start: [],
+        table: []
+
+    };
+
+    let lastId = 0;
+
+    function getNextId() {
+        const n = lastId++;
+        return `${n}`;
+    }
+
+    const map = {};
+
+    for (let l = 0; l < lexerList.length; l++) {
+        const lexema = lexerList[l];
+        lexema.priority = l;
+        map[lexema.tokenType] = {};
+
+        const stateList = Object(__WEBPACK_IMPORTED_MODULE_0__getStateList__["a" /* default */])(lexema.sm.table);
+
+        stateList.forEach(stateId => map[lexema.tokenType][stateId] = getNextId());
+
+        lexema.sm.table.forEach(jump => {
+            structure.table.push({
+                from: map[lexema.tokenType][jump.from],
+                to: map[lexema.tokenType][jump.to],
+                _ft_: jump._ft_,
+                _tt_: jump._tt_
+            });
+        });
+
+        lexema.sm.start.forEach(stateId => {
+            structure.start.push(map[lexema.tokenType][stateId]);
+        });
+
+        lexema.sm.end.forEach(stateId => {
+            const endStateId = map[lexema.tokenType][stateId];
+
+            structure.end.push(endStateId);
+
+            if (structure.endMap[endStateId] === undefined) {
+                structure.endMap[endStateId] = {
+
+                    tokenType: lexema.tokenType,
+                    parseFunction: lexema.parseFunction,
+                    priority: lexema.priority
+                };
+            } else if (structure.endMap[endStateId].priority > lexema.priority) {
+                structure.endMap[endStateId] = {
+
+                    tokenType: lexema.tokenType,
+                    parseFunction: lexema.parseFunction,
+                    priority: lexema.priority
+                };
+            }
+        });
+    }
+
+    return structure;
+}
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+const parserRules = {
+    start: 'G',
+    ignoreTokens: ['WHITESPACE'],
+    'precedence': [{
+        type: 'left',
+        tokens: ['+', '-']
+    }, {
+        type: 'left',
+        tokens: ['*', '/']
+    }, {
+        type: 'left',
+        tokens: ['^']
+    }, {
+        type: 'left',
+        tokens: ['UMINUS']
+    }],
+    states: {
+        G: {
+            rules: [{
+                rule: ['expr'],
+                action: function (args) {
+
+                    return args[0].rules;
+                }
+            }]
+        },
+
+        expr: {
+            rules: [{
+                rule: ['NUMBER'],
+                action: function (args) {
+
+                    return {
+
+                        type: 'number',
+                        child: [args[0].content]
+
+                        // value: args[0].content
+                    };
+                }
+            }, {
+                rule: ['SQRT', '(', 'expr', ')'],
+                action: function (args) {
+                    return {
+
+                        type: 'SQRT',
+                        child: [args[2].rules]
+                        // value: Math.sqrt(args[2].rules.value)
+                    };
+                }
+            }, {
+                rule: ['SIN', '(', 'expr', ')'],
+                action: function (args) {
+                    return {
+
+                        type: 'SIN',
+                        child: [args[2].rules]
+                        // value: Math.sin(args[2].rules.value)
+                    };
+                }
+            }, {
+                rule: ['COS', '(', 'expr', ')'],
+                action: function (args) {
+                    return {
+
+                        type: 'COS',
+                        child: [args[2].rules]
+                        // value: Math.cos(args[2].rules.value)
+                    };
+                }
+            }, {
+                rule: ['expr', '*', 'expr'],
+                action: function (args) {
+                    return {
+
+                        type: 'product',
+                        child: [args[0].rules, args[2].rules]
+                        // value: args[0].rules.value * args[2].rules.value
+                    };
+                }
+            }, {
+                rule: ['expr', '/', 'expr'],
+                action: function (args) {
+                    return {
+
+                        type: '/',
+                        child: [args[0].rules, args[2].rules]
+
+                        // value: args[0].rules.value / args[2].rules.value
+                    };
+                }
+            }, {
+                rule: ['expr', '+', 'expr'],
+                action: function (args) {
+
+                    return {
+
+                        type: 'sum',
+                        child: [args[0].rules, args[2].rules]
+
+                        // value: args[0].rules.value + args[2].rules.value
+                    };
+                }
+            }, {
+                rule: ['expr', '-', 'expr'],
+
+                action: function (args) {
+
+                    return {
+
+                        type: '-',
+                        child: [args[0].rules, args[2].rules]
+
+                        // value: args[0].rules.value - args[2].rules.value
+                    };
+                }
+            }, {
+                rule: ['expr', '^', 'expr'],
+
+                action: function (args) {
+
+                    return {
+
+                        type: 'power',
+                        child: [args[0].rules, args[2].rules]
+                    };
+                }
+            }, {
+                rule: ['(', 'expr', ')'],
+                action: function (args) {
+                    return args[1].rules;
+                }
+            }, {
+                rule: ['-', 'expr'],
+                prec: 'UMINUS',
+                action: function (args) {
+
+                    return {
+                        type: 'negative',
+                        child: [args[1].rules]
+                    };
+                }
+            }]
+        }
+    }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = parserRules;
+
+
+/***/ })
+/******/ ]);

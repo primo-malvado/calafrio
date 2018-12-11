@@ -1,13 +1,12 @@
-/*
-import Parser from './classes/Parser';
+/*import Parser from './classes/Parser';
 import Lexer from './classes/Lexer';
 import { createParser } from './classes/GenerateLalrParser';
 
 import { lexerRules } from './rules/calc/lexRules';
 import { parserRules } from './rules/calc/parserRules';
-import text from './rules/calc/teste.txt';
 
-// var text = "3 -65 / 17  -5 * ( 5 / 12 ) * 3";
+var text = "3 -65 / 17  -5 * ( 5 / 12 ) * 3";
+
 
 const parserTable = createParser(parserRules);
 
@@ -20,14 +19,31 @@ parser.parse(text);
 let a = parser.stack[0].rules;
 console.log('resultado', JSON.stringify(a));
 
-
-
 */
 
 
-
-
 import { dotRenderer } from './classes/StateMachineDependency/DotRenderer';
-import RegexToDfa from './classes/RegexToDfa';
-var sm = RegexToDfa("(\\.[0-9]+|[0-9]+(\\.[0-9]*)?)");
+import RegexToNfa from './classes/RegexToNfa';
+
+ import { minimize } from './classes/StateMachineDependency/Minimizer';
+import { determinize } from './classes/StateMachineDependency/Determinizer';
+
+
+//let sm = RegexToDfa('(\\.[0-9]+|[0-9]+(\\.[0-9]*)?)');
+
+var regex = '(1234)|(1c)|(12r)';
+
+
+
+
+
+let sm = RegexToNfa(regex);
 dotRenderer(sm);
+
+
+let det = determinize(sm);
+dotRenderer(det);
+
+
+let min = minimize(det);
+dotRenderer(min);
