@@ -29,8 +29,8 @@
 
     // This must be hosted on the same server as this page - otherwise you get a Cross Site Scripting error
     //var audioUrl = "static/half-a-person.ogg";
-    //var audioUrl = "static/sleep.ogg";
-    var audioUrl = "static/almamater.ogg";
+    var audioUrl = "static/sleep2.ogg";
+    //var audioUrl = "static/almamater.ogg";
 
     // Global Variables for Drawing
     var column = 0;
@@ -44,9 +44,9 @@
     
  
 
-    $(document).ready(function() {
+window.onload = function() {
         // get the context from the canvas to draw on
-        ctx = $("#canvas").get()[0].getContext("2d");
+        ctx = document.getElementById("canvas").getContext("2d");
 
         // the AudioContext is the primary 'container' for all your audio node objects
         try {
@@ -57,7 +57,7 @@
 
         // When the Start button is clicked, finish setting up the audio nodes, play the sound and
         // gather samples for FFT frequency analysis, draw the spectrogram
-        $("#start_button").click(function(e) {
+        document.getElementById("start_button").onclick = function(e) {
             e.preventDefault();
             column = 0;
             // Set up / reset the audio Analyser and Source Buffer
@@ -82,15 +82,15 @@
             } else {
                 playSound(audioData);
             }
-        });
+        }
 
         // Stop the audio playing
-        $("#stop_button").click(function(e) {
+        document.getElementById("stop_button").onclick = function(e) {
             e.preventDefault();
             sourceNode.stop(0);
             audioPlaying = false;
-        });
-    });
+        };
+    } 
 
     function setupAudioNodes() {
         sourceNode     = audioContext.createBufferSource();
@@ -138,11 +138,11 @@
     }
 
     function drawSpectrogram() {
-        for (var i = 0; i < 800/* frequencyArray.length*/ ; i++) {
+        for (var i = 0; i <   3200 /*frequencyArray.length*/  ; i++) {
             // Get the color from the color map, draw 1x1 pixel rectangle
             ctx.fillStyle = colorScale(frequencyArray[i] / 256.0);
             
-            var n = 12 * Math.log2(i/440) + 49;
+            var n = 12 * Math.log2(i/440) + 49-24;
             //n=12\,\log _{2}\left({{\frac  {f}{440\,{\text{Hz}}}}}\right)+49
             
             ctx.fillRect(column,canvasHeight - n*20, 1, 1);
