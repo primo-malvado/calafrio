@@ -1,5 +1,5 @@
 //https://www.masswerk.at/6502/6502_instruction_set.html#SEI
-
+//http://www.6502.org/tutorials/6502opcodes.html
 class P6502{
 	constructor(){
 		this.mem = [];
@@ -74,6 +74,22 @@ LDA  Load Accumulator with Memory
 
 				this.reg.pc = this.reg.pc+2;
 				break;
+
+
+			case "bd": 
+				debugger;
+				var value = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
+
+
+				console.log(`${this.reg.pc}: lda ${value}, x`);
+				/*
+				this.reg.A = value;
+				this.flags.N = false; // ???
+				this.flags.Z = value === 0;
+	*/
+				this.reg.pc = this.reg.pc+3;
+				break;
+
 
 
 /*
