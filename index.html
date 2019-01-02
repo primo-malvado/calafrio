@@ -11,6 +11,17 @@
             Your Browser Doesn't Support HTML5's Canvas.  
       </canvas>
        
+
+
+<canvas id="myCanvas" width="256" height="256">
+            Your Browser Doesn't Support HTML5's Canvas.  
+      </canvas>
+       
+
+
+
+
+
     <!-- Your Vertex Shader -->
      
     <!-- Your Fragment Shader -->
@@ -35,26 +46,25 @@ void main() {
 
 
 <script id="VertexShader" type="x-shader/x-vertex">
-   
-
-attribute vec4 a_position;
-
-uniform mat4 u_matrix;
 
 
-    attribute highp vec3 VertexPosition;
-    attribute highp vec2 TextureCoord;
-     
-     
-    uniform highp mat4 TransformationMatrix;
-    uniform highp mat4 PerspectiveMatrix;
-     
-    varying highp vec2 vTextureCoord;
-     
-    void main(void) {
-        gl_Position = u_matrix * a_position;
-        vTextureCoord = TextureCoord;
-    }
+  //attribute highp vec3 VertexPosition;
+
+
+  //uniform highp mat4 TransformationMatrix;
+  //uniform highp mat4 PerspectiveMatrix;
+
+
+  attribute vec4 a_position;
+  uniform mat4 u_matrix;
+
+  attribute highp vec2 TextureCoord;
+  varying highp vec2 vTextureCoord;
+
+  void main(void) {
+    gl_Position = u_matrix * a_position;
+    vTextureCoord = TextureCoord;
+  }
 </script>
  
 <script id="FragmentShader" type="x-shader/x-fragment"> 

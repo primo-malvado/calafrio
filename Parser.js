@@ -1,31 +1,30 @@
+
 class Parser {
     constructor(data) {
-        this.data = data;
+        this.dv = new DataView(data)
         this.pos = 0;
     }
 
-
+/*
     readString(len) {
         var str = '';
         for (var i = 0; i < len; i++) {
-            str += String.fromCharCode(this.readByte());
+            str += String.fromCharCode(this.uint8_t());
         }
         return str;
     }
 
-    readByte() {
-        return this.data[this.pos++];
+    uint8_t() {
+        var r = this.dv.getUint8(this.pos);
+        this.pos++;
+        return r;
     }
 
     readBytes(n) {
-        var bytes = new Array(n);
-        for (var i = 0; i < n; i++) {
-            bytes[i] = this.readByte();
-        }
-        return bytes;
+        return this.array(n, "uint8_t");
     }
 
-
+*/
     tr2_room_staticmesh() { //20
         /*
         struct tr2_room_staticmesh  // 20 bytes
@@ -52,87 +51,46 @@ class Parser {
 
     }
 
-    uint32_t() { //4
-        var a = this.readBytes(4);
+    uint32_t() {
 
-        return a[3] * 256 *256 *256 + a[2] * 256 *256 + a[1] * 256 + a[0] 
+        var a = this.dv.getUint32(this.pos, true);
+        this.pos +=4;
 
-    }
-
-    int32_t() { //4
-        var a = this.readBytes(4);
-
-        var v =  a[3] * 256 *256 *256 + a[2] * 256 *256 + a[1] * 256 + a[0] 
-
-
-        if(a[3] >= 128){
-
-            var bin = (+v).toString(2);
-            //console.log(bin)
-
-
-            
-            bin = bin.replace(new RegExp("1", 'g'), "t");
-            bin = bin.replace(new RegExp("0", 'g'), "1");
-            bin = bin.replace(new RegExp("t", 'g'), "0");
-            return -parseInt(bin, 2);
-        }
-
-        return v;
-
-
+        return a
 
     }
-    int16_t() { //2
-        var a = this.readBytes(2);
-        var v =  a[1] * 256 + a[0] 
-        if(a[1] >= 128){
 
-            var bin = (+v).toString(2);
-            //console.log(bin)
+    int32_t(){
+        var a = this.dv.getInt32(this.pos, true);
+        this.pos +=4;
+        return a
+    }
 
+    int16_t() { 
+        var a = this.dv.getInt16(this.pos, true);
+        this.pos +=2;
 
-            
-            bin = bin.replace(new RegExp("1", 'g'), "t");
-            bin = bin.replace(new RegExp("0", 'g'), "1");
-            bin = bin.replace(new RegExp("t", 'g'), "0");
-            return -parseInt(bin, 2);
-        }
-        return v;
+        return a
 
     }
 
     uint16_t() {
-        var a = this.readBytes(2);
-        return a[1] * 256 + a[0] 
+        var a = this.dv.getUint16(this.pos, true);
+        this.pos +=2;
+        return a
     }
+
     uint8_t() {
-        var a = this.readByte();
-        return a;
+        var a = this.dv.getUint8(this.pos, true);
+        this.pos +=1;
+        return a
     }
 
     int8_t() {
-        var v = this.readByte();
+        var a = this.dv.getInt8(this.pos, true);
+        this.pos +=1;
 
-  
-        if(v >= 128){
-
-            var bin = (+v).toString(2);
-            //console.log(bin)
-
-
-            
-            bin = bin.replace(new RegExp("1", 'g'), "t");
-            bin = bin.replace(new RegExp("0", 'g'), "1");
-            bin = bin.replace(new RegExp("t", 'g'), "0");
-            return -parseInt(bin, 2);
-        }
-        return v;
-
-
-
-
-        return a;
+        return a
     }
 
     array(count, parserFunction) {
@@ -153,23 +111,23 @@ class Parser {
 
     tr_colour() { //3
         return {
-            Red: this.readByte(),
-            Green: this.readByte(),
-            Blue: this.readByte()
+            Red: this.uint8_t(),
+            Green: this.uint8_t(),
+            Blue: this.uint8_t()
         }
     }
 
     tr_colour4() { //4
         return {
-            Red: this.readByte(),
-            Green: this.readByte(),
-            Blue: this.readByte(),
-            Unused: this.readByte(),
+            Red: this.uint8_t(),
+            Green: this.uint8_t(),
+            Blue: this.uint8_t(),
+            Unused: this.uint8_t(),
         }
     }
     tr_textile8() {
         return {
-            Tile: this.readBytes(256 * 256),
+            Tile: this.array(256 * 256, "uint8_t"),
         };
 
     }
@@ -184,8 +142,38 @@ class Parser {
 
         */
 
+        var l = this.array(256 * 256, "uint16_t");
+
+
+        var cores = l.map(function(color){
+
+            var b = (color & 31) << 3;
+            color = color >> 5;
+            
+            var g = (color & 31) << 3;
+            color = color >>  5;
+
+            var r = (color & 31) << 3;
+            color = color >>  5;
+            
+            var transparent = color;
+
+            return {
+                r: r,
+                g: g,
+                b: b,
+                t: transparent
+            }
+
+
+        })
+
+        return cores;
+        //36931 & 7
+
+
         return {
-            Tile: this.readBytes(2 * 256 * 256),
+            Tile: this.array(256 * 256, "uint16_t"),
         };
 
     }
@@ -276,10 +264,8 @@ virtual struct tr_mesh // (variable length)
  */
 
 
-    var start = parser.pos;
-
-
-
+ 
+ 
 
 
 
@@ -295,7 +281,14 @@ virtual struct tr_mesh // (variable length)
         if(mesh.NumNormals > 0){
             mesh.Normals  = this.array(mesh.NumNormals, "tr_vertex");
         }else{
+
+            //debugger;
             mesh.Lights  = this.array(-mesh.NumNormals, "int16_t");
+        }
+        if(mesh.Vertices == 0){
+
+            debugger;
+            
         }
 
         mesh.NumTexturedRectangles  = this.int16_t();
@@ -310,17 +303,7 @@ virtual struct tr_mesh // (variable length)
         mesh.NumColouredTriangles  = this.int16_t();
         mesh.ColouredTriangles  = this.array(mesh.NumColouredTriangles, "tr_face3");
 
-
-
-
-        var diff = (parser.pos - start) % 4;
-        if(diff > 0){
-            //debugger;
-            parser.readBytes(4-diff)
-        }
-
-
-
+ 
         return mesh;
     }
 
@@ -391,68 +374,207 @@ struct tr2_room_vertex  // 12 bytes
             Lighting2: this.int16_t(true),
         }
 
-    } 
+    }
 
-   tr_animation() {
-        /*
-struct tr_animation // 32 bytes
+tr_sound_source() {
+/*
+struct tr_sound_source // 16 bytes
 {
-    uint32_t  FrameOffset; // Byte offset into Frames[] (divide by 2 for Frames[i])
-     uint8_t  FrameRate;   // Engine ticks per frame
-     uint8_t  FrameSize;   // Number of int16_t's in Frames[] used by this animation
-
-    uint16_t  State_ID;
-
-       fixed  Speed;
-       fixed  Accel;
-
-    uint16_t  FrameStart;  // First frame in this animation
-    uint16_t  FrameEnd;    // Last frame in this animation
-    uint16_t  NextAnimation;
-    uint16_t  NextFrame;
-
-    uint16_t  NumStateChanges;
-    uint16_t  StateChangeOffset; // Offset into StateChanges[]
-
-    uint16_t  NumAnimCommands;   // How many of them to use.
-    uint16_t  AnimCommand;       // Offset into AnimCommand[]
+     int32_t x;         // absolute X position of sound source (world coordinates)
+     int32_t y;         // absolute Y position of sound source (world coordinates)
+     int32_t z;         // absolute Z position of sound source (world coordinates)
+    uint16_t SoundID;   // internal sound index
+    uint16_t Flags;     // 0x40, 0x80, or 0xC0
 };
  */
+        return {
 
-
-        var anim =  {
-
-            FrameOffset: this.uint32_t(true),
-            FrameRate: this.uint8_t(true),
-            FrameSize: this.uint8_t(true),
-            State_ID: this.uint16_t(true),
+            x: this.int32_t(),
+            y: this.int32_t(),
+            z: this.int32_t(),
+            SoundID: this.uint16_t(),
+            Flags: this.uint16_t(),
         }
+
+    } 
+
+tr2_box() {
+/*
+struct tr2_box   // 8 bytes
+{
+    uint8_t Zmin;          // Horizontal dimensions in sectors
+    uint8_t Zmax;
+    uint8_t Xmin;
+    uint8_t Xmax;
+    int16_t TrueFloor;     // Height value in global units
+    int16_t OverlapIndex;  // Index into Overlaps[] (same as tr_box?)
+};
+ */
+        return {
+
+            Zmin: this.uint8_t(),
+            Zmax: this.uint8_t(),
+            Xmin: this.uint8_t(),
+            Xmax: this.uint8_t(),
+            TrueFloor: this.int16_t(),
+            OverlapIndex: this.int16_t(),
+        }
+
+    }
+
+tr2_entity() {
+/*
+struct tr2_entity // 24 bytes
+{
+    int16_t TypeID;
+    int16_t Room;
+    int32_t x;
+    int32_t y;
+    int32_t z;
+    int16_t Angle;
+    int16_t Intensity1;
+    int16_t Intensity2; // Like Intensity1, and almost always with the same value.
+    uint16_t Flags;
+};
+
+ */
+        return {
+
+            TypeID: this.int16_t(),
+            Room: this.int16_t(),
+            x: this.int32_t(),
+            y: this.int32_t(),
+            z: this.int32_t(),
+            Angle: this.int16_t(),
+            Intensity1: this.int16_t(),
+            Intensity2: this.int16_t(),
+            Flags: this.uint16_t(),
+        }
+
+    } 
+
+tr_cinematic_frame() {
+/*
+struct tr_cinematic_frame // 16 bytes
+{
+    int16_t rotY;    // rotation about Y axis, +/- 32767 == +/- 180 degrees
+    int16_t rotZ;    // rotation about Z axis, +/- 32767 == +/- 180 degrees
+    int16_t rotZ2;   // seems to work a lot like rotZ;  I haven't yet been able to
+                     // differentiate them
+    int16_t posZ;    // camera position relative to something (target? Lara? room
+                     // origin?).  pos* are _not_ in world coordinates.
+    int16_t posY;    // camera position relative to something (see posZ)
+    int16_t posX;    // camera position relative to something (see posZ)
+    int16_t unknown; // changing this can cause a runtime error
+    int16_t rotX;    // rotation about X axis, +/- 32767 == +/- 180 degrees
+};
+
+ */
+        return {
+
+            rotY: this.int16_t(),
+            rotZ: this.int16_t(),
+            rotZ2: this.int16_t(),
+            posZ: this.int16_t(),
+            posY: this.int16_t(),
+            posX: this.int16_t(),
+            unknown: this.int16_t(),
+            rotX: this.int16_t(), 
+        }
+
+    } 
+
+tr_sound_details() {
+/*
+struct tr_sound_details // 8 bytes
+{
+   uint16_t Sample; // (index into SampleIndices)
+   uint16_t Volume;
+   uint16_t Chance; // If !=0 and ((rand()&0x7fff) > Chance), this sound is not played
+   uint16_t Characteristics;
+};
+
+ */
+        return {
+
+            Sample: this.uint16_t(),
+            Volume: this.uint16_t(),
+            Chance: this.uint16_t(),
+            Characteristics: this.uint16_t(),
+        }
+
+    } 
+
+
+   tr_animation() {
+
+        var anim =  {};
+
+        anim.FrameOffset= this.uint32_t(true);
+        anim.FrameRate= this.uint8_t(true);
+        anim.FrameSize= this.uint8_t(true);
+        anim.State_ID= this.uint16_t(true);
+        
+        anim.unknown= this.int16_t(true);
+        
         anim.Speed =  this.int16_t(true);
-anim.Accel= this.int16_t(true);
-anim.FrameStart= this.uint16_t(true);
-anim.FrameEnd= this.uint16_t(true);
-anim.NextAnimation= this.uint16_t(true);
-anim.NextFrame= this.uint16_t(true);
+        anim.accelLo= this.uint16_t(true);
+        anim.accelHi= this.int16_t(true);
 
-anim.NumStateChanges= this.uint16_t(true);
-anim.StateChangeOffset= this.uint16_t(true);
+        anim.FrameStart= this.uint16_t(true);
+        anim.FrameEnd= this.uint16_t(true);
+        anim.NextAnimation= this.uint16_t(true);
+        anim.NextFrame= this.uint16_t(true);
 
-anim.NumAnimCommands= this.uint16_t(true);
-anim.AnimCommand= this.uint16_t(true);
+        anim.NumStateChanges= this.uint16_t(true);
+        anim.StateChangeOffset= this.uint16_t(true);
+
+        anim.NumAnimCommands= this.uint16_t(true);
+        anim.AnimCommand= this.uint16_t(true);
 
 
  
         return anim;
 
     }
+   tr_state_change() {
+
+/*
+    uint16_t StateID;
+    uint16_t NumAnimDispatches; // number of ranges (seems to always be 1..5)
+    uint16_t AnimDispatch;      // Offset into AnimDispatches[]
+*/
+
+        var x =  {};
+
+        x.StateID= this.uint16_t(true);
+        x.NumAnimDispatches= this.uint16_t(true);
+        x.AnimDispatch= this.uint16_t(true); 
+        return x;
+
+    } 
+
+    tr_anim_dispatch() {
+
+/*
+    int16_t Low;           // Lowest frame that uses this range
+    int16_t High;          // Highest frame that uses this range
+    int16_t NextAnimation; // Animation to dispatch to
+    int16_t NextFrame;     // Frame offset to dispatch to
+*/
+
+        var x =  {};
+
+        x.Low= this.int16_t(true);
+        x.High= this.int16_t(true);
+        x.NextAnimation= this.int16_t(true); 
+        x.NextFrame= this.int16_t(true); 
+        return x;
+
+    }
+
+
     tr_face4() {
-        /*
-struct tr_face4    // 12 bytes
-{
-    uint16_t Vertices[4];
-    uint16_t Texture;
-};
- */
         return {
 
             Vertices: this.array(4, "uint16_t"),
@@ -526,6 +648,228 @@ struct tr_anim_command // 2 bytes
 
 
         return tr_anim_command;
+    }
+
+
+    tr_object_texture_vert() {
+        /*
+struct tr_object_texture_vert // 4 bytes
+{
+    uint8_t Xcoordinate; // 1 if Xpixel is the low value, 255 if Xpixel is the high value in the object texture
+    uint8_t Xpixel;
+    uint8_t Ycoordinate; // 1 if Ypixel is the low value, 255 if Ypixel is the high value in the object texture
+    uint8_t Ypixel;
+}; 
+ */
+        var x = {};
+        x.Xcoordinate = this.uint8_t(true); 
+        x.Xpixel = this.uint8_t(true); 
+        x.Ycoordinate = this.uint8_t(true); 
+        x.Ypixel = this.uint8_t(true); 
+
+
+        return x;
+    }
+
+
+
+
+
+
+
+
+
+    tr_object_texture() {
+        /*
+struct tr_object_texture  // 20 bytes
+{
+    uint16_t Attribute;
+    uint16_t TileAndFlag;
+    tr_object_texture_vert Vertices[4]; // The four corners of the texture
+};
+ */
+        var x = {};
+        x.Attribute = this.uint16_t(true); 
+        x.TileAndFlag = this.uint16_t(true); 
+        x.Vertices = this.array(4, "tr_object_texture_vert"); 
+
+
+        return x;
+    }
+
+
+    tr_sprite_texture() {
+        /*
+struct tr_sprite_texture   // 16 bytes
+{
+    uint16_t Tile;
+     uint8_t x;
+     uint8_t y;
+    uint16_t Width;        // (ActualWidth  * 256) + 255
+    uint16_t Height;       // (ActualHeight * 256) + 255
+     int16_t LeftSide;
+     int16_t TopSide;
+     int16_t RightSide;
+     int16_t BottomSide;
+};
+ */
+        var x = {};
+        x.Tile = this.uint16_t(true); 
+        x.x = this.uint8_t(true); 
+        x.y = this.uint8_t(true); 
+        x.Width = this.uint16_t(true); 
+        x.Height = this.uint16_t(true); 
+        x.LeftSide = this.int16_t(true); 
+        x.TopSide = this.int16_t(true); 
+        x.RightSide = this.int16_t(true); 
+        x.BottomSide = this.int16_t(true); 
+
+        return x;
+    }
+
+
+
+tr_bounding_box() {
+/*
+struct tr_bounding_box // 12 bytes
+{
+    int16_t MinX, MaxX, MinY, MaxY, MinZ, MaxZ;
+};
+ */
+        var x = {};
+        x.MinX = this.int16_t(); 
+        x.MaxX = this.int16_t(); 
+        x.MinY = this.int16_t(); 
+        x.MaxY = this.int16_t(); 
+        x.MinZ = this.int16_t(); 
+        x.MaxZ = this.int16_t(); 
+
+
+        return x;
+    }
+
+tr_staticmesh() {
+/*
+struct tr_staticmesh   // 32 bytes
+{
+    uint32_t        ID;   // Static Mesh Identifier
+    uint16_t        Mesh; // Mesh (offset into MeshPointers[])
+    tr_bounding_box VisibilityBox;
+    tr_bounding_box CollisionBox;
+    uint16_t        Flags;
+};
+ */
+        var x = {};
+        x.ID = this.uint32_t(); 
+        x.Mesh = this.uint16_t(); 
+        x.VisibilityBox = this.tr_bounding_box(); 
+        x.CollisionBox = this.tr_bounding_box(); 
+        x.Flags = this.uint16_t(); 
+
+
+        return x;
+    }
+
+    tr_meshtree_node() {
+
+
+        var conf = this.int32_t(true);
+        return conf;
+        /*
+struct tr_meshtree_node // 4 bytes
+{
+    uint32_t Flags;
+     int32_t Offset_X;
+     int32_t Offset_Y;
+     int32_t Offset_Z;
+};
+ */
+
+
+        var x = {};
+        x.Flags = this.uint32_t(true); 
+        x.Offset_X = this.int32_t(true); 
+        x.Offset_Y = this.int32_t(true); 
+        x.Offset_Z = this.int32_t(true); 
+        
+        return x;
+    }
+
+
+    tr_sprite_sequence() {
+ 
+        /*
+struct tr_sprite_sequence  // 8 bytes
+{
+    int32_t SpriteID;       // Sprite identifier
+    int16_t NegativeLength; // Negative of ``how many sprites are in this sequence''
+    int16_t Offset;         // Where (in sprite texture list) this sequence starts
+};
+ */
+
+
+        var x = {};
+        x.SpriteID = this.int32_t(); 
+        x.NegativeLength = this.int16_t(); 
+        x.Offset = this.int16_t();  
+        
+        return x;
+    }
+
+    tr_camera() {
+ 
+        /*
+struct tr_camera // 16 bytes
+{
+    int32_t x;
+    int32_t y;
+    int32_t z;
+    int16_t Room;
+   uint16_t Flag;
+};
+ */
+
+
+        var x = {};
+        x.x = this.int32_t(); 
+        x.y = this.int32_t(); 
+        x.z = this.int32_t();  
+        x.Room = this.int16_t();  
+        x.Flag = this.uint16_t();  
+        
+        return x;
+    }
+
+
+
+
+
+
+    tr_model() {
+
+ 
+        /*
+struct tr_model  // 18 bytes
+{
+    uint32_t ID;           // Type Identifier (matched in Entities[])
+    uint16_t NumMeshes;    // Number of meshes in this object
+    uint16_t StartingMesh; // Stating mesh (offset into MeshPointers[])
+    uint32_t MeshTree;     // Offset into MeshTree[]
+    uint32_t FrameOffset;  // Byte offset into Frames[] (divide by 2 for Frames[i])
+    uint16_t Animation;    // Offset into Animations[]
+};
+ */
+
+
+        var x = {};
+        x.ID = this.uint32_t(true); 
+        x.NumMeshes = this.uint16_t(true); 
+        x.StartingMesh = this.uint16_t(true); 
+        x.MeshTree = this.uint32_t(true); 
+        x.FrameOffset = this.uint32_t(true); 
+        x.Animation = this.uint16_t(true); 
+        
+        return x;
     }
 
 
@@ -614,8 +958,8 @@ struct tr_anim_command // 2 bytes
 function loadLevel(buffer) {
 
 
-    var data = new Uint8Array(buffer);
-    parser = new Parser(data);
+    //var data = new Uint8Array(buffer);
+    parser = new Parser(buffer);
 
 
     var schema = { };
@@ -647,28 +991,46 @@ function loadLevel(buffer) {
     schema.Rooms = parser.array(schema.NumRooms, "tr2_room");
 
     
-     /*
-
     //uint32_t NumFloorData; // number of floor data uint16_t's to follow (4 bytes)
     schema.NumFloorData = parser.uint32_t(true);
-
+     
     //uint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
     schema.FloorData = parser.array(schema.NumFloorData, "uint16_t");
-
  
 
     //uint32_t NumMeshData; // number of uint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
     schema.NumMeshData = parser.uint32_t(true);
+
     var start = parser.pos;
-    var end = parser.pos + 2 * schema.NumMeshData;
+
+
+
+    parser.pos += schema.NumMeshData*2;
+    //uint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
+    schema.NumMeshPointers = parser.uint32_t(true);
+
+
+    //uint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
+    schema.MeshPointers = parser.array(schema.NumMeshPointers, "uint32_t");
+
+    var pos2 = parser.pos;
+
+
+    
+
+
+    
+ 
+ 
     //tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
-
-
     schema.Meshes = [];
-    while (parser.pos < end) {
+    for(var i = 0; i<  schema.NumMeshPointers ; i++) {
+
+        parser.pos = start+schema.MeshPointers[i];
 
         schema.Meshes.push(parser.tr_mesh());
     }
+
  
 
     //tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
@@ -676,14 +1038,15 @@ function loadLevel(buffer) {
 
 
     //uint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
-    schema.NumMeshPointers = parser.uint32_t(true);
-
-
-
-
+    //schema.NumMeshPointers = parser.uint32_t(true);
 
     //uint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
-    schema.MeshPointers = parser.array(schema.NumMeshPointers, "uint32_t");
+    //schema.MeshPointers = parser.array(schema.NumMeshPointers, "uint32_t");
+
+
+
+    parser.pos =  pos2;
+
 
 
     
@@ -717,47 +1080,133 @@ function loadLevel(buffer) {
     //uint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
     schema.NumMeshTrees = parser.uint32_t(true);
 
-
-
     //tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
+    schema.MeshTrees = parser.array(schema.NumMeshTrees, "tr_meshtree_node");
+
+
+
     //uint32_t NumFrames; // number of words of frame data to follow (4 bytes)
+    schema.NumFrames = parser.uint32_t();
+
+
     //uint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
+    schema.Frames = parser.array(schema.NumFrames, "uint16_t");
+
+    
     //uint32_t NumModels; // number of models to follow (4 bytes)
+    schema.NumModels = parser.uint32_t();
+
     //tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
+    schema.Models = parser.array(schema.NumModels, "tr_model");
+
     //uint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
+    schema.NumStaticMeshes = parser.uint32_t();
+
     //tr_staticmesh StaticMeshes[NumStaticMeshes]; // StaticMesh data (NumStaticMesh * 32 bytes)
+    schema.StaticMeshes = parser.array(schema.NumStaticMeshes, "tr_staticmesh");
+    
     //uint32_t NumObjectTextures; // number of object textures to follow (4 bytes)
+    schema.NumObjectTextures = parser.uint32_t();
+
     //tr_object_texture ObjectTextures[NumObjectTextures]; // object texture list (NumObjectTextures * 20 bytes) (after AnimatedTextures in TR3)
+     schema.ObjectTextures = parser.array(schema.NumObjectTextures, "tr_object_texture");
+
     //uint32_t NumSpriteTextures; // number of sprite textures to follow (4 bytes)
+    schema.NumSpriteTextures = parser.uint32_t();
+
     //tr_sprite_texture SpriteTextures[NumSpriteTextures]; // sprite texture list (NumSpriteTextures * 16 bytes)
+    schema.SpriteTextures = parser.array(schema.NumSpriteTextures, "tr_sprite_texture");
+    
     //uint32_t NumSpriteSequences; // number of sprite sequences records to follow (4 bytes)
+    schema.NumSpriteSequences = parser.uint32_t();
+
     //tr_sprite_sequence SpriteSequences[NumSpriteSequences]; // sprite sequence data (NumSpriteSequences * 8 bytes)
+    schema.SpriteSequences = parser.array(schema.NumSpriteSequences, "tr_sprite_sequence");
+
+    
     //uint32_t NumCameras; // number of camera data records to follow (4 bytes)
+    schema.NumCameras = parser.uint32_t();
+
     //tr_camera Cameras[NumCameras]; // camera data (NumCameras * 16 bytes)
+    schema.Cameras = parser.array(schema.NumCameras, "tr_camera");
+    
     //uint32_t NumSoundSources; // number of sound source data records to follow (4 bytes)
+    schema.NumSoundSources = parser.uint32_t();
+
     //tr_sound_source SoundSources[NumSoundSources]; // sound source data (NumSoundSources * 16 bytes)
+    schema.SoundSources = parser.array(schema.NumSoundSources, "tr_sound_source");
+    
     //uint32_t NumBoxes; // number of box data records to follow (4 bytes)
+    schema.NumBoxes = parser.uint32_t();
+
+
     //tr2_box Boxes[NumBoxes]; // box data (NumBoxes * 8 bytes)
+    schema.Boxes = parser.array(schema.NumBoxes, "tr2_box");
+    
     //uint32_t NumOverlaps; // number of overlap records to follow (4 bytes)
+    schema.NumOverlaps = parser.uint32_t();
+
+
     //uint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
+    schema.Overlaps = parser.array(schema.NumOverlaps, "uint16_t");
+    
     //int16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
+    schema.Zones = parser.array(10*schema.NumBoxes, "int16_t");
+
+    
     //uint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
+    schema.NumAnimatedTextures = parser.uint32_t();
+
+
     //uint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
+    schema.AnimatedTextures = parser.array(schema.NumAnimatedTextures, "uint16_t");
+
+    
     //uint32_t NumEntities; // number of entities to follow (4 bytes)
+    schema.NumEntities = parser.uint32_t();
+
+
     //tr2_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
+    schema.Entities = parser.array(schema.NumEntities, "tr2_entity");
+
+    
     //uint8_t LightMap[32 * 256]; // light map (8192 bytes)
+    schema.LightMap = parser.array(32 * 256, "uint8_t");
+
+    
     //uint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
+    schema.NumCinematicFrames = parser.uint16_t();
+
+    
     //tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
+    schema.CinematicFrames = parser.array(schema.NumCinematicFrames, "tr_cinematic_frame");    
+    
     //uint16_t NumDemoData; // number of demo data records to follow (2 bytes)
+    schema.NumDemoData = parser.uint16_t();
+
+    
     //uint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
+    schema.DemoData = parser.array(schema.NumDemoData, "uint8_t");    
+
+    
     //int16_t SoundMap[370]; // sound map (740 bytes)
+    schema.SoundMap = parser.array(370, "int16_t");    
+
+
+    
     //uint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
+    schema.NumSoundDetails = parser.uint32_t();
+
     //tr_sound_details SoundDetails[NumSoundDetails]; // sound-detail list (NumSoundDetails * 8 bytes)
+    schema.SoundDetails = parser.array(schema.NumSoundDetails, "tr_sound_details"); 
+
     //uint32_t NumSampleIndices; // number of sample indices to follow (4 bytes)
+    schema.NumSampleIndices = parser.uint32_t();
+
     //uint32_t SampleIndices[NumSampleIndices]; // sample indices (NumSampleIndices * 4 bytes)
+    schema.SampleIndices = parser.array(schema.NumSampleIndices, "uint32_t");
 
-*/
-
+ 
 
     return schema;
 }

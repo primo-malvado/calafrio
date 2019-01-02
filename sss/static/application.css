@@ -1,0 +1,115 @@
+/* CSS stylesheet for Craic API Demo pages */
+
+body {
+  font-family: 'Helvetica Neue', verdana, arial, helvetica, sans-serif;
+  font-size: 14px;
+}
+
+
+.header {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  font-size: 24px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  padding: 5px;
+}
+
+.footer {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 75px;
+
+  text-align: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+
+  padding: 10px;
+}
+
+.main {
+ 
+}
+
+
+.header table {
+  width: 100%;
+}
+
+.header .td-edge {
+  width: 25%;
+  vertical-align: top;
+  text-align: center;
+}
+.header .td-center {
+  width: 50%;
+  vertical-align: top;
+  text-align: center;
+}
+
+.tutorial-links {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+  font-size: 18px;
+
+  padding: 5px;
+  text-align: center;
+}
+
+.tutorial-links  a {
+  color: #888;
+  text-decoration: none;
+}
+
+.github-link {
+   margin-bottom: 25px;
+}
+
+.github-link a {
+  font-size: 18px;
+  color: #888;
+  text-decoration: none;
+}
+
+.web-apprentice-logo {
+  color: #d80;
+  font-size: 22px;
+  text-decoration: none;
+}
+
+.web-apprentice-logo  a {
+    color: #d80;
+    text-decoration: none;
+}
+.web-apprentice-logo  a:visited {
+    color: #d80;
+    text-decoration: none;
+}
+.web-apprentice-logo  a:hover {
+    text-decoration: underline;
+}
+
+
+.tutorial-id {
+  color: #888;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.tutorial-title {
+  color: #000;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.footer a {
+  color: #888;
+  text-decoration: none;
+}
