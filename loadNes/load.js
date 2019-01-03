@@ -85,12 +85,14 @@ fetch('SuperMarioBros.nes', {
 			var layer2 = data.chrRom[i*16+8+j];
 
 			
-			var y = i*8+j;
+			var xT = i   & 0b00001111;
+
+			var y =  (i >>4) * 9   +j;
 
 			for(var x = 0; x <8; x++){
 				
 				
-				var off = (y * id.width + 7-x) * 4;
+				var off = (y * id.width + 7-x  +xT*9) * 4;
 
 				var v1 = (layer1&Math.pow(2, x) ) >> x;
 				var v2 = (layer2&Math.pow(2, x) ) >> x;
