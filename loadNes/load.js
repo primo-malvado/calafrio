@@ -13,7 +13,15 @@ var cpu;
 
 
 
-
+/*
+Flags 7
+76543210
+||||||||
+|||||||+- VS Unisystem
+||||||+-- PlayChoice-10 (8KB of Hint Screen data stored after CHR data)
+||||++--- If equal to 2, flags 8-15 are in NES 2.0 format
+++++----- Upper nybble of mapper number
+*/
 
 
 //fetch('LegendZelda.nes', {
@@ -46,8 +54,7 @@ fetch('SuperMarioBros2.nes', {
 			trainer : ((flags6  & 4) >> 2),
 			ignoremirroring : ((flags6  & 8) >> 3),
 
-			lowerNybble : ((flags6  & 0b11110000) >> 4),
-
+			mapperNumber : (flags7  & 0b11110000) + ((flags6  & 0b11110000) >> 4)
 		},
 		trainer: []
 	};
