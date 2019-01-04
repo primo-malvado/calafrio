@@ -1,7 +1,13 @@
 //https://www.masswerk.at/6502/6502_instruction_set.html#SEI
 //http://www.6502.org/tutorials/6502opcodes.html
 //http://www.obelisk.me.uk/6502/index.html
+/*
+https://wiki.nesdev.com/w/index.php/PPU_power_up_state
 
+https://wiki.nesdev.com/w/index.php/CPU_power_up_state
+
+*/
+exit = false;
 class P6502{
 	constructor(){
 		this.mem = [];
@@ -10,6 +16,9 @@ class P6502{
 		};
 
 		this.reg = {
+			a: 0,
+			x:0,
+			y:0,
 			sp: 0x100,
 			pc: 32768,
 		}
@@ -22,463 +31,146 @@ class P6502{
 		})
 	}
 
+	load(register){
+		//lda
+	}
+
 	tick(){
-		var instruction = this.mem[this.reg.pc];
 
-		var opCode = instruction.toString(16);
+		if(exit ){
+			throw "sdsd";
+		}
 
+		var opCode = this.mem[this.reg.pc].toString(16);
+
+		var instruction = instructions[opCode];
+/*
+Address Modes:
+
+A		....	Accumulator	 	OPC A	 	operand is AC (implied single byte instruction)
+abs		....	absolute	 	OPC $LLHH	 	operand is address $HHLL *
+abs,X		....	absolute, X-indexed	 	OPC $LLHH,X	 	operand is address; effective address is address incremented by X with carry **
+abs,Y		....	absolute, Y-indexed	 	OPC $LLHH,Y	 	operand is address; effective address is address incremented by Y with carry **
+#		....	immediate	 	OPC #$BB	 	operand is byte BB
+impl		....	implied	 	OPC	 	operand implied
+ind		....	indirect	 	OPC ($LLHH)	 	operand is address; effective address is contents of word at address: C.w($HHLL)
+X,ind		....	X-indexed, indirect	 	OPC ($LL,X)	 	operand is zeropage address; effective address is word in (LL + X, LL + X + 1), inc. without carry: C.w($00LL + X)
+ind,Y		....	indirect, Y-indexed	 	OPC ($LL),Y	 	operand is zeropage address; effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL) + Y
+rel		....	relative	 	OPC $BB	 	branch target is PC + signed offset BB ***
+zpg		....	zeropage	 	OPC $LL	 	operand is zeropage address (hi-byte is zero, address = $00LL)
+zpg,X		....	zeropage, X-indexed	 	OPC $LL,X	 	operand is zeropage address; effective address is address incremented by X without carry **
+zpg,Y		....	zeropage, Y-indexed	 	OPC $LL,Y	 	operand is zeropage address; effective address is address incremented by Y without carry **
+ 
+*   16-bit address words are little endian, lo(w)-byte first, followed by the hi(gh)-byte.
+(An assembler will use a human readable, big-endian notation as in $HHLL.)
+
+**  The available 16-bit address space is conceived as consisting of pages of 256 bytes each, with
+address hi-bytes represententing the page index. An increment with carry may affect the hi-byte
+and may thus result in a crossing of page boundaries, adding an extra cycle to the execution.
+Increments without carry do not affect the hi-byte of an address and no page transitions do occur.
+Generally, increments of 16-bit addresses include a carry, increments of zeropage addresses don't.
+Notably this is not related in any way to the state of the carry bit of the accumulator.
+
+*** Branch offsets are signed 8-bit values, -128 ... +127, negative offsets in two's complement.
+Page transitions may occur and add an extra cycle to the exucution.
+
+ 
+*/		
+		var assembler = null;
+		var oper = null;
+		var address = null;
+		var value = null;
+
+
+
+		if(instruction.addressing === 'implied' && instruction.assembler == ''){
+			assembler = "";
+		}else if(instruction.addressing === 'absolute' && instruction.assembler === 'oper'){
+			
+			oper = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
+
+			assembler = oper;
+			address = oper;
+			value = this.mem[address] | 0;
+
+
+		}else if(instruction.addressing === 'immidiate' && instruction.assembler == '#oper'){
+
+			
+		 	oper = this.mem[this.reg.pc+1];
+		 	assembler = `#${oper}`;
+		 	value = oper;
+
+		}else if(instruction.addressing === 'relative' && instruction.assembler == 'oper'){
+		 	
+		 	//rel		....	relative	 	OPC $BB	 	branch target is PC + signed offset BB ***
+		 	oper = this.mem[this.reg.pc+1];
+		 	
+/*
+			if( ( oper & 128)>>7){
+				oper = oper - 255 +1;
+			}
+*/
+
+		 	assembler = `${oper}`;
+		 	//value = this.reg.pc + oper;
+		 	address = this.reg.pc + oper;
+		 	value = this.mem[address] | 0;
+
+
+		}else if(instruction.addressing === 'absolute,x' && instruction.assembler === 'oper,x'){
+
+			//abs,X		....	absolute, X-indexed	 	OPC $LLHH,X	 	operand is address; effective address is address incremented by X with carry **
+			oper = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
+			assembler = `${oper},x`;
+			//value = this.mem[oper] + this.reg.x + this.flags.x;
+		}
 
 
  
 
 
-		switch(opCode){
-			case "78": 
-				console.log(`${this.reg.pc}: sei`);
-				this.flags.I = true;
-				this.reg.pc = this.reg.pc+1;
-				break;
 
+		switch(instruction.inst){ 
 
-
-
-/*
-
-CPY  Compare Memory and Index Y
-
-     Y - M                            N Z C I D V
-                                      + + + - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     immidiate     CPY #oper     C0    2     2
-     zeropage      CPY oper      C4    2     3
-     absolute      CPY oper      CC    3     4
-*/
-
-
-			case "c0": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: cpy ${value}`);
-				this.flags.N = (this.reg.y - value)>=128;
-				this.flags.Z = this.reg.y === value;
-				this.flags.c = this.reg.y >= value;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-
-
-
-/*
-CLD  Clear Decimal Mode
-
-0 -> D                           N Z C I D V
-                                 - - - - 0 -
-
-addressing    assembler    opc  bytes  cyles
---------------------------------------------
-implied       CLD           D8    1     2
-*/
-			case "d8": 
-				console.log(`${this.reg.pc}: cld`);
-				this.flags.D = false;
-				this.reg.pc = this.reg.pc+1;
-				break;
-
-
-/*
-LDA  Load Accumulator with Memory
-
-     M -> A                           N Z C I D V
-                                      + + - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     immidiate     LDA #oper     A9    2     2
-     zeropage      LDA oper      A5    2     3
-     zeropage,X    LDA oper,X    B5    2     4
-     absolute      LDA oper      AD    3     4
-     absolute,X    LDA oper,X    BD    3     4*
-     absolute,Y    LDA oper,Y    B9    3     4*
-     (indirect,X)  LDA (oper,X)  A1    2     6
-     (indirect),Y  LDA (oper),Y  B1    2     5*
-
-a1	10100001
-a5	10100101
-a9	10101001
-ad	10101101
-
-b1	10110001
-b5	10110101
-b9	10111001
-bd	10111101
-
-
-*/
-
-			case "a9": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: lda ${value}`);
-				this.reg.a = value;
-				this.flags.N = false; // ???
-				this.flags.Z = value === 0;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-
-			case "bd": 
-				var value = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
-
-
-				console.log(`${this.reg.pc}: lda ${value}, x`);
-				this.reg.pc = this.reg.pc+3;
-				break;
-
+			case 'bcs':
 /*
 BCS  Branch on Carry Set
 
      branch on C = 1                  N Z C I D V
                                       - - - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     relative      BCS oper      B0    2     2**
 */
-			case "b0": 
-				var value = this.mem[this.reg.pc+1];
-
-				if( ( value & 128)>>7){
-					value = value - 255 +1;
-				}
-
-				console.log(`${this.reg.pc.toString(16)}: bcs ${value}`);
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
 
 				if(this.flags.c){
-					this.reg.pc = this.reg.pc+value;
+					this.reg.pc = this.reg.pc + value;
 				}else{
-					this.reg.pc = this.reg.pc+2;
+					
+					this.reg.pc = this.reg.pc+ instruction.bytes;
 				}
 				break;
 
-/*
-BCC  Branch on Carry Clear
+		
 
-     branch on C = 0                  N Z C I D V
-                                      - - - - - -
 
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     relative      BCC oper      90    2     2**
+			case "jsr": 
+
+			/*
+JSR  Jump to New Location Saving Return Address
+
+     push (PC+2),                     N Z C I D V
+     (PC+1) -> PCL                    - - - - - -
+     (PC+2) -> PCH
 */
-			case "90": 
-				var value = this.mem[this.reg.pc+1];
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
+				this.mem[this.reg.sp] = this.reg.pc+ instruction.bytes;
+				this.reg.sp = this.reg.sp +1;
 
-				if( ( value & 128)>>7){
-					value = value - 255 +1;
-				}
-
-				console.log(`${this.reg.pc.toString(16)}: bcs ${value}`);
-
-				if(!this.flags.c){
-					this.reg.pc = this.reg.pc+value;
-				}else{
-					this.reg.pc = this.reg.pc+2;
-				}
+				this.reg.pc = value;
 				break;
 
 
-/*
-
-DEX  Decrement Index X by One
-
-     X - 1 -> X                       N Z C I D V
-                                      + + - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     implied       DEC           CA    1     2
-
-*/
-			case "ca": 
-
-				console.log(`${this.reg.pc.toString(16)}: dex`);
-				this.reg.x = this.reg.x -1;
-				this.flags.N = (this.reg.x)>=128;
-				this.flags.Z = this.reg.x === 0;
-
-
-				this.reg.pc = this.reg.pc+1;
-				break;
-
-
-/*
-DEY  Decrement Index Y by One
-
-     Y - 1 -> Y                       N Z C I D V
-                                      + + - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     implied       DEC           88    1     2
-*/
-			case "88": 
-
-				console.log(`${this.reg.pc.toString(16)}: dey`);
-				this.reg.y = this.reg.y -1;
-				this.flags.N = (this.reg.y)>=128;
-				this.flags.Z = this.reg.y === 0;
-
-
-				this.reg.pc = this.reg.pc+1;
-				break;
-
-
-
-/*
-CMP  Compare Memory with Accumulator
-
-A - M                            N Z C I D V
-                                 + + + - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     immidiate     CMP #oper     C9    2     2
-     zeropage      CMP oper      C5    2     3
-     zeropage,X    CMP oper,X    D5    2     4
-     absolute      CMP oper      CD    3     4
-     absolute,X    CMP oper,X    DD    3     4*
-     absolute,Y    CMP oper,Y    D9    3     4*
-     (indirect,X)  CMP (oper,X)  C1    2     6
-     (indirect),Y  CMP (oper),Y  D1    2     5*
-
-Compare sets flags as if a subtraction had been carried out.
-If the value in the accumulator is equal or greater than the compared value, the Carry will be set.
-The equal (Z) and sign (S) flags will be set based on equality or lack thereof and the sign (i.e. A>=$80) of the accumulator.
-
-
-*/
-			case "c9": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc.toString(16)}: cmp ${value}`);
-				this.flags.N = (this.reg.a - value)>=128;
-				this.flags.Z = this.reg.a === value;
-				this.flags.c = this.reg.a >= value;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-/*
-
-CPX  Compare Memory and Index X
-
-     X - M                            N Z C I D V
-                                      + + + - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     immidiate     CPX #oper     E0    2     2
-     zeropage      CPX oper      E4    2     3
-     absolute      CPX oper      EC    3     4
-*/
-			case "e0": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc.toString(16)}: cpx ${value}`);
-				this.flags.N = (this.reg.x - value)>=128;
-				this.flags.Z = this.reg.x === value;
-				this.flags.c = this.reg.x >= value;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-/*
-
-LDY  Load Index Y with Memory
-
-     M -> Y                           N Z C I D V
-                                      + + - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     immidiate     LDY #oper     A0    2     2
-     zeropage      LDY oper      A4    2     3
-     zeropage,X    LDY oper,X    B4    2     4
-     absolute      LDY oper      AC    3     4
-     absolute,X    LDY oper,X    BC    3     4*
-
-*/
-
-			case "a0": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: ldy ${value}`);
-				this.reg.y = value;
-				this.flags.N = false; // ???
-				this.flags.Z = value === 0;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-			case "ad": 
-				var value = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
-
-
-				console.log(`${this.reg.pc}: lda ${value}`);
-				this.reg.a = value;
-				this.flags.N = false; // ???
-				this.flags.Z = value === 0;
-
-				this.reg.pc = this.reg.pc+3;
-				break;
-
-
-/*
-STA  Store Accumulator in Memory
-
-     A -> M                           N Z C I D V
-                                      - - - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     zeropage      STA oper      85    2     3
-     zeropage,X    STA oper,X    95    2     4
-     absolute      STA oper      8D    3     4
-     absolute,X    STA oper,X    9D    3     5
-     absolute,Y    STA oper,Y    99    3     5
-     (indirect,X)  STA (oper,X)  81    2     6
-     (indirect),Y  STA (oper),Y  91    2     6
-
-
-*/
-
-			case "85": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: sta ${value}`);
-				this.mem[value] = this.reg.a;
-
-				this.flags.N = false;  // ???
-				this.flags.Z = this.mem[value] === 0;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-			case "8d": 
-				var value = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: sta ${value}`);
-				this.mem[value] = this.reg.a;
-
-				this.flags.N = false;  // ???
-				this.flags.Z = this.mem[value] === 0;
-
-				this.reg.pc = this.reg.pc+3;
-				break;
-
-			case "91": 
-				var value = this.mem[this.reg.pc+1];
-
-
-				if( ( value & 128)>>7){
-					value = value - 255 +1;
-				}
-
- 
-				console.log(`${this.reg.pc}: sta (${value}), y`);
-
-				var pos = this.reg.y + this.mem[ value]; 
-				this.mem[ pos]  = this.reg.a;
-
-				this.flags.N = false;  // ???
-				this.flags.Z = this.mem[pos] === 0;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-/*
-
-STX  Store Index X in Memory
-
-     X -> M                           N Z C I D V
-                                      - - - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     zeropage      STX oper      86    2     3
-     zeropage,Y    STX oper,Y    96    2     4
-     absolute      STX oper      8E    3     4
-*/
-
-			case "86": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: stx ${value}`);
-				this.mem[value] = this.reg.x;
-
-				this.flags.N = false;  // ???
-				this.flags.Z = this.mem[value] === 0;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-
-/*
-LDX  Load Index X with Memory
-
-     M -> X                           N Z C I D V
-                                      + + - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     immidiate     LDX #oper     A2    2     2
-     zeropage      LDX oper      A6    2     3
-     zeropage,Y    LDX oper,Y    B6    2     4
-     absolute      LDX oper      AE    3     4
-     absolute,Y    LDX oper,Y    BE    3     4*
-
-*/
-			case "a2": 
-				var value = this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: ldx ${value}`);
-				this.reg.x = value;
-				this.flags.N = false; // ???
-				this.flags.Z = value === 0;
-
-				this.reg.pc = this.reg.pc+2;
-				break;
-
-/*
-TXS  Transfer Index X to Stack Register
-
-     X -> SP                          N Z C I D V
-                                      - - - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     implied       TXS           9A    1     2
-*/
-			case "9a": 
-
-				console.log(`${this.reg.pc}: txs`);
-				this.reg.sp = this.reg.x;
-				this.reg.pc = this.reg.pc+1;
-				break;
-
-
-
-
+			case "bpl": 
 /*
 BPL  Branch on Result Plus
 
@@ -488,109 +180,92 @@ BPL  Branch on Result Plus
      addressing    assembler    opc  bytes  cyles
      --------------------------------------------
      relative      BPL oper      10    2     2**
-
-
-
 */
-			case "10": 
-				var value = this.mem[this.reg.pc+1];
 
-
-
-				if( ( value & 128)>>7){
-					value = value - 255 +1;
-				}
-
-				console.log(`${this.reg.pc}: bpl ${value}`);
-
-				if(this.flags.N === 0){
-					this.reg.pc = this.reg.pc + value;
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
+ 
+				if(!this.flags.n){
+					this.reg.pc = address;
 				}else{
-					this.reg.pc = this.reg.pc+2;
+					
+					this.reg.pc = this.reg.pc+ instruction.bytes;
 				}
-
-
- 
 				break;
-/*
-JSR  Jump to New Location Saving Return Address
-
-     push (PC+2),                     N Z C I D V
-     (PC+1) -> PCL                    - - - - - -
-     (PC+2) -> PCH
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     absolute      JSR oper      20    3     6
-*/
-			case "20": 
-				var value = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
-
-				console.log(`${this.reg.pc}: jsr ${value}`);
-				this.mem[this.reg.sp] = this.reg.pc+3;
-				this.reg.sp = this.reg.sp +1;
-				this.reg.pc = value;
 
 
- 
+			case "lda": 
+
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
+
+				this.reg.a = value & 255;
+
+				this.flags.n = (this.reg.a & 0b10000000) >> 7;
+				this.flags.z = this.reg.a === 0;
+
+				this.reg.pc = this.reg.pc+ instruction.bytes;
 				break;
-/*
-RTS  Return from Subroutine
+			case "ldx": 
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
 
-     pull PC, PC+1 -> PC              N Z C I D V
+				this.reg.x = value & 255;
+
+				this.flags.n = (this.reg.x & 0b10000000) >> 7;
+				this.flags.z = this.reg.x === 0;
+
+				this.reg.pc = this.reg.pc+ instruction.bytes;
+				break;
+			case "ldy": 
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
+
+				this.reg.y = value & 255;
+
+				this.flags.n = (this.reg.y & 0b10000000) >> 7;
+				this.flags.z = this.reg.y === 0;
+
+				this.reg.pc = this.reg.pc+ instruction.bytes;
+				break;
+			case "sta": 
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
+				this.mem[address] = this.reg.a;
+
+				this.flags.n = (this.reg.a & 0b10000000) >> 7;
+				this.flags.z = this.reg.a === 0;
+
+				this.reg.pc = this.reg.pc+ instruction.bytes;
+				break;
+  			case "txs": 
+/*
+
+TXS  Transfer Index X to Stack Register
+
+     X -> SP                          N Z C I D V
                                       - - - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     implied       RTS           60    1     6
-     */
-			case "60": 
-				console.log(`${this.reg.pc}: rts`);
-				this.reg.sp = this.reg.sp - 1;
-				this.reg.pc = this.mem[this.reg.sp];
-
-
-
- 
-				break;
-
-
-/*
-
-BNE  Branch on Result not Zero
-
-     branch on Z = 0                  N Z C I D V
-                                      - - - - - -
-
-     addressing    assembler    opc  bytes  cyles
-     --------------------------------------------
-     relative      BNE oper      D0    2     2**
 */
-			case "d0": 
-				var value = this.mem[this.reg.pc+1];
+				console.log(`${this.reg.pc} ${instruction.inst} ${assembler}`)
 
-
-
-				if( ( value & 128)>>7){
-					value = value - 255 +1;
-				}
-
-				console.log(`${this.reg.pc}: bne ${value}`);
-
-				if(this.flags.Z === 0){
-					this.reg.pc = this.reg.pc + value;
-				}else{
-					this.reg.pc = this.reg.pc+2;
-				}
-
-
- 
+				this.reg.sp = this.reg.x;
+				this.reg.pc = this.reg.pc+ instruction.bytes;
 				break;
-
-
+  
 			default: 
-				throw(`${this.reg.pc} ${opCode}`)
+
+
+
+				if(assembler !== null){
+					console.log(`---${this.reg.pc} ${instruction.inst} ${assembler}`)
+				}else{
+
+
+
+					console.log(`${this.reg.pc} ${instruction.inst} ${instruction.assembler} ${instruction.addressing} ${instruction.bytes} `)
+ 
+				}
+
+				this.reg.pc = this.reg.pc+ instruction.bytes;
 		}
+ 		
+
+ 
 
 		this.tick();
 
