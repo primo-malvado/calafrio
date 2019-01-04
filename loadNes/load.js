@@ -16,8 +16,8 @@ var cpu;
 
 
 
-//fetch('ducktales1.nes', {
-fetch('SuperMarioBros.nes', {
+//fetch('LegendZelda.nes', {
+fetch('SuperMarioBros2.nes', {
 	method: 'get'
 }).then(function(response) {
 	return response.arrayBuffer()
