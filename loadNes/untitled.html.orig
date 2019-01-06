@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="application.css" media="all" rel="stylesheet" type="text/css">
+    <title>Load Nes</title>
+  </head>
+  <body>
+<<<<<<< HEAD
+    <canvas id="canvas" width=200 height=5200 ></canvas>
+=======
+    <canvas id="canvas" width=200 height=400 ></canvas>
+>>>>>>> 08709c6d30a3ff602c256f78560803c6b7049d62
+      <div id="main" class="main"> 
+      </div>
+      <script type="text/javascript" src="instructions.js"></script>
+      <script type="text/javascript" src="p6502.js"></script>
+      <script type="text/javascript" src="load.js"></script>
+  </body>
+</html>

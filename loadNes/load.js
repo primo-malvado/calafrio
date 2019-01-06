@@ -12,6 +12,19 @@ var data ;
 var cpu;
 
 
+function loop(){
+	if (toParse.length >0){
+	setTimeout(function(){
+
+
+		console.log("---------")
+		cpu.tick();
+		loop()
+		
+	}, 0)
+}
+
+}
 
 /*
 Flags 7
@@ -25,7 +38,7 @@ Flags 7
 
 
 //fetch('LegendZelda.nes', {
-fetch('SuperMarioBros2.nes', {
+fetch('SuperMarioBros.nes', {
 	method: 'get'
 }).then(function(response) {
 	return response.arrayBuffer()
@@ -121,7 +134,29 @@ fetch('SuperMarioBros2.nes', {
 	}
 	ctx.putImageData(id, 0, 0);
 	
+ /*
+	setTimeout(function(){ 
+		cpu.mem[0x2002] = 201
+	}, 200)
+
+	setTimeout(function(){
+		exit=true
+	}, 2000)
+*/
 
 
-	cpu.tick();
+	setTimeout(function(){
+
+
+		console.log("---------")
+		cpu.tick();
+ 
+		
+	}, 0)
+
+
+	
+
+
+
 })
