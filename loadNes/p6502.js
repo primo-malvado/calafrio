@@ -6,6 +6,9 @@ https://wiki.nesdev.com/w/index.php/PPU_power_up_state
 
 https://wiki.nesdev.com/w/index.php/CPU_power_up_state
 
+https://wiki.nesdev.com/w/index.php/Init_code
+
+
 */
 exit = false;
 //8212, f3ae
@@ -34,7 +37,7 @@ class P6502{
 			b: 0 , // break command
 			d: 0 , // decimal mode 
 			i: 0 , //interrupt disable
-			z: 0 , // zero resuult
+			z: 0 , // zero result
 			c: 0 , //carry
 
 		};
