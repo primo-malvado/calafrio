@@ -12,19 +12,7 @@ var data ;
 var cpu;
 
 
-function loop(){
-	if (toParse.length >0){
-	setTimeout(function(){
-
-
-		console.log("---------")
-		cpu.tick();
-		loop()
-		
-	}, 0)
-}
-
-}
+ 
 
 /*
 Flags 7
@@ -147,16 +135,17 @@ fetch('SuperMarioBros.nes', {
 
 	setTimeout(function(){
 
-
-		console.log("---------")
+ 
 		cpu.tick();
  
 		
 	}, 0)
 
 
-	
-
+	setTimeout(function(){ 
+		//cpu.mem[0x2002] = 201
+		exit = true
+	}, 200)
 
 
 })
