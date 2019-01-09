@@ -7,28 +7,18 @@ https://wiki.nesdev.com/w/index.php/PPU_power_up_state
 https://wiki.nesdev.com/w/index.php/CPU_power_up_state
 
 https://wiki.nesdev.com/w/index.php/Init_code
-
-
 */
 exit = false;
-//8212, f3ae
 
-/* 
-var toParse = [ 
- 0x8082,
- 0x8000,
-  ]; 
-*/
 
 var parsed = {}
 
-function addToParsed(pc, asm){
-
-}
+ 
 
 class P6502{
 	constructor(){
-		this.mem = [];
+		this.cicles = 0;
+		//this.mem = [];
 		this.flags = {
 
 			n: 0 , //negative result
@@ -53,38 +43,64 @@ class P6502{
 
 
     lda() {
-    	console.log(`${this.startPc.toString(16)}: lda ${this.operText}`);
-    	this.reg.a = this.addressValue;
+
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: lda ${this.operText}`);
+    	}
+    	this.reg.a = this.getAddressValue();
     	this.flags.z = this.reg.a === 0 ? 1:0;
     	this.flags.n = this.reg.a & 128 ? 1:0;
     }
     ldx() {
-    	console.log(`${this.startPc.toString(16)}: ldx ${this.operText}`);
-    	this.reg.x = this.addressValue;
+
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		
+	    	console.log(`${this.startPc.toString(16)}: ldx ${this.operText}`);
+    	}    	
+    	this.reg.x = this.getAddressValue();
     	this.flags.z = this.reg.x === 0 ? 1:0;
     	this.flags.n = this.reg.x & 128 ? 1:0;
     }
     ldy() {
-    	console.log(`${this.startPc.toString(16)}: ldy ${this.operText}`);
-    	this.reg.y = this.addressValue;
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: ldy ${this.operText}`);
+    	}    	
+    	this.reg.y = this.getAddressValue();
     	this.flags.z = this.reg.y === 0 ? 1:0;
     	this.flags.n = this.reg.y & 128 ? 1:0;
     }
 
     sta() {
-    	console.log(`${this.startPc.toString(16)}: sta ${this.operText}`);
-    	this.mem[this.address] = this.reg.a ;
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+	    	console.log(`${this.startPc.toString(16)}: sta ${this.operText};`); // ${this.address.toString(16)} = ${this.mapper.getCpuAddress(this.address).toString(16)}
+    	}    	
+    	//console.log(`${this.startPc.toString(16)}: sta ${this.operText}; ${this.address.toString(16)} = ${this.mapper.getCpuAddress(this.address).toString(16)}`);
+
+    	this.mapper.setCpuAddress(this.address, this.reg.a)
+
     }
 
     stx() {
-    	console.log(`${this.startPc.toString(16)}: stx ${this.operText}`);
-    	this.mem[this.address] = this.reg.x ;
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+			console.log(`${this.startPc.toString(16)}: stx ${this.operText}`);
+    	}
+
+    	this.mapper.setCpuAddress(this.address, this.reg.x) ;
     }
 
 
     
     txs() {
-    	console.log(`${this.startPc.toString(16)}: txs ${this.operText}`);
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		
+    		console.log(`${this.startPc.toString(16)}: txs ${this.operText}`);
+    	}    	
     	this.reg.sp = this.reg.x
     }
 
@@ -99,13 +115,18 @@ the carry flag is set when the value in memory is less than or equal to the accu
 greater than the accumulator.
 */
 
-		var r = (this.reg.a + (255-this.addressValue+1)) & 255;
+		var r = (this.reg.a + (255-this.getAddressValue()+1)) & 255;
 
 		this.flags.z = r === 0;
 		this.flags.n = (r&128)? 1:0;
-		this.flags.c = this.addressValue <= this.reg.a ? 1:0;
+		this.flags.c = this.getAddressValue() <= this.reg.a ? 1:0;
  
-    	console.log(`${this.startPc.toString(16)}: cmp ${this.operText}`);
+
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: cmp ${this.operText}`);
+    	}
+ 
 
     }
 	cpx() {
@@ -118,48 +139,69 @@ the carry flag is set when the value in memory is less than or equal to the accu
 greater than the accumulator.
 */
 
-		var r = (this.reg.x + (255-this.addressValue+1)) & 255;
+		var r = (this.reg.x + (255-this.getAddressValue()+1)) & 255;
 
 		this.flags.z = r === 0;
 		this.flags.n = (r&128)? 1:0;
-		this.flags.c = this.addressValue <= this.reg.x ? 1:0;
+		this.flags.c = this.getAddressValue() <= this.reg.x ? 1:0;
  
-    	console.log(`${this.startPc.toString(16)}: cpx ${this.operText}`);
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: cpx ${this.operText}`);
+    	}
 
     }
 	cpy() {
-		var r = (this.reg.y + (255-this.addressValue+1)) & 255;
+		var r = (this.reg.y + (255-this.getAddressValue()+1)) & 255;
 
 		this.flags.z = r === 0;
 		this.flags.n = (r&128)? 1:0;
-		this.flags.c = this.addressValue <= this.reg.y ? 1:0;
+		this.flags.c = this.getAddressValue() <= this.reg.y ? 1:0;
  
-    	console.log(`${this.startPc.toString(16)}: cpy ${this.operText}`);
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+			console.log(`${this.startPc.toString(16)}: cpy ${this.operText}`);
+		}
 
     }
 
 
     
     bpl() {
-    	console.log(`${this.startPc.toString(16)}: bpl ${this.operText}; ${this.addressValue.toString(16)}`);
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: bpl ${this.operText};`);
+    	}
     	this.branch(this.flags.n == 0);
     }
 
     bcs() {
-    	console.log(`${this.startPc.toString(16)}: bcs ${this.operText}; ${this.addressValue.toString(16)}`);
+    			if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: bcs ${this.operText};`);
+    	}
     	this.branch(this.flags.c == 1);
     }
     bne() {
-    	console.log(`${this.startPc.toString(16)}: bne ${this.operText}; ${this.addressValue.toString(16)}`);
+    	if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: bne ${this.operText};`);
+    	}
     	this.branch(this.flags.z == 0);
     } 
     jsr() {
-    	console.log(`${this.startPc.toString(16)}: jsr ${this.operText}; ${this.addressValue.toString(16)}`);
-    	this.branch(true);
+    	if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: jsr ${this.operText};`);
+    	}
+    	this.jumpAndStack(true);
     }
 
     dex() {
-    	console.log(`${this.startPc.toString(16)}: dex ${this.operText};`);
+    	if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: dex ${this.operText};`);
+    	}
 
     	this.reg.x = (this.reg.x + 255) & 255 ;
     	this.flags.z = this.reg.x === 0 ? 1:0;
@@ -167,57 +209,138 @@ greater than the accumulator.
  
     }
      dey() {
-    	console.log(`${this.startPc.toString(16)}: dey ${this.operText};`);
+    	if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: dey ${this.operText};`);
+    	}
 
-    	this.reg.x = (this.reg.y + 255) & 255 ;
+    	this.reg.y = (this.reg.y + 255) & 255 ;
     	this.flags.z = this.reg.y === 0 ? 1:0;
     	this.flags.n = this.reg.y & 128 ? 1:0;
+ 
+    }
+ 
+     bit() {
+/*
+BIT  Test Bits in Memory with Accumulator
+
+     bits 7 and 6 of operand are transfered to bit 7 and 6 of SR (N,V);
+     the zeroflag is set to the result of operand AND accumulator.
+
+     A AND M, M7 -> N, M6 -> V        N Z C I D V
+                                     M7 + - - - M6
+
+     addressing    assembler    opc  bytes  cyles
+     --------------------------------------------
+     zeropage      BIT oper      24    2     3
+     absolute      BIT oper      2C    3     4
+*/
+
+    	if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: bit ${this.operText};`);
+    	}
+
+//    	debugger;
+    	var temp = this.getAddressValue();
+
+    	this.flags.z = (temp &  this.reg.y ) === 0 ? 1:0;
+
+    	this.flags.n = temp & 128 ? 1:0;
+    	this.flags.v = temp & 1 ? 1:0;
  
     }
  
 
 
     push(value) {
-    	this.mem[this.reg.sp] = value;
+    	this.mapper.setCpuAddress(this.reg.sp, value);
     	this.reg.sp++;
     }
-
-
-
-
-
+    
+    pull() {
+    	this.reg.sp--;
+    	return this.mapper.getCpuAddress(this.reg.sp);
+    }
     
     branch(doBranch) {
     	if(doBranch){
+    		this.reg.pc = this.address;
+    	}
+    }
+
+    
+    jumpAndStack(doJump) {
+    	if(doJump){
     		this.push(this.reg.pc);
     		this.reg.pc = this.address;
     	}
+    } 
+
+    rts() {
+		this.reg.pc = this.pull();
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: rts`);
+    	}
+
     }
 
 
 
     sei() { 
-		console.log(`${this.startPc.toString(16)}: sei`);
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: sei`);
+    	}
     	this.flags.i = 1;
 	}
     
     cld() { 
-		console.log(`${this.startPc.toString(16)}: cld`);
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: cld`);
+    	}
     	this.flags.d = 0;
 	}
 
+    
+
+/*
+INY  Increment Index Y by One
+
+     Y + 1 -> Y                       N Z C I D V
+                                      + + - - - -
+
+     addressing    assembler    opc  bytes  cyles
+     --------------------------------------------
+     implied       INY           C8    1     2
+
+*/
+
+    iny() { 
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: iny`);
+    	}
+    	this.reg.y = (this.reg.y + 1) & 255 ;
+
+    	this.flags.z = this.reg.x === 0 ? 1:0;
+    	this.flags.n = this.reg.x & 128 ? 1:0;
 
 
-	setPrgRom(data){
-		var _this = this;
-		var init = 32768;
-		data.forEach(function(item, idx){
-			_this.mem[init+idx] = item;
-		})
+	}
+
+
+
+	setMapper(mapper){
+		this.mapper = mapper;
 	}
 
 	getOpCode(){
-		var opCode = "00"+this.mem[this.reg.pc].toString(16);
+		var value = this.mapper.getCpuAddress(this.reg.pc);
+
+		var opCode = "00"+value.toString(16);
 		return opCode.substring(opCode.length-2);
 	}
  
@@ -227,7 +350,10 @@ greater than the accumulator.
 
 		if(instruction === undefined)
 		{
-			throw "instrução nao definida";
+
+			//console.log(this.reg.pc.toString(16) ,opCode)
+			//debugger;
+			//throw "instrução nao definida";
 		}
 
 		return instruction;
@@ -235,17 +361,23 @@ greater than the accumulator.
 	}
 
 
+	getAddressValue(){
+		return this.immidiateValue !== null ? this.immidiateValue: (this.mapper.getCpuAddress(this.address) | 0);
+	}
+
+
 	implied(){
 		this.startPc = this.reg.pc;
 		this.reg.pc = this.reg.pc+1;
+		this.immidiateValue = this.oper;
 		this.operText = ``;
 	}
 
 	immidiate(){
 		this.startPc = this.reg.pc;
+		this.oper = this.mapper.getCpuAddress(this.reg.pc+1);
 
-		this.oper = this.mem[this.reg.pc+1];
-		this.addressValue = this.oper;
+		this.immidiateValue = this.oper;
 
 		this.operText = `#${this.oper.toString(16)}`;
 		this.reg.pc = this.reg.pc+2;
@@ -255,10 +387,10 @@ greater than the accumulator.
 
 		this.startPc = this.reg.pc;
 
-		this.oper = this.mem[this.reg.pc+1];
+		this.oper = this.mapper.getCpuAddress(this.reg.pc+1);
 		this.address = this.oper;
 		this.operText = `$${this.oper.toString(16)}`;
-		this.addressValue = this.mem[this.address] | 0;
+		this.immidiateValue = null
 
 		this.reg.pc = this.reg.pc+2;
 	}
@@ -266,10 +398,10 @@ greater than the accumulator.
 
 		this.startPc = this.reg.pc;
 
-		this.oper = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
+		this.oper = ((this.mapper.getCpuAddress(this.reg.pc+2))<<8)+this.mapper.getCpuAddress(this.reg.pc+1);
 		this.address = this.oper;
 		this.operText = `$${this.oper.toString(16)}`;
-		this.addressValue = this.mem[this.oper] | 0;
+		this.immidiateValue = null
 
 		this.reg.pc = this.reg.pc+3;
 	}
@@ -287,21 +419,48 @@ greater than the accumulator.
 
 		this.startPc = this.reg.pc;
 
-		this.oper = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
+		this.oper = ((this.mapper.getCpuAddress(this.reg.pc+2))<<8)+this.mapper.getCpuAddress(this.reg.pc+1);
 		
-		this.address = this.mem[this.oper] + this.reg.x + this.flags.c;
+		this.address = this.mapper.getCpuAddress(this.oper) + this.reg.x + this.flags.c;
 
 		this.operText = `$${this.oper.toString(16)}, x`;
-		this.addressValue = this.mem[this.address] | 0;
+		this.immidiateValue = null
 
 		this.reg.pc = this.reg.pc+3;
 	}
+
+
+	absoluteY(){
+
+/*
+			//abs,y		....	absolute, y-indexed	 	OPC $LLHH,y	 	operand is address; effective address is address incremented by y with carry **
+			oper = ((this.mem[this.reg.pc+2])<<8)+this.mem[this.reg.pc+1];
+			assembler = `$${oper.toString(16)},y`;
+			//value = this.mem[oper] + this.reg.y + this.flags.y;
+*/
+
+
+
+		this.startPc = this.reg.pc;
+
+		this.oper = ((this.mapper.getCpuAddress(this.reg.pc+2))<<8)+this.mapper.getCpuAddress(this.reg.pc+1);
+		
+		this.address = this.mapper.getCpuAddress(this.oper) + this.reg.y + this.flags.c;
+
+		this.operText = `$${this.oper.toString(16)}, y`;
+		this.immidiateValue = null
+
+		this.reg.pc = this.reg.pc+3;
+	}
+
+
+
 
 	relative(){
 
 		this.startPc = this.reg.pc;
 
-		this.oper = this.mem[this.reg.pc+1];
+		this.oper = this.mapper.getCpuAddress(this.reg.pc+1);
 		this.operText = `$${this.oper.toString(16)}`;
  
 	 	this.address = this.reg.pc + this.oper + 2;
@@ -310,7 +469,7 @@ greater than the accumulator.
 			this.address = this.reg.pc + this.oper  - 255 +1;
 		}
 
-	 	this.addressValue = this.mem[this.address] | 0;
+	 	this.immidiateValue = null
 
 
 
@@ -325,26 +484,26 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 */
 		this.startPc = this.reg.pc;
 
-		this.oper = this.mem[this.reg.pc+1];
+		this.oper = this.mapper.getCpuAddress(this.reg.pc+1);
 
 		this.operText = `$(${this.oper.toString(16)}),y`;
 
 
 
-		this.address = ((this.mem[this.oper+1])<<8)+this.mem[this.oper] + this.reg.y;
+		this.address = ((this.mapper.getCpuAddress(this.oper+1))<<8)+this.mapper.getCpuAddress(this.oper) + this.reg.y;
 
 		if( ( this.reg.y & 128)>>7){
-			this.address = ((this.mem[this.oper+1])<<8)+this.mem[this.oper] + this.reg.y - 255 +1;
+			this.address = ((this.mapper.getCpuAddress(this.oper+1))<<8)+this.mapper.getCpuAddress(this.oper) + this.reg.y - 255 +1;
 		}
 
 		
 
-	 	this.addressValue = this.mem[this.address] | 0;
+	 	this.immidiateValue = null;
 
 
 
 		this.reg.pc = this.reg.pc+2;
-		console.log("_indirect_Y");
+		////console.log("_indirect_Y");
  
 
 	}
@@ -354,24 +513,28 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 	tick(){
 
 		if(exit ){
-			throw "sdsd";
+
+			return ; 
 		}
 
 		var opCode = this.getOpCode();
 		var instruction = this.getInstruction(opCode);
 
+		this.cicles += duration[opCode];
 
 		if(typeof(instruction) !== "function"){
 			debugger;
+
+
+			exit = true
+
+			return;
 		}
  
 
 
 		instruction(this)
-		var _this = this
-		setTimeout(function(){
-			_this.tick();
 
-		},10);
+
 	}
 }
