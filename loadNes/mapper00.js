@@ -56,6 +56,8 @@ class Mapper00{
 		this.PPUDATA = 0; //	$2007	dddd dddd	PPU data read/write
 		this.OAMDMA = 0; //	$4014	aaaa aaaa	OAM DMA high address
 
+		this.ppuAddress = 0;
+		this.ppuMemory = [];
 
 		this.data;
 
@@ -132,20 +134,27 @@ class Mapper00{
 			return this.ram[address % (0x07FF+1)] | 0;
 		}else if(address >= 0x8000 && address <=0xBFFF){
 			return this.firstRom[address-0x8000];
+		}else if(address >= 0xc000 && address <=0xffff){
+			return this.secondRom[address-0xc000];
 		}else if(address == 0x2002){
 			return this.PPUSTATUS;
 		}else if(address == 0x2000){
 			return this.PPUCTRL;
 		}else{
-			throw "getCpuAddress"+ address;
+			console.log("getCpuAddress", address.toString(16), this.ram[address]);
+			return this.ram[address] | 0;
 		}
 
 	}
 
 	setCpuAddress(address, value){
+ 
+		if(address <=0x0100 && address >= 0x01ff){
+			//stack
+			
+			return this.ram[address] = value;
 
-
-		if(address >= 0x4000 && address <=0x4017){
+		}else if(address >= 0x4000 && address <=0x4017){
 			//$4000-$4017	$0018	NES APU and I/O registers
 			//this.firstRom[address-0x8000] = value;
 			console.error("APU", address.toString(16), value)
@@ -174,9 +183,44 @@ class Mapper00{
 
 
 
-		} else if(address == 0x2001){
+		}else if(address == 0x2006){
 
-			console.error("PPUMASK", address.toString(16), value)
+			//console.error("PPUADDR", value.toString(16))
+
+			this.ppuAddress = ((this.ppuAddress<<8)+value) & 0xffff;
+			this.PPUADDR = value; 
+		}else if(address == 0x2003){
+
+			//console.error("OAMADDR", value.toString(16))
+
+			//this.ppuAddress = ((this.ppuAddress<<8)+value) & 0xffff;
+			this.OAMADDR = value; 
+		}
+		 else if(address == 0x2005){
+
+			console.error("PPUSCROLL", value.toString(16))
+			this.PPUSCROLL = value; 
+		}
+	
+		else if(address == 0x2007){
+
+			//console.error("PPUDATA", value.toString(16))
+			//this.PPUDATA = value; 
+
+
+			
+			this.ppuMemory[this.ppuAddress] = value;
+
+			this.ppuAddress += this.VRAMaddressincrementPerCPU;
+
+
+
+		}
+
+
+		 else if(address == 0x2001){
+
+			console.error("PPUMASK",  value.toString(16))
 			this.PPUMASK = value; 
 
 			this.B = (value & 0b10000000)>>7;
@@ -208,7 +252,7 @@ BGRs bMmG
 
 
 		}else{ 
-			throw "setCpuAddress"+ address;
+			throw "setCpuAddress "+ address;
 		}
 
 	}

@@ -72,9 +72,7 @@ fetch('SuperMarioBros.nes', {
 	data.prgRom = a.slice(pos, pos+16384*PrgRomSize);
 	pos = pos+16384*PrgRomSize;
 
-
-	cpu = new P6502();
-	cpu.setPrgRom(data.prgRom);
+ 
  
  	data.chrRom = a.slice(pos, pos+8192*PrgChrSize);
 	pos = pos+8192*PrgChrSize;
@@ -125,16 +123,7 @@ fetch('SuperMarioBros.nes', {
  
 
 
-	setTimeout(function(){ 
-		//cpu.mem[0x2002] = 201
-		//exit = true
-	}, 2)
-
-	console.time("cpu");
-	while(!exit){
-		cpu.tick();
-	}
-console.timeEnd("cpu");
-	console.log(cpu.cicles)
+ 
+ 
 
 })
