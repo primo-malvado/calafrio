@@ -144,7 +144,15 @@ class P6502{
     	}    	
     	this.reg.x = this.reg.a;
     }
-
+    tay() {
+    	
+    	if(parsed[this.startPc] == undefined){
+    		parsed[this.startPc] = true;
+    		
+    		console.log(`${this.startPc.toString(16)}: tay ${this.operText}`);
+    	}    	
+    	this.reg.y = this.reg.a;
+    }
 
 	cmp() {
 
@@ -379,6 +387,24 @@ greater than the accumulator.
     	this.flags.n = this.reg.y & 128 ? 1:0;
  
     }     
+/*
+ASL  Shift Left One Bit (Memory or Accumulator)
+
+     C <- [76543210] <- 0             N Z C I D V
+                                      + + + - - -
+*/
+    asl_a() {
+    	if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: asl ${this.operText};`);
+    	}
+ 
+    	this.reg.c = (this.reg.a & 128) >> 7;;
+    	this.reg.a = this.reg.a < 1;
+    	this.flags.z = this.reg.a === 0 ? 1:0;
+    	this.flags.n = this.reg.a & 128 ? 1:0;
+ 
+    }
 
     lsr_a() {
     	if(parsed[this.startPc] == undefined){
@@ -633,6 +659,21 @@ BIT  Test Bits in Memory with Accumulator
 
 		this.reg.pc = this.reg.pc+3;
 	}	
+
+	indirect(){
+
+		this.startPc = this.reg.pc;
+
+		this.oper = ((this.mapper.getCpuAddress(this.reg.pc+2))<<8)+this.mapper.getCpuAddress(this.reg.pc+1);
+		this.address = this.oper = ((this.mapper.getCpuAddress(this.oper+1))<<8)+this.mapper.getCpuAddress(this.oper);
+		
+		this.operText = `$(${this.oper.toString(16)})`;
+		this.immidiateValue = null
+
+		this.reg.pc = this.reg.pc+3;
+	}	
+
+
 
 	accumulator(){
 	
