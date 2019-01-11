@@ -13,7 +13,7 @@ class Ppu{
 
 	tick(){
 
-		if(this.cicles%1000 > 80)
+		if(this.cicles%100000 > 80000)
 		{
 			this.mapper.PPUSTATUS = 128
 		}else{

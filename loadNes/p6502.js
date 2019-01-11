@@ -501,12 +501,14 @@ BIT  Test Bits in Memory with Accumulator
     push(value) {
     	//debugger;
     	this.mapper.setCpuAddress(0x0100+this.reg.sp, value);
+
+    	console.warn("push", value.toString(16))
     	this.reg.sp--;
     }
     
     pull() {
-    	//debugger;
     	this.reg.sp++;
+    	console.warn("pull", this.mapper.getCpuAddress(0x0100+this.reg.sp).toString(16))
     	return this.mapper.getCpuAddress(0x0100+this.reg.sp);
     }
     
@@ -519,20 +521,38 @@ BIT  Test Bits in Memory with Accumulator
     
     jumpAndStack(doJump) {
     	if(doJump){
-    		this.push(this.reg.pc & 0xff);
     		this.push(this.reg.pc >> 8);
+    		this.push(this.reg.pc & 0xff);
     		this.reg.pc = this.address;
     	}
     } 
 
     rts() {
-		this.reg.pc = (this.pull() << 8 ) + this.pull();
+		this.reg.pc =  this.pull();
+		this.reg.pc += (this.pull() << 8 ) 
 
 
 		if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: rts`);
     	}
+
+    }
+
+    rti() {
+
+
+    	debugger;
+    	/*
+		this.reg.pc =  this.pull();
+		this.reg.pc += (this.pull() << 8 ) 
+
+
+		if(parsed[this.startPc] == undefined){
+			parsed[this.startPc] = true;
+    		console.log(`${this.startPc.toString(16)}: rti`);
+    	}
+    	*/
 
     }
 
