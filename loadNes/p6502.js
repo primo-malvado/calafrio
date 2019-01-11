@@ -394,13 +394,14 @@ ASL  Shift Left One Bit (Memory or Accumulator)
                                       + + + - - -
 */
     asl_a() {
+    	debugger;
     	if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: asl ${this.operText};`);
     	}
  
     	this.reg.c = (this.reg.a & 128) >> 7;;
-    	this.reg.a = this.reg.a < 1;
+    	this.reg.a = (this.reg.a << 1) & 0xff;
     	this.flags.z = this.reg.a === 0 ? 1:0;
     	this.flags.n = this.reg.a & 128 ? 1:0;
  
@@ -409,12 +410,12 @@ ASL  Shift Left One Bit (Memory or Accumulator)
     lsr_a() {
     	if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
-    		console.log(`${this.startPc.toString(16)}: lsr ${this.operText};`);
+    		console.log(`${this.startPc.toString(16)}: lsr ${this.operText}; Shift One Bit Right`);
     	}
 
     	//if(this.reg.y==1)debugger;
     	this.reg.c = this.reg.a & 1;
-    	this.reg.a = this.reg.a > 1;
+    	this.reg.a = this.reg.a >> 1;
     	this.flags.z = this.reg.a === 0 ? 1:0;
  
     }
@@ -435,7 +436,7 @@ ROL  Rotate One Bit Left (Memory or Accumulator)
 
     	var c = this.reg.c;
 		this.reg.c = (this.reg.a & 128) ? 1:0;
-    	this.reg.a = (this.reg.a < 1)+c;
+    	this.reg.a = ((this.reg.a << 1)+c) & 0xff ;
 
     	this.flags.z = this.reg.a === 0 ? 1:0;
     	this.flags.n = this.reg.a & 128 ? 1:0;
@@ -453,7 +454,7 @@ ROL  Rotate One Bit Left (Memory or Accumulator)
 
     	this.reg.c = value & 1;
 
-    	var res = (c << 7) + (value > 1);
+    	var res = (c << 7) + (value >> 1);
 
     	this.mapper.setCpuAddress(this.address, res);
 
@@ -518,13 +519,16 @@ BIT  Test Bits in Memory with Accumulator
     
     jumpAndStack(doJump) {
     	if(doJump){
-    		this.push(this.reg.pc);
+    		this.push(this.reg.pc & 0xff);
+    		this.push(this.reg.pc >> 8);
     		this.reg.pc = this.address;
     	}
     } 
 
     rts() {
-		this.reg.pc = this.pull();
+		this.reg.pc = (this.pull() << 8 ) + this.pull();
+
+
 		if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: rts`);
@@ -791,6 +795,8 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 		this.address = temp2+(temp&0xff);
 		
 
+		console.error("_indirect_Y", this.address.toString(16));
+
 	 	this.immidiateValue = null;
 
 
@@ -804,6 +810,12 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
  
 
 	tick(){
+
+
+		if(this.reg.pc == 0x8e07){
+			debugger;
+		}
+
 
 		if(exit ){
 

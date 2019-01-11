@@ -130,9 +130,26 @@ class Mapper00{
 	getCpuAddress(address){
 
 
-		if(address <=0x07FF){
+
+		if(address == 0x4016){
+			return 0b00000001;
+		}
+
+		else if(address == 0x4017){
+			return 0b00000000;
+		}
+
+		else  if(address <=0x1fff){
 			return this.ram[address % (0x07FF+1)] | 0;
-		}else if(address >= 0x8000 && address <=0xBFFF){
+		}
+/*
+$0000-$07FF	$0800	2KB internal RAM
+$0800-$0FFF	$0800	Mirrors of $0000-$07FF
+$1000-$17FF	$0800
+$1800-$1FFF	$0800
+*/
+
+		else if(address >= 0x8000 && address <=0xBFFF){
 			return this.firstRom[address-0x8000];
 		}else if(address >= 0xc000 && address <=0xffff){
 			return this.secondRom[address-0xc000];
@@ -141,7 +158,7 @@ class Mapper00{
 		}else if(address == 0x2000){
 			return this.PPUCTRL;
 		}else{
-			console.log("getCpuAddress", address.toString(16), this.ram[address]);
+			console.error("getCpuAddress", address.toString(16), this.ram[address]);
 			return this.ram[address] | 0;
 		}
 
@@ -158,7 +175,16 @@ class Mapper00{
 			//$4000-$4017	$0018	NES APU and I/O registers
 			//this.firstRom[address-0x8000] = value;
 			console.error("APU", address.toString(16), value)
-		}else if(address <=0x07FF){
+		}else if(address <=0x1FFF){
+
+/*
+$0000-$07FF	$0800	2KB internal RAM
+$0800-$0FFF	$0800	Mirrors of $0000-$07FF
+$1000-$17FF	$0800
+$1800-$1FFF	$0800
+*/
+
+
 			
 			return this.ram[address % (0x07FF+1)] = value;
 
