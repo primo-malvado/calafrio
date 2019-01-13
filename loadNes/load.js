@@ -45,7 +45,7 @@ fetch('SuperMarioBros.nes', {
 
 	console.time("cpu");
 	while(cpu.cicles < 1000000 && !exit){
-		if(3*ppu.cicles > cpu.cicles){
+		if(ppu.cicles/5 > cpu.cicles / 16){
 			cpu.tick();
 			
 		}else{

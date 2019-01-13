@@ -12,13 +12,18 @@ class Ppu{
 	}
 
 	tick(){
+		var position = this.cicles%(312*341); //A video frame consists of 312 scanlines, each 341 pixels long
 
-		if(this.cicles%100000 > 80000)
-		{
-			this.mapper.PPUSTATUS = 128
-		}else{
-			this.mapper.PPUSTATUS = 0
+		if(this.cicles >29658){
+			
 
+			if(position)
+			{
+				this.mapper.PPUSTATUS = 208
+			}else{
+				this.mapper.PPUSTATUS = 80
+
+			}
 		}
 		if(exit ){
 			return ; 

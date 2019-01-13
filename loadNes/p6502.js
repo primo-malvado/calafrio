@@ -81,6 +81,34 @@ class P6502{
     	this.flags.n = this.reg.y & 128 ? 1:0;
     }
 
+
+    adc() {
+        if(parsed[this.startPc] == undefined){
+            parsed[this.startPc] = true;
+            console.log(`${this.startPc.toString(16)}: adc ${this.operText};`); // ${this.address.toString(16)} = ${this.mapper.getCpuAddress(this.address).toString(16)}
+        }       
+
+//     A + M + C -> A, C                N Z C I D V
+//                                      + + + - - +
+
+
+        var r = this.reg.a + this.getAddressValue() + this.flags.c;
+
+        this.reg.a = r & 0xff;
+
+        this.flags.z = r === 0;
+        this.flags.n = (r&128)? 1:0;
+        this.flags.c = r > 255 ? 1:0;
+
+
+        this.flags.v = (r&128)? 1:0;
+
+
+
+    }
+
+
+
     sta() {
     	if(parsed[this.startPc] == undefined){
     		parsed[this.startPc] = true;
@@ -114,6 +142,15 @@ class P6502{
     }
 
     
+    tya() {
+        //debugger;
+        if(parsed[this.startPc] == undefined){
+            parsed[this.startPc] = true;
+            
+            console.log(`${this.startPc.toString(16)}: tya ${this.operText}`);
+        }       
+        this.reg.a = this.reg.y
+    }    
     txa() {
     	//debugger;
     	if(parsed[this.startPc] == undefined){
@@ -339,13 +376,17 @@ greater than the accumulator.
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: jmp ${this.operText};`);
     	}
-    	if(this.startPc == 0x8057){
-    		debugger;
-    		this.reg.pc = 0x8082
-    	}else{
 
-    		this.branch(true);
-    	}
+        if(this.startPc === 0x8057)
+        {
+            debugger
+            //this.reg.pc = 0x8082
+        } 
+
+
+            this.branch(true);
+         
+ 
     }
 
 
@@ -394,7 +435,7 @@ ASL  Shift Left One Bit (Memory or Accumulator)
                                       + + + - - -
 */
     asl_a() {
-    	debugger;
+    	//debugger;
     	if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: asl ${this.operText};`);
@@ -502,13 +543,13 @@ BIT  Test Bits in Memory with Accumulator
     	//debugger;
     	this.mapper.setCpuAddress(0x0100+this.reg.sp, value);
 
-    	console.warn("push", value.toString(16))
+    	//console.warn("push", value.toString(16))
     	this.reg.sp--;
     }
     
     pull() {
     	this.reg.sp++;
-    	console.warn("pull", this.mapper.getCpuAddress(0x0100+this.reg.sp).toString(16))
+    	//console.warn("pull", this.mapper.getCpuAddress(0x0100+this.reg.sp).toString(16))
     	return this.mapper.getCpuAddress(0x0100+this.reg.sp);
     }
     
@@ -539,7 +580,7 @@ BIT  Test Bits in Memory with Accumulator
 
     }
 
-    rti() {
+    xxxrti() {
 
 
     	debugger;
@@ -815,7 +856,7 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 		this.address = temp2+(temp&0xff);
 		
 
-		console.error("_indirect_Y", this.address.toString(16));
+		//console.error("_indirect_Y", this.address.toString(16));
 
 	 	this.immidiateValue = null;
 

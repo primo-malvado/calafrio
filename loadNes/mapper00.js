@@ -205,19 +205,19 @@ $1800-$1FFF	$0800
 			
  
 
-
-
+console.error("PPUCTRL", value.toString(16))
+debugger;
 
 
 		}else if(address == 0x2006){
 
-			//console.error("PPUADDR", value.toString(16))
+			console.error("PPUADDR", value.toString(16))
 
 			this.ppuAddress = ((this.ppuAddress<<8)+value) & 0xffff;
 			this.PPUADDR = value; 
 		}else if(address == 0x2003){
-
-			//console.error("OAMADDR", value.toString(16))
+ 
+			 console.error("OAMADDR", value.toString(16))
 
 			//this.ppuAddress = ((this.ppuAddress<<8)+value) & 0xffff;
 			this.OAMADDR = value; 
@@ -230,7 +230,7 @@ $1800-$1FFF	$0800
 	
 		else if(address == 0x2007){
 
-			//console.error("PPUDATA", value.toString(16))
+			console.error("PPUDATA", value.toString(16))
 			//this.PPUDATA = value; 
 
 
