@@ -106,7 +106,7 @@ var instructions = {
 'ee': function(cpu){cpu.absolute(); cpu.inc();},
 'e6': function(cpu){cpu.zeropage(); cpu.inc();},
 'f6': {'inst': 'inc', 'addressing': 'zeropage,x', 'assembler': 'oper,x', 'bytes': 2},
-'4c': function(cpu){debugger;  cpu.absolute(); cpu.jmp();},
+'4c': function(cpu){cpu.absolute(); cpu.jmp();},
 //'6c': {'inst': 'jmp', 'addressing': 'indirect', 'assembler': '(oper)', 'bytes': 3},
 '6c': function(cpu){cpu.indirect(); cpu.jmp();},
 '20': function(cpu){cpu.absolute(); cpu.jsr();},

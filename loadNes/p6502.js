@@ -132,7 +132,7 @@ class P6502{
 
     
     txs() {
-    	//debugger;
+    	
     	if(parsed[this.startPc] == undefined){
     		parsed[this.startPc] = true;
     		
@@ -143,7 +143,6 @@ class P6502{
 
     
     tya() {
-        //debugger;
         if(parsed[this.startPc] == undefined){
             parsed[this.startPc] = true;
             
@@ -152,7 +151,7 @@ class P6502{
         this.reg.a = this.reg.y
     }    
     txa() {
-    	//debugger;
+    	
     	if(parsed[this.startPc] == undefined){
     		parsed[this.startPc] = true;
     		
@@ -162,7 +161,7 @@ class P6502{
     }
         
     pha() {
-    	//debugger;
+    	
     	if(parsed[this.startPc] == undefined){
     		parsed[this.startPc] = true;
     		
@@ -376,13 +375,13 @@ greater than the accumulator.
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: jmp ${this.operText};`);
     	}
-
+/*
         if(this.startPc === 0x8057)
         {
             debugger
             //this.reg.pc = 0x8082
         } 
-
+*/
 
             this.branch(true);
          
@@ -435,7 +434,7 @@ ASL  Shift Left One Bit (Memory or Accumulator)
                                       + + + - - -
 */
     asl_a() {
-    	//debugger;
+    	
     	if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: asl ${this.operText};`);
@@ -540,7 +539,7 @@ BIT  Test Bits in Memory with Accumulator
 
 
     push(value) {
-    	//debugger;
+    	
     	this.mapper.setCpuAddress(0x0100+this.reg.sp, value);
 
     	//console.warn("push", value.toString(16))
@@ -671,7 +670,7 @@ BIT  Test Bits in Memory with Accumulator
 		{
 
 			//console.log(this.reg.pc.toString(16) ,opCode)
-			//debugger;
+			
 			//throw "instrução nao definida";
 		}
 
@@ -874,7 +873,7 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 
 
 		if(this.reg.pc == 0x8e07){
-			debugger;
+			
 		}
 
 

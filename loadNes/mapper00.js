@@ -204,11 +204,18 @@ $1800-$1FFF	$0800
 			this.GenerateNmiAtStartVerticalBlankingInterval = (value & 0b10000000)>>7;
 			
  
-
-console.error("PPUCTRL", value.toString(16))
-debugger;
+			console.error("PPUCTRL", value.toString(16))
 
 
+
+
+
+		}else if(address == 0x4014){
+
+			console.error("OAMDMA", value.toString(16))
+
+			//this.ppuAddress = ((this.ppuAddress<<8)+value) & 0xffff;
+			this.OAMDMA = value; 
 		}else if(address == 0x2006){
 
 			console.error("PPUADDR", value.toString(16))
