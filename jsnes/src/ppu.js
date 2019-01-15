@@ -1,5 +1,5 @@
-var Tile = require("./tile");
-var utils = require("./utils");
+import Tile from "./tile";
+import utils from "./utils";
 
 var PPU = function(nes) {
   this.nes = nes;
@@ -1750,4 +1750,4 @@ PaletteTable.prototype = {
   }
 };
 
-module.exports = PPU;
+export default PPU;

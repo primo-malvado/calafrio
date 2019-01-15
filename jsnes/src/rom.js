@@ -1,5 +1,5 @@
-var Mappers = require("./mappers");
-var Tile = require("./tile");
+import  Mappers from "./mappers";
+import  Tile from "./tile";
 
 var ROM = function(nes) {
   this.nes = nes;
@@ -201,4 +201,4 @@ ROM.prototype = {
   }
 };
 
-module.exports = ROM;
+export default ROM;

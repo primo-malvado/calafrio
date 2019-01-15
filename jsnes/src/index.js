@@ -1,4 +1,7 @@
-module.exports = {
-  Controller: require("./controller"),
-  NES: require("./nes")
+
+import Controller from "./controller";
+import NES from "./nes";
+export  {
+  Controller,
+  NES
 };

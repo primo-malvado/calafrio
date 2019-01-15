@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 
   copyArrayElements: function(src, srcPos, dest, destPos, length) {
     for (var i = 0; i < length; ++i) {

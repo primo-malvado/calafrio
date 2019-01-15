@@ -2,9 +2,10 @@ var path = require("path");
 var webpack = require("webpack");
 
 module.exports = {
+  mode: "development",
   entry: {
     "jsnes": "./src/index.js",
-    "jsnes.min": "./src/index.js",
+    //"jsnes.min": "./src/index.js",
   },
   devtool: "source-map",
   output: {

@@ -1368,4 +1368,4 @@ ChannelTriangle.prototype = {
   }
 };
 
-module.exports = PAPU;
+export default PAPU;

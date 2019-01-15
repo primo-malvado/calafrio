@@ -1,7 +1,14 @@
 
 class Controller{
 
- 
+static BUTTON_A = 0;
+static BUTTON_B = 1;
+static BUTTON_SELECT = 2;
+static BUTTON_START = 3;
+static BUTTON_UP = 4;
+static BUTTON_DOWN = 5;
+static BUTTON_LEFT = 6;
+static BUTTON_RIGHT = 7;
 
   constructor(){
     this.state = new Array(8);
@@ -21,13 +28,6 @@ class Controller{
 }
 
 
-Controller.BUTTON_A = 0;
-Controller.BUTTON_B = 1;
-Controller.BUTTON_SELECT = 2;
-Controller.BUTTON_START = 3;
-Controller.BUTTON_UP = 4;
-Controller.BUTTON_DOWN = 5;
-Controller.BUTTON_LEFT = 6;
-Controller.BUTTON_RIGHT = 7;
 
-module.exports = Controller;
+
+export default Controller;

@@ -1,4 +1,4 @@
-var utils = require("./utils");
+import  utils from "./utils";
 
 var Mappers = {};
 
@@ -1536,4 +1536,4 @@ Mappers[180].prototype.loadROM = function() {
 };
 */
 
-module.exports = Mappers;
+export default Mappers;

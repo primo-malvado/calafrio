@@ -195,4 +195,4 @@ Tile.prototype = {
   }
 };
 
-module.exports = Tile;
+export default Tile;
