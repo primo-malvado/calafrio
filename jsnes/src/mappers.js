@@ -517,7 +517,7 @@ Mappers[0].prototype = {
     this.joypadLastWrite = s.joypadLastWrite;
   }
 };
-
+/*
 Mappers[1] = function(nes) {
   this.nes = nes;
 };
@@ -817,7 +817,7 @@ Mappers[2].prototype.loadROM = function() {
   // Do Reset-Interrupt:
   this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
 };
-
+*/
 /**
  * Mapper 003 (CNROM)
  *
@@ -825,6 +825,8 @@ Mappers[2].prototype.loadROM = function() {
  * @example Solomon's Key, Arkanoid, Arkista's Ring, Bump 'n' Jump, Cybernoid
  * @description http://wiki.nesdev.com/w/index.php/INES_Mapper_003
  */
+
+ /*
 Mappers[3] = function(nes) {
   this.nes = nes;
 };
@@ -1096,7 +1098,7 @@ Mappers[4].prototype.fromJSON = function(s) {
   this.irqEnable = s.irqEnable;
   this.prgAddressChanged = s.prgAddressChanged;
 };
-
+*/
 /**
  * Mapper005 (MMC5,ExROM)
  *
@@ -1104,6 +1106,8 @@ Mappers[4].prototype.fromJSON = function(s) {
  * @description http://wiki.nesdev.com/w/index.php/INES_Mapper_005
  * @constructor
  */
+
+ /*
 Mappers[5] = function(nes) {
   this.nes = nes;
 };
@@ -1256,6 +1260,7 @@ Mappers[5].prototype.loadROM = function() {
   // Do Reset-Interrupt:
   this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
 };
+*/
 
 /**
  * Mapper007 (AxROM)
@@ -1263,6 +1268,9 @@ Mappers[5].prototype.loadROM = function() {
  * @description http://wiki.nesdev.com/w/index.php/INES_Mapper_007
  * @constructor
  */
+
+/*
+
 Mappers[7] = function(nes) {
   this.nes = nes;
 };
@@ -1297,6 +1305,7 @@ Mappers[7].prototype.loadROM = function() {
   // Do Reset-Interrupt:
   this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
 };
+*/
 
 /**
  * Mapper 011 (Color Dreams)
@@ -1305,6 +1314,8 @@ Mappers[7].prototype.loadROM = function() {
  * @example Crystal Mines, Metal Fighter
  * @constructor
  */
+
+ /*
 Mappers[11] = function(nes) {
   this.nes = nes;
 };
@@ -1331,7 +1342,7 @@ Mappers[11].prototype.write = function(address, value) {
     }
   }
 };
-
+*/
 /**
  * Mapper 034 (BNROM, NINA-01)
  *
@@ -1339,6 +1350,7 @@ Mappers[11].prototype.write = function(address, value) {
  * @example Darkseed, Mashou, Mission Impossible 2
  * @constructor
  */
+ /*
 Mappers[34] = function(nes) {
   this.nes = nes;
 };
@@ -1353,7 +1365,7 @@ Mappers[34].prototype.write = function(address, value) {
     this.load32kRomBank(value, 0x8000);
   }
 };
-
+*/
 /**
  * Mapper 038
  *
@@ -1361,6 +1373,7 @@ Mappers[34].prototype.write = function(address, value) {
  * @example Crime Busters
  * @constructor
  */
+ /*
 Mappers[38] = function(nes) {
   this.nes = nes;
 };
@@ -1379,7 +1392,7 @@ Mappers[38].prototype.write = function(address, value) {
     this.load8kVromBank(((value >> 2) & 3) * 2, 0x0000);
   }
 };
-
+*/
 /**
  * Mapper 066 (GxROM)
  *
@@ -1388,6 +1401,8 @@ Mappers[38].prototype.write = function(address, value) {
  * Super Mario Bros. + Duck Hunt
  * @constructor
  */
+
+/* 
 Mappers[66] = function(nes) {
   this.nes = nes;
 };
@@ -1406,7 +1421,7 @@ Mappers[66].prototype.write = function(address, value) {
     this.load8kVromBank((value & 3) * 2, 0x0000);
   }
 };
-
+*/
 /**
  * Mapper 094 (UN1ROM)
  *
@@ -1414,6 +1429,7 @@ Mappers[66].prototype.write = function(address, value) {
  * @example Senjou no Ookami
  * @constructor
  */
+ /*
 Mappers[94] = function(nes) {
   this.nes = nes;
 };
@@ -1447,7 +1463,7 @@ Mappers[94].prototype.loadROM = function() {
   // Do Reset-Interrupt:
   this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
 };
-
+*/
 /**
  * Mapper 140
  *
@@ -1455,6 +1471,8 @@ Mappers[94].prototype.loadROM = function() {
  * @example Bio Senshi Dan - Increaser Tono Tatakai
  * @constructor
  */
+
+ /*
 Mappers[140] = function(nes) {
   this.nes = nes;
 };
@@ -1473,7 +1491,7 @@ Mappers[140].prototype.write = function(address, value) {
     this.load8kVromBank((value & 0xf) * 2, 0x0000);
   }
 };
-
+*/
 /**
  * Mapper 180
  *
@@ -1481,6 +1499,8 @@ Mappers[140].prototype.write = function(address, value) {
  * @example Crazy Climber
  * @constructor
  */
+
+ /*
 Mappers[180] = function(nes) {
   this.nes = nes;
 };
@@ -1514,5 +1534,6 @@ Mappers[180].prototype.loadROM = function() {
   // Do Reset-Interrupt:
   this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
 };
+*/
 
 module.exports = Mappers;
