@@ -17,13 +17,15 @@ class Ppu{
 	}
 
  
-
 	setMapper(mapper){
 		this.mapper = mapper;
 	}
+	setCpu(cpu){
+		this.cpu = cpu;
+	}
+
 
 	tick(){
-		//debugger;
  		this.pixels =this.frameCount%312;
 
  		this.scanLine = ((this.frameCount - this.pixels) / 312)%341;
@@ -39,30 +41,40 @@ class Ppu{
 
  		if(this.scanLine == 241 && this.pixels == 1) 
  		{
- 			debugger;
- 			this.verticalBlank = 0;
+ 			
+ 			this.verticalBlank = 1;
+
+
  		}
  		if(this.scanLine == 261 && this.pixels == 1) 
  		{
- 			debugger;
- 			this.verticalBlank = 1;
+ 			
+ 			this.verticalBlank = 0;
  		}
 
 
 		var position = this.cicles%(312*341); //A video frame consists of 312 scanlines, each 341 pixels long
 
- 
+ /*
 		var ppuStatus = (this.verticalBlank ? 128 : 0)+
 		(this.sprite0Hit ? 64 : 0)+
 		(this.spriteOverflow ? 32 : 0)+
 		(this.leastSignificantBits  & 0b11111);
+*/
 
+		var ppuStatus = this.verticalBlank ? 208 : 80
 		if(this.mapper.PPUSTATUS != ppuStatus){
-			debugger;
 			this.mapper.PPUSTATUS = ppuStatus;
 		}
 
+ 		if(this.scanLine == 241 && this.pixels == 1) 
+ 		{
+ 			 
+ 			if(this.mapper.GenerateNmiAtStartVerticalBlankingInterval){
+ 				this.cpu.nmi = true;
+ 			}
 
+ 		}
 	 
 		if(exit ){
 			return ; 
@@ -74,9 +86,6 @@ class Ppu{
 
 
 		if(typeof(instruction) !== "function"){
-//			debugger;
-
-
 			exit = true
 
 			return;

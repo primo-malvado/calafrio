@@ -54,7 +54,7 @@ class Mapper00{
 		this.PPUSCROLL = 0; //	$2005	xxxx xxxx	fine scroll position (two writes: X scroll, Y scroll)
 		this.PPUADDR = 0; //	$2006	aaaa aaaa	PPU read/write address (two writes: most significant byte, least significant byte)
 		this.PPUDATA = 0; //	$2007	dddd dddd	PPU data read/write
-		this.OAMDMA = 0; //	$4014	aaaa aaaa	OAM DMA high address
+		this.OAMDMA = 0; //		$4014	aaaa aaaa	OAM DMA high address
 
 		this.ppuAddress = 0;
 		this.ppuMemory = [];
@@ -154,7 +154,13 @@ $1800-$1FFF	$0800
 		}else if(address >= 0xc000 && address <=0xffff){
 			return this.secondRom[address-0xc000];
 		}else if(address == 0x2002){
-			return this.PPUSTATUS;
+			var ret =  this.PPUSTATUS;
+
+			this.PPUSTATUS = this.PPUSTATUS & 0b01111111;
+			this.verticalBlank = 0;
+
+			return ret; 
+
 		}else if(address == 0x2000){
 			return this.PPUCTRL;
 		}else{

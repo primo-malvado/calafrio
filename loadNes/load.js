@@ -40,11 +40,13 @@ fetch('SuperMarioBros.nes', {
 	cpu.setMapper(mapper);
 	ppu.setMapper(mapper);
 
+	ppu.setCpu(cpu);
+
 
  
 
 	console.time("cpu");
-	while(cpu.cicles < 10000000 && !exit){
+	while(cpu.cicles < 1000000000 && !exit){
 		if(ppu.cicles/5 > cpu.cicles / 16){
 			cpu.tick();
 			
@@ -52,6 +54,9 @@ fetch('SuperMarioBros.nes', {
 			ppu.tick();
 			
 		}
+
+
+
 
 	}
 	console.timeEnd("cpu");

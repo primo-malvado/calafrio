@@ -16,8 +16,9 @@ var parsed = {}
  
 
 class P6502{
-	constructor(){
-		this.cicles = 0;
+    constructor(){
+        this.cicles = 0;
+		this.nmi = false;
 		//this.mem = [];
 		this.flags = {
 
@@ -42,6 +43,7 @@ class P6502{
 	}
 
 
+ 
     lda() {
 
     	if(parsed[this.startPc] == undefined){
@@ -375,13 +377,7 @@ greater than the accumulator.
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: jmp ${this.operText};`);
     	}
-/*
-        if(this.startPc === 0x8057)
-        {
-            debugger
-            //this.reg.pc = 0x8082
-        } 
-*/
+ 
 
             this.branch(true);
          
@@ -420,8 +416,7 @@ greater than the accumulator.
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: dey ${this.operText};`);
     	}
-
-    	//if(this.reg.y==1)debugger;
+ 
     	this.reg.y = (this.reg.y + 255) & 255 ;
     	this.flags.z = this.reg.y === 0 ? 1:0;
     	this.flags.n = this.reg.y & 128 ? 1:0;
@@ -452,8 +447,7 @@ ASL  Shift Left One Bit (Memory or Accumulator)
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: lsr ${this.operText}; Shift One Bit Right`);
     	}
-
-    	//if(this.reg.y==1)debugger;
+ 
     	this.reg.c = this.reg.a & 1;
     	this.reg.a = this.reg.a >> 1;
     	this.flags.z = this.reg.a === 0 ? 1:0;
@@ -461,14 +455,7 @@ ASL  Shift Left One Bit (Memory or Accumulator)
     }
     rol_a() {
 
-/*
-ROL  Rotate One Bit Left (Memory or Accumulator)
-
-     C <- [76543210] <- C             N Z C I D V
-                                      + + + - - -
-
-*/
-
+ 
     	if(parsed[this.startPc] == undefined){
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: rol ${this.operText};`);
@@ -526,7 +513,7 @@ BIT  Test Bits in Memory with Accumulator
     		console.log(`${this.startPc.toString(16)}: bit ${this.operText};`);
     	}
 
-//    	debugger;
+ 
     	var temp = this.getAddressValue();
 
     	this.flags.z = (temp &  this.reg.y ) === 0 ? 1:0;
@@ -579,12 +566,10 @@ BIT  Test Bits in Memory with Accumulator
 
     }
 
-    xxxrti() {
+    rti() {
 
-
-    	debugger;
-    	/*
-		this.reg.pc =  this.pull();
+ 
+    	this.reg.pc =  this.pull();
 		this.reg.pc += (this.pull() << 8 ) 
 
 
@@ -592,8 +577,7 @@ BIT  Test Bits in Memory with Accumulator
 			parsed[this.startPc] = true;
     		console.log(`${this.startPc.toString(16)}: rti`);
     	}
-    	*/
-
+    
     }
 
 
@@ -655,8 +639,7 @@ BIT  Test Bits in Memory with Accumulator
 	getOpCode(){
 		var value = this.mapper.getCpuAddress(this.reg.pc);
 
-//		if(this.reg.pc == 0x8225){debugger;}
-
+ 
 
 		var opCode = "00"+value.toString(16);
 		return opCode.substring(opCode.length-2);
@@ -871,16 +854,29 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 
 	tick(){
 
+        if(exit ){
 
-		if(this.reg.pc == 0x8e07){
-			
-		}
+            return ; 
+        }
 
 
-		if(exit ){
 
-			return ; 
-		}
+        if(this.nmi){
+            this.nmi = false;
+
+
+            this.push(this.reg.pc >> 8);
+            this.push(this.reg.pc & 0xff);
+            this.reg.pc = 0x8082;
+
+
+        }else{
+
+        }
+ 
+
+
+
 
 		var opCode = this.getOpCode();
 		var instruction = this.getInstruction(opCode);
@@ -888,7 +884,7 @@ effective address is word in (LL, LL + 1) incremented by Y with carry: C.w($00LL
 		this.cicles += duration[opCode];
 
 		if(typeof(instruction) !== "function"){
-			debugger;
+ 
 
 
 			exit = true
