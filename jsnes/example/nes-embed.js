@@ -109,7 +109,6 @@ function nes_load_data(canvas_id, rom_data){
 }
 
 function nes_load_url(canvas_id, path){
-	nes_init(canvas_id);
 	
 	var req = new XMLHttpRequest();
 	req.open("GET", path);
@@ -118,6 +117,7 @@ function nes_load_url(canvas_id, path){
 	
 	req.onload = function() {
 		if (this.status === 200) {
+	nes_init(canvas_id);
 		nes_boot(this.responseText);
 		} else if (this.status === 0) {
 			// Aborted, so ignore error
