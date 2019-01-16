@@ -5,13 +5,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Embedding Example</title>
 		
-		<script type="text/javascript" src="../dist/jsnes.js"></script>
+		<script type="text/javascript" src="/jsnes.js"></script>
 		<script type="text/javascript" src="nes-embed.js"></script>
-		<script>window.onload = function(){nes_load_url("nes-canvas", "SuperMarioBros.nes");}</script>
+		<!--<script>window.onload = function(){nes_load_url("nes-canvas", "SuperMarioBros.nes");}</script>-->
+		<script>window.onload = function(){nes_load_url("nes-canvas", "KirbyAdventure.nes");}</script>
 	</head>
 	<body>
-		<div style="margin: auto; width: 75%;">
-			<canvas id="nes-canvas" width="256" height="240" style="width: 100%"/>
+		<div>
+			<canvas id="nes-canvas" width="256" height="240" />
 		</div>
 		<p>DPad: Arrow keys<br/>Start: Return, Select: Tab<br/>A Button: A, B Button: S</p>
 	</body>

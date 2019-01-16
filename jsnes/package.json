@@ -12,8 +12,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "webpack",
-    "test": "prettier-check src/**/*.js && mocha ./test/*.spec.js",
-    "test:watch": "mocha -w ./test/*.spec.js",
+    "dev": "webpack-dev-server",
     "prepublish": "npm run build",
     "format": "prettier --write src/**/*.js"
   },
@@ -33,6 +32,7 @@
     "webpack-cli": "^3.2.1"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.2.3"
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "webpack-dev-server": "^3.1.14"
   }
 }

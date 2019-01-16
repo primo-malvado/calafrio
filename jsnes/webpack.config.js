@@ -12,8 +12,8 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
     library: "jsnes",
-    libraryTarget: "umd",
-    umdNamedDefine: true
+    //libraryTarget: "umd",
+    //umdNamedDefine: true
   },
  
 module: {
@@ -33,7 +33,8 @@ module: {
  
    ,
   plugins: [
-  /*  new webpack.optimize.UglifyJsPlugin({
+    /* 
+    new webpack.optimize.UglifyJsPlugin({
       include: /\.min\.js$/,
       sourceMap: true
     })
