@@ -1,4 +1,6 @@
 class Controller {
+ 
+
   constructor() {
     this.state = new Array(8);
     for (var i = 0; i < this.state.length; i++) {
@@ -21,6 +23,7 @@ class Controller {
   static BUTTON_DOWN = 5;
   static BUTTON_LEFT = 6;
   static BUTTON_RIGHT = 7;
+ 
 }
 
 export default Controller;

@@ -1,21 +1,22 @@
 class Tile {
-  constructor() {
-    // Tile data:
-    this.pix = new Array(64);
 
-    this.fbIndex = null;
-    this.tIndex = null;
-    this.x = null;
-    this.y = null;
-    this.w = null;
-    this.h = null;
-    this.incX = null;
-    this.incY = null;
-    this.palIndex = null;
-    this.tpri = null;
-    this.c = null;
-    this.initialized = false;
+  fbIndex = null;
+  tIndex = null;
+  x = null;
+  y = null;
+  w = null;
+  h = null;
+  incX = null;
+  incY = null;
+  palIndex = null;
+  tpri = null;
+  c = null;
+  initialized = false;
+
+  constructor() {
+    this.pix = new Array(64);
     this.opaque = new Array(8);
+
   }
 
   setBuffer(scanline) {
@@ -177,12 +178,11 @@ class Tile {
       }
     }
   }
-
+/*
   isTransparent(x, y) {
     return this.pix[(y << 3) + x] === 0;
   }
-
- 
+  */
 }
 
 export default Tile;

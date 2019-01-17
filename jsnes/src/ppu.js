@@ -206,7 +206,8 @@ class PPU {
     }
 
     this.palTable = new PaletteTable();
-    this.palTable.loadNTSCPalette();
+    //this.palTable.loadNTSCPalette();
+    this.palTable.loadPALPalette();
     //this.palTable.loadDefaultPalette();
 
     this.updateControlReg1(0);
@@ -593,32 +594,10 @@ class PPU {
     // Fetch status data:
     return tmp;
   }
-
   // CPU Register $2003:
   // Write the SPR-RAM address that is used for sramWrite (Register 0x2004 in CPU memory map)
   writeSRAMAddress(address) {
     this.sramAddress = address;
-  }
-
-  // CPU Register $2004 (R):
-  // Read from SPR-RAM (Sprite RAM).
-  // The address should be set first.
-  sramLoad() {
-    /*short tmp = sprMem.load(sramAddress);
-        sramAddress++; // Increment address
-        sramAddress%=0x100;
-        return tmp;*/
-    return this.spriteMem[this.sramAddress];
-  }
-
-  // CPU Register $2004 (W):
-  // Write to SPR-RAM (Sprite RAM).
-  // The address should be set first.
-  sramWrite(value) {
-    this.spriteMem[this.sramAddress] = value;
-    this.spriteRamWriteUpdate(this.sramAddress, value);
-    this.sramAddress++; // Increment address
-    this.sramAddress %= 0x100;
   }
 
   // CPU Register $2005:
@@ -639,7 +618,6 @@ class PPU {
     }
     this.firstWrite = !this.firstWrite;
   }
-
   // CPU Register $2006:
   // Sets the adress used when reading/writing from/to VRAM.
   // The first write sets the high byte, the second the low byte.
@@ -805,34 +783,6 @@ class PPU {
     b2 |= this.cntHT & 31;
 
     this.vramAddress = ((b1 << 8) | b2) & 0x7fff;
-  }
-
-  incTileCounter(count) {
-    for (var i = count; i !== 0; i--) {
-      this.cntHT++;
-      if (this.cntHT === 32) {
-        this.cntHT = 0;
-        this.cntVT++;
-        if (this.cntVT >= 30) {
-          this.cntH++;
-          if (this.cntH === 2) {
-            this.cntH = 0;
-            this.cntV++;
-            if (this.cntV === 2) {
-              this.cntV = 0;
-              this.cntFV++;
-              this.cntFV &= 0x7;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Reads from memory, taking into account
-  // mirroring/mapping of address ranges.
-  mirroredLoad(address) {
-    return this.vramMem[this.vramMirrorTable[address]];
   }
 
   // Writes to memory, taking into account
@@ -1378,7 +1328,6 @@ class PPU {
     //updateSpr0Hit();
     this.checkSprite0(this.scanline - 20);
   }
-
   // Updates the internal pattern
   // table buffers with this new attribute
   // table byte.
@@ -1413,6 +1362,57 @@ class PPU {
       this.sprX[tIndex] = value;
     }
   }
+  isPixelWhite(x, y) {
+    this.triggerRendering();
+    return this.nes.ppu.buffer[(y << 8) + x] === 0xffffff;
+  }
+
+  /*
+  // CPU Register $2004 (R):
+  // Read from SPR-RAM (Sprite RAM).
+  // The address should be set first.
+  sramLoad() {
+ 
+    return this.spriteMem[this.sramAddress];
+  }
+
+  // CPU Register $2004 (W):
+  // Write to SPR-RAM (Sprite RAM).
+  // The address should be set first.
+  sramWrite(value) {
+    this.spriteMem[this.sramAddress] = value;
+    this.spriteRamWriteUpdate(this.sramAddress, value);
+    this.sramAddress++; // Increment address
+    this.sramAddress %= 0x100;
+  }
+
+  incTileCounter(count) {
+    for (var i = count; i !== 0; i--) {
+      this.cntHT++;
+      if (this.cntHT === 32) {
+        this.cntHT = 0;
+        this.cntVT++;
+        if (this.cntVT >= 30) {
+          this.cntH++;
+          if (this.cntH === 2) {
+            this.cntH = 0;
+            this.cntV++;
+            if (this.cntV === 2) {
+              this.cntV = 0;
+              this.cntFV++;
+              this.cntFV &= 0x7;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Reads from memory, taking into account
+  // mirroring/mapping of address ranges.
+  mirroredLoad(address) {
+    return this.vramMem[this.vramMirrorTable[address]];
+  }
 
   doNMI() {
     // Set VBlank flag:
@@ -1421,15 +1421,7 @@ class PPU {
     this.nes.cpu.requestIrq(this.nes.cpu.IRQ_NMI);
   }
 
-  isPixelWhite(x, y) {
-    this.triggerRendering();
-    return this.nes.ppu.buffer[(y << 8) + x] === 0xffffff;
-  }
-
- 
-
- 
- 
+ */
 }
 
 class NameTable {
@@ -1474,8 +1466,6 @@ class NameTable {
       }
     }
   }
-
- 
 }
 
 class PaletteTable {
@@ -1567,7 +1557,7 @@ class PaletteTable {
   getRgb(r, g, b) {
     return (r << 16) | (g << 8) | b;
   }
-
+  /*
   loadDefaultPalette() {
     this.curTable[0] = this.getRgb(117, 117, 117);
     this.curTable[1] = this.getRgb(39, 27, 143);
@@ -1637,6 +1627,7 @@ class PaletteTable {
     this.makeTables();
     this.setEmphasis(0);
   }
+*/
 }
 
 export default PPU;

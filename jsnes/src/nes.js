@@ -189,8 +189,6 @@ class NES {
     this.frameTime = 1000 / rate;
     this.papu.setSampleRate(this.opts.sampleRate, false);
   }
-
- 
 }
 
 export default NES;

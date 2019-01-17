@@ -1,19 +1,8 @@
-
 import utils from "./utils";
 
 export default class Mapper {
   constructor(nes) {
     this.nes = nes;
-  }
-
-  reset() {
-    this.joy1StrobeState = 0;
-    this.joy2StrobeState = 0;
-    this.joypadLastWrite = 0;
-
-    this.zapperFired = false;
-    this.zapperX = null;
-    this.zapperY = null;
   }
 
   write(address, value) {
@@ -26,19 +15,6 @@ export default class Mapper {
         // Write to persistent RAM
         this.nes.opts.onBatteryRamWrite(address, value);
       }
-    } else if (address > 0x2007 && address < 0x4000) {
-      this.regWrite(0x2000 + (address & 0x7), value);
-    } else {
-      this.regWrite(address, value);
-    }
-  }
-
-  writelow(address, value) {
-    if (address < 0x2000) {
-      // Mirroring of RAM:
-      this.nes.cpu.mem[address & 0x7ff] = value;
-    } else if (address > 0x4017) {
-      this.nes.cpu.mem[address] = value;
     } else if (address > 0x2007 && address < 0x4000) {
       this.regWrite(0x2000 + (address & 0x7), value);
     } else {
@@ -337,7 +313,6 @@ export default class Mapper {
     //nes.getCpu().doResetInterrupt();
     this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
   }
-
   loadPRGROM() {
     if (this.nes.rom.romCount > 1) {
       // Load the two first banks into memory.
@@ -413,24 +388,7 @@ export default class Mapper {
     );
   }
 
-  load32kRomBank(bank, address) {
-    this.loadRomBank((bank * 2) % this.nes.rom.romCount, address);
-    this.loadRomBank((bank * 2 + 1) % this.nes.rom.romCount, address + 16384);
-  }
-
-  load8kVromBank(bank4kStart, address) {
-    if (this.nes.rom.vromCount === 0) {
-      return;
-    }
-    this.nes.ppu.triggerRendering();
-
-    this.loadVromBank(bank4kStart % this.nes.rom.vromCount, address);
-    this.loadVromBank(
-      (bank4kStart + 1) % this.nes.rom.vromCount,
-      address + 4096
-    );
-  }
-
+  //mapper4
   load1kVromBank(bank1k, address) {
     if (this.nes.rom.vromCount === 0) {
       return;
@@ -454,6 +412,59 @@ export default class Mapper {
       this.nes.ppu.ptTile[baseIndex + i] = vromTile[(bank1k % 4 << 6) + i];
     }
   }
+
+  //mapper4
+  load8kRomBank(bank8k, address) {
+    var bank16k = Math.floor(bank8k / 2) % this.nes.rom.romCount;
+    var offset = (bank8k % 2) * 8192;
+
+    //this.nes.cpu.mem.write(address,this.nes.rom.rom[bank16k],offset,8192);
+    utils.copyArrayElements(
+      this.nes.rom.rom[bank16k],
+      offset,
+      this.nes.cpu.mem,
+      address,
+      8192
+    );
+  }
+
+  clockIrqCounter() {
+    // Does nothing. This is used by the MMC3 mapper.
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  latchAccess(address) {
+    // Does nothing. This is used by MMC2.
+  }
+
+  /*
+  reset() {
+    this.joy1StrobeState = 0;
+    this.joy2StrobeState = 0;
+    this.joypadLastWrite = 0;
+
+    this.zapperFired = false;
+    this.zapperX = null;
+    this.zapperY = null;
+  }
+  load32kRomBank(bank, address) {
+    this.loadRomBank((bank * 2) % this.nes.rom.romCount, address);
+    this.loadRomBank((bank * 2 + 1) % this.nes.rom.romCount, address + 16384);
+  }
+
+  load8kVromBank(bank4kStart, address) {
+    if (this.nes.rom.vromCount === 0) {
+      return;
+    }
+    this.nes.ppu.triggerRendering();
+
+    this.loadVromBank(bank4kStart % this.nes.rom.vromCount, address);
+    this.loadVromBank(
+      (bank4kStart + 1) % this.nes.rom.vromCount,
+      address + 4096
+    );
+  }
+
 
   load2kVromBank(bank2k, address) {
     if (this.nes.rom.vromCount === 0) {
@@ -479,27 +490,17 @@ export default class Mapper {
     }
   }
 
-  load8kRomBank(bank8k, address) {
-    var bank16k = Math.floor(bank8k / 2) % this.nes.rom.romCount;
-    var offset = (bank8k % 2) * 8192;
-
-    //this.nes.cpu.mem.write(address,this.nes.rom.rom[bank16k],offset,8192);
-    utils.copyArrayElements(
-      this.nes.rom.rom[bank16k],
-      offset,
-      this.nes.cpu.mem,
-      address,
-      8192
-    );
+  writelow(address, value) {
+    if (address < 0x2000) {
+      // Mirroring of RAM:
+      this.nes.cpu.mem[address & 0x7ff] = value;
+    } else if (address > 0x4017) {
+      this.nes.cpu.mem[address] = value;
+    } else if (address > 0x2007 && address < 0x4000) {
+      this.regWrite(0x2000 + (address & 0x7), value);
+    } else {
+      this.regWrite(address, value);
+    }
   }
-
-  clockIrqCounter() {
-    // Does nothing. This is used by the MMC3 mapper.
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  latchAccess(address) {
-    // Does nothing. This is used by MMC2.
-  }
- 
+*/
 }

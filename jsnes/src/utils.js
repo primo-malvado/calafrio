@@ -7,6 +7,5 @@ export default {
 
   copyArray: function(src) {
     return src.slice(0);
-  },
- 
+  }
 };
