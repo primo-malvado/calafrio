@@ -24,11 +24,14 @@ var nes = new jsnes.NES({
 });
 
 function onAnimationFrame(){
-	window.requestAnimationFrame(onAnimationFrame);
+	
+	
+		window.requestAnimationFrame(onAnimationFrame);
 	
 	image.data.set(framebuffer_u8);
 	canvas_ctx.putImageData(image, 0, 0);
-	nes.frame();
+
+		nes.frame();
 }
 
 function audio_remain(){
@@ -40,8 +43,11 @@ function audio_callback(event){
 	var len = dst.length;
 	
 	// Attempt to avoid buffer underruns.
-	if(audio_remain() < AUDIO_BUFFERING) nes.frame();
-	
+	if(audio_remain() < AUDIO_BUFFERING) {
+ 
+		nes.frame();
+ 
+	}
 	var dst_l = dst.getChannelData(0);
 	var dst_r = dst.getChannelData(1);
 	for(var i = 0; i < len; i++){
@@ -108,6 +114,7 @@ function nes_load_data(canvas_id, rom_data){
 	nes_boot(rom_data);
 }
 
+
 function nes_load_url(canvas_id, path){
 	
 	var req = new XMLHttpRequest();
@@ -117,7 +124,7 @@ function nes_load_url(canvas_id, path){
 	
 	req.onload = function() {
 		if (this.status === 200) {
-	nes_init(canvas_id);
+			nes_init(canvas_id);
 		nes_boot(this.responseText);
 		} else if (this.status === 0) {
 			// Aborted, so ignore error

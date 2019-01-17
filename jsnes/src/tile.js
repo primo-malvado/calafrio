@@ -1,30 +1,30 @@
-var Tile = function() {
-  // Tile data:
-  this.pix = new Array(64);
+class Tile {
+  constructor() {
+    // Tile data:
+    this.pix = new Array(64);
 
-  this.fbIndex = null;
-  this.tIndex = null;
-  this.x = null;
-  this.y = null;
-  this.w = null;
-  this.h = null;
-  this.incX = null;
-  this.incY = null;
-  this.palIndex = null;
-  this.tpri = null;
-  this.c = null;
-  this.initialized = false;
-  this.opaque = new Array(8);
-};
+    this.fbIndex = null;
+    this.tIndex = null;
+    this.x = null;
+    this.y = null;
+    this.w = null;
+    this.h = null;
+    this.incX = null;
+    this.incY = null;
+    this.palIndex = null;
+    this.tpri = null;
+    this.c = null;
+    this.initialized = false;
+    this.opaque = new Array(8);
+  }
 
-Tile.prototype = {
-  setBuffer: function(scanline) {
+  setBuffer(scanline) {
     for (this.y = 0; this.y < 8; this.y++) {
       this.setScanline(this.y, scanline[this.y], scanline[this.y + 8]);
     }
-  },
+  }
 
-  setScanline: function(sline, b1, b2) {
+  setScanline(sline, b1, b2) {
     this.initialized = true;
     this.tIndex = sline << 3;
     for (this.x = 0; this.x < 8; this.x++) {
@@ -34,9 +34,9 @@ Tile.prototype = {
         this.opaque[sline] = false;
       }
     }
-  },
+  }
 
-  render: function(
+  render(
     buffer,
     srcx1,
     srcy1,
@@ -176,23 +176,13 @@ Tile.prototype = {
         this.fbIndex += 256;
       }
     }
-  },
-
-  isTransparent: function(x, y) {
-    return this.pix[(y << 3) + x] === 0;
-  },
-
-  toJSON: function() {
-    return {
-      opaque: this.opaque,
-      pix: this.pix
-    };
-  },
-
-  fromJSON: function(s) {
-    this.opaque = s.opaque;
-    this.pix = s.pix;
   }
-};
+
+  isTransparent(x, y) {
+    return this.pix[(y << 3) + x] === 0;
+  }
+
+ 
+}
 
 export default Tile;
