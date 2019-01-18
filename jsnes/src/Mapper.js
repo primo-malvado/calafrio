@@ -1,4 +1,5 @@
 import utils from "./utils";
+import CPU from "./cpu";
 
 export default class Mapper {
   constructor(nes) {
@@ -311,7 +312,7 @@ export default class Mapper {
 
     // Reset IRQ:
     //nes.getCpu().doResetInterrupt();
-    this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
+    this.nes.cpu.requestIrq(CPU.IRQ_RESET);
   }
   loadPRGROM() {
     if (this.nes.rom.romCount > 1) {

@@ -3,6 +3,7 @@ import Tile from "./tile";
 import utils from "./utils";
 import NameTable from "./NameTable";
 import PaletteTable from "./PaletteTable";
+import CPU from "./cpu";
 
 
 class PPU {
@@ -306,7 +307,7 @@ class PPU {
 
   startVBlank() {
     // Do NMI:
-    this.nes.cpu.requestIrq(this.nes.cpu.IRQ_NMI);
+    this.nes.cpu.requestIrq(CPU.IRQ_NMI);
 
     // Make sure everything is rendered:
     if (this.lastRenderedScanline < 239) {
@@ -1422,7 +1423,7 @@ class PPU {
     // Set VBlank flag:
     this.setStatusFlag(this.STATUS_VBLANK, true);
     //nes.getCpu().doNonMaskableInterrupt();
-    this.nes.cpu.requestIrq(this.nes.cpu.IRQ_NMI);
+    this.nes.cpu.requestIrq(CPU.IRQ_NMI);
   }
 
  */

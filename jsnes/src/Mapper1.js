@@ -219,7 +219,7 @@ export default class Mapper1 extends Mappe1 {
     this.loadBatteryRam();
 
     // Do Reset-Interrupt:
-    this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
+    this.nes.cpu.requestIrq(CPU.IRQ_RESET);
   }
 
   // eslint-disable-next-line no-unused-vars

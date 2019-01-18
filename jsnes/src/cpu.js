@@ -2,6 +2,12 @@ import utils from "./utils";
 import OpData from "./OpData";
 
 class CPU {
+
+  // IRQ Types
+  static IRQ_NORMAL = 0;
+  static IRQ_NMI = 1;
+  static IRQ_RESET = 2;
+  
   constructor(nes) {
     this.nes = nes;
 
@@ -33,10 +39,7 @@ class CPU {
 
     this.reset();
   }
-  // IRQ Types
-  IRQ_NORMAL = 0;
-  IRQ_NMI = 1;
-  IRQ_RESET = 2;
+
 
   reset() {
     // Main memory
@@ -1284,7 +1287,7 @@ class CPU {
 
   requestIrq(type) {
     if (this.irqRequested) {
-      if (type === this.IRQ_NORMAL) {
+      if (type === CPU.IRQ_NORMAL) {
         return;
       }
       // console.log("too fast irqs. type="+type);

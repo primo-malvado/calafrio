@@ -38,5 +38,5 @@ Mappers[7].prototype.loadROM = function() {
   this.loadCHRROM();
 
   // Do Reset-Interrupt:
-  this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
+  this.nes.cpu.requestIrq(CPU.IRQ_RESET);
 };

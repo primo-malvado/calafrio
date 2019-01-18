@@ -94,7 +94,7 @@ Mappers[94].prototype.loadROM = function() {
   this.loadCHRROM();
 
   // Do Reset-Interrupt:
-  this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
+  this.nes.cpu.requestIrq(CPU.IRQ_RESET);
 };
 
 /**
@@ -161,7 +161,7 @@ Mappers[180].prototype.loadROM = function() {
   this.loadCHRROM();
 
   // Do Reset-Interrupt:
-  this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
+  this.nes.cpu.requestIrq(CPU.IRQ_RESET);
 };
 
 export default Mappers;

@@ -207,7 +207,7 @@ export default class Mapper4 extends Mapper {
     this.loadBatteryRam();
 
     // Do Reset-Interrupt:
-    this.nes.cpu.requestIrq(this.nes.cpu.IRQ_RESET);
+    this.nes.cpu.requestIrq(CPU.IRQ_RESET);
   }
 
   clockIrqCounter() {
@@ -216,7 +216,8 @@ export default class Mapper4 extends Mapper {
       if (this.irqCounter < 0) {
         // Trigger IRQ:
         //nes.getCpu().doIrq();
-        this.nes.cpu.requestIrq(this.nes.cpu.IRQ_NORMAL);
+        debugger;
+        this.nes.cpu.requestIrq(CPU.IRQ_NORMAL);
         this.irqCounter = this.irqLatchValue;
       }
     }

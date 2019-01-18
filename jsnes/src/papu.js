@@ -375,7 +375,7 @@ class PAPU {
 
     // Frame IRQ handling:
     if (this.frameIrqEnabled && this.frameIrqActive) {
-      this.nes.cpu.requestIrq(this.nes.cpu.IRQ_NORMAL);
+      this.nes.cpu.requestIrq(CPU.IRQ_NORMAL);
     }
 
     // Clock frame counter at double CPU speed:
@@ -780,8 +780,8 @@ class ChannelDM {
       this.dmaCounter = 8;
     }
 
-    if (this.irqGenerated) {
-      this.papu.nes.cpu.requestIrq(this.papu.nes.cpu.IRQ_NORMAL);
+    if (this.irqGenerated) {        
+      this.papu.nes.cpu.requestIrq(CPU.IRQ_NORMAL);
     }
   }
 
