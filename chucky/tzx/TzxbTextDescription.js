@@ -1,6 +1,6 @@
 
 
-import TzxbBlock from "./tzxblocks";
+//import TzxbBlock from "./tzxblocks";
 
 
 export default class TzxbTextDescription/*  extends TzxbBlock*/{
@@ -10,8 +10,9 @@ export default class TzxbTextDescription/*  extends TzxbBlock*/{
 
  
     read(tzx){
-        var len = tzx.readByte()
-
-        this.data = tzx.readString(len)
+    	this.type = tzx.readByte();
+    	this.len  = tzx.readByte();
+        this.text = tzx.readString(this.len)
+        
     }
 }

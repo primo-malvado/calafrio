@@ -4,7 +4,7 @@ var webpack = require("webpack");
 module.exports = {
   mode: "development",
   entry: {
-    "load": "./tzx/load.js",
+    "load": "./src/load.js",
     //"jsnes.min": "./src/index.js",
   },
   devtool: "source-map",

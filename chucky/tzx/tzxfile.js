@@ -1,6 +1,4 @@
-//from tzxlib.tzxblocks import TzxbBlock
-
-
+ 
 import TzxbBlock from "./tzxblocks"
 
 export default class TzxFile {
@@ -8,28 +6,28 @@ export default class TzxFile {
   static MINOR = 20;
 
   constructor() {
-    this.pos = 0;
     this._reset();
   }
 
   _reset() {
-    this.version = (TzxFile.MAJOR, TzxFile.MINOR);
+    this.version = {
+        major:TzxFile.MAJOR,
+        minor:TzxFile.MINOR
+    };
+
     this.blocks = [];
   }
 
   read(tzx) {
     this._reset();
 
-    this.version = this._readHeader(tzx);
+    
+    this._readHeader(tzx);
 
-    while (true) {
-      var blockType = tzx.readByte();
-
-      if (!blockType) {
-        break;
-      }
-      var block = TzxbBlock.createBlock(blockType);
-      block.read(tzx);
+    while (tzx.pos < tzx.data.length) {
+        debugger;
+      var block = TzxbBlock.createBlock(tzx);
+      //block.read(tzx);
       this.blocks.push(block);
     }
   }
@@ -51,12 +49,15 @@ export default class TzxFile {
       throw "Not a TZX file";
     }
 
-    var major = tzx.readByte();
-    if (major != TzxFile.MAJOR) {
-      throw `Cannot handle TZX with major version ${major}`;
+    this.version = {
+        major: tzx.readByte(),
+        minor: tzx.readByte(),
     }
-    var minor = tzx.readByte();
-    return [major, minor];
+
+ 
+    if (this.version.major != TzxFile.MAJOR) {
+      throw `Cannot handle TZX with major version ${this.version.major}`;
+    } 
   }
 
   /*

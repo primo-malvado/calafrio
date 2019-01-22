@@ -1,10 +1,15 @@
-/*
-from struct import pack, unpack
-
-from tzxlib.convert import convert
-*/
+ 
 export default class TapFile {
   static create(data) {
+    if(data[0] == 0){
+        if(data[1] == 0){
+            //case #1:  program header or  program autostart header - for storing BASIC programs
+
+            debugger;
+        }
+    }
+
+
     if (data.length == 19 && data[0] == 0x00) {
       return new TapHeader(data);
     } else {
@@ -42,6 +47,9 @@ export default class TapFile {
 class TapHeader /*extends TapFile*/ {
   constructor(data) {
     this.data = data;
+    this._name = this.name();
+    this._type = this.type();
+    
   }
 
   type() {
@@ -103,8 +111,18 @@ class TapHeader /*extends TapFile*/ {
 }
 
 class TapData /* extends TapFile*/ {
-  constructor(data) {
+  constructor(data) { 
     this.data = data;
+  }
+
+
+  valid() {
+    var val = 0;
+
+    for (var b in this.data) {
+      val ^= this.data[b];
+    }
+    return val == 0;
   }
 
   length() {

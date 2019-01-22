@@ -23,15 +23,15 @@ class TzxbData/* extends TzxbBlock*/{
     }
 */
     read( tzx){
-
-        this.data = tzx.readWord();
-        var len = tzx.readWord();
+        this.type = tzx.readByte();
+        this.pauseAfter = tzx.readWord();
+        this.len = tzx.readWord();
 
         //len = unpack('<H', this.data[0x02:0x04])[0]
 
 
 
-        this.tap = TapFile.create(tzx.read(len))
+        this.tap = TapFile.create(tzx.read(this.len))
     }
 /*
     write( tzx){
@@ -96,15 +96,18 @@ export default class TzxbBlock {
 
  
 
-    static createBlock(type){
+    static createBlock(parser){
+        var type = parser.data[parser.pos];
 
- 
         if(TzxbBlock.blockTypes[type]===undefined){
 
             throw `Unknown block type ${type}`;
         }
-        return new TzxbBlock.blockTypes[type]();
-        //return new clazz();
+        var block =  new TzxbBlock.blockTypes[type]();
+        block.read(parser);
+
+        return block;
+        
     }
 
   constructor() {
