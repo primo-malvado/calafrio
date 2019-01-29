@@ -8,13 +8,12 @@ var OAuth2Strategy = require('passport-oauth2').Strategy;
 
 
 
-
 var oStrat = new OAuth2Strategy({
 
     authorizationURL: 'http://localhost:3000/dialog/authorize',
     tokenURL: 'http://localhost:3000/oauth/token',
-    clientID: "xyz123",
-    clientSecret: "ssh-password",
+    clientID: "abc123",
+    clientSecret: "ssh-secret",
     callbackURL: '/returnOAuth'
   },
   function(accessToken, refreshToken, profile, cb) {
