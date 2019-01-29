@@ -2,7 +2,8 @@ require('dotenv').config();
 
 var express = require('express');
 var passport = require('passport');
-//var Strategy = require('passport-facebook').Strategy;
+
+var Strategy = require('passport-facebook').Strategy;
 var OAuth2Strategy = require('passport-oauth2').Strategy;
 
 
@@ -11,18 +12,21 @@ var OAuth2Strategy = require('passport-oauth2').Strategy;
 var oStrat = new OAuth2Strategy({
 
     authorizationURL: 'http://localhost:3000/dialog/authorize',
-    tokenURL: 'http://localhost:3000/oauth2/token',
+    tokenURL: 'http://localhost:3000/oauth/token',
     clientID: "xyz123",
     clientSecret: "ssh-password",
-    callbackURL: '/return'
+    callbackURL: '/returnOAuth'
   },
   function(accessToken, refreshToken, profile, cb) {
 
 
-    console.log(profile);
+    console.log("profile", profile);
+    return cb(null, profile);
+    /*
     User.findOrCreate({ exampleId: profile.id }, function (err, user) {
       return cb(err, user);
     });
+    */
   }
 )
 oStrat.name = "my"
@@ -35,7 +39,6 @@ passport.use(oStrat);
 
 
 
-/*
 
 let appId = "324791828243608";
 let appSecret = "021c69c1795672929cb812562dd6b570";
@@ -53,7 +56,7 @@ process.env['FACEBOOK_CLIENT_SECRET'] = appSecret;
 passport.use(new Strategy({
     clientID: process.env['FACEBOOK_CLIENT_ID'],
     clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
-    callbackURL: '/return'
+    callbackURL: '/returnFacebook'
   },
   function(accessToken, refreshToken, profile, cb) {
 
@@ -65,6 +68,7 @@ passport.use(new Strategy({
     // providers.
     return cb(null, profile);
   }));
+/*
 
 */
 // Configure Passport authenticated session persistence.
@@ -116,21 +120,44 @@ app.get('/login',
     res.render('login');
   });
 
-//app.get('/login/facebook', passport.authenticate('facebook'));
+app.get('/login/facebook', passport.authenticate('facebook'));
 
 app.get('/login/oauth2', passport.authenticate('my'));
 
 
-app.get('/return', 
+
+app.get('/returnOAuth', 
   passport.authenticate('my', { failureRedirect: '/login' }),
+  function(req, res) {
+
+
+
+
+    res.redirect('/');
+  });
+app.get('/returnFacebook', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
 
-app.get('/profile',
+
+app.get('/profileFacebook',
   require('connect-ensure-login').ensureLoggedIn(),
   function(req, res){
-    res.render('profile', { user: req.user });
+
+
+    res.render('profileFacebook', { user: req.user });
+  });
+
+app.get('/profileOAuth',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+
+
+        console.log(req.user);
+
+    res.render('profileOAuth', { user: req.user });
   });
 
 app.listen(process.env['PORT'] || 8080);

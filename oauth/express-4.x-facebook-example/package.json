@@ -7,6 +7,11 @@
     "express",
     "passport"
   ],
+
+  "scripts": {
+    "start": "node server.js"
+  },
+
   "author": "Jared Hanson",
   "license": "Unlicense",
   "homepage": "https://github.com/passport/express-4.x-facebook-example",
