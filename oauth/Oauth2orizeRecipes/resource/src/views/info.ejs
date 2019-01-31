@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<script type="text/javascript">
+  document.write("\<script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' type='text/javascript'>\<\/script>");
+</script>
+
+ 
+
+<button id="button_refresh">refresh</button>
+https://localhost:3000/api/revoke?token=
+<script>
+  $(document).ready(function () {
+    $("#button_refresh").click(function () {
+      $.ajax({
+        method:"get",
+        data: "token=<%= access_token %>",
+        headers: {
+          "Authorization": "Bearer <%= access_token %>"
+        },
+        url: "https://localhost:3000/api/revoke",
+        success: function (result) {
+          console.log(result);
+//          $("#protectedEndPointData").html(result);
+        },
+        failure: function (result) {
+          console.log(result);
+  //        $("#protectedEndPointData").html(result);
+        }
+      });
+    });
+  });
+</script>
+
+ 
+
+
+<p>
+  Your access token (Authorization Bearer) is:
+<pre><%= access_token %></pre>
+Your refresh token is:
+<pre><%= refresh_token %></pre>
+</p>
+<p>
+<div id="div1"><h2>Get User Information from access token</h2></div>
+<button id="button_1">Get Protected EndPoint Data</button>
+</p>
+<p>
+<div id="protectedEndPointData">No Protected EndPoint Data yet</div>
+</p>
+<script>
+  $(document).ready(function () {
+    $("#button_1").click(function () {
+      $.ajax({
+        headers: {
+          "Authorization": "Bearer <%= access_token %>"
+        },
+        url: "/api/protectedEndPoint",
+        success: function (result) {
+          $("#protectedEndPointData").html(result);
+        },
+        failure: function (result) {
+          $("#protectedEndPointData").html(result);
+        }
+      });
+    });
+  });
+</script>
