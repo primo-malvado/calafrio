@@ -251,7 +251,7 @@ DEX  Decrement Index X by One
 
      addressing    assembler    opc  bytes  cyles
      --------------------------------------------
-     implied       DEC           CA    1     2
+     implied       DEx           CA    1     2
 
 
 DEY  Decrement Index Y by One
@@ -261,7 +261,7 @@ DEY  Decrement Index Y by One
 
      addressing    assembler    opc  bytes  cyles
      --------------------------------------------
-     implied       DEC           88    1     2
+     implied       DEy          88    1     2
 
 
 EOR  Exclusive-OR Memory with Accumulator

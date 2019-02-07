@@ -47,6 +47,9 @@ server.deserializeClient((id, done) => {
 
 server.grant(oauth2orize.grant.code((client, redirectUri, user, ares, done) => {
   const code = utils.getUid(16);
+
+
+
   db.authorizationCodes.save(code, client.id, redirectUri, user.id, (error) => {
     if (error) return done(error);
     return done(null, code);
@@ -176,6 +179,11 @@ module.exports.authorization = [
     });
   }),
   (request, response) => {
+
+    console.log("request.user", request.user);
+
+
+    
     response.render('dialog', { transactionId: request.oauth2.transactionID, user: request.user, client: request.oauth2.client });
   },
 ];

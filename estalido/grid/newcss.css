@@ -1,0 +1,225 @@
+html{
+    font-size: 32px;
+} 
+
+.stripes {
+    background:  repeating-linear-gradient(#fff, 
+        #000 0px, #fff 1px, 
+        #fff 15px,  #e59198 16px, #fff 17px, 
+        #fff 31px,  #9198e5 32px, #fff 33px, 
+        #fff 47px, #9198e5 48px)
+}            
+            
+h1 {
+    padding-top: 1rem;
+    padding-bottom: .5rem;
+    font-size: 3rem;
+    line-height: 4.5rem;
+}
+
+h2 {
+padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-size: 2rem;
+    line-height: 3rem;
+}
+
+
+h3 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+
+
+fieldset {
+    outline: #ccc 1px solid;
+    margin: .75rem;
+    padding: .75rem;
+}
+
+ legend {
+  display: block;
+  margin-left: 3px;
+  padding-top: 2px;
+  text-shadow: 2px 2px 3px rgba(150, 150, 150, 0.75);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:.9em;
+}
+
+
+.btn-group {
+    display: inline;
+
+}
+
+.btn {
+    display: inline;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: .25rem .75rem;
+    font-size: 1rem;
+    line-height: 1rem;
+    height: 2rem;
+    margin: .5rem;
+    background-color: #eee;
+}
+ 
+.btn:first-child{
+    margin-left: 0rem;
+    
+}
+
+            
+
+         label {
+    line-height: 2.5rem;
+    margin-top: 1rem;
+    display: inline-block;
+}   
+            
+            
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.tab-links{
+    clear: both;
+    display: table;
+    content: " ";
+    margin-bottom: -1px;
+    border-bottom: #fda thin solid;
+    
+}
+
+.col::after,
+.row::after{
+    clear: both;
+    display: table;
+    content: " ";
+}
+
+
+
+.col{
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: left;
+    
+}
+
+
+ 
+
+    .col.col-1 {
+        width: calc(100%/12*1);
+    }    
+    .col.col-2 {
+        width: calc(100%/12*2);
+    }    
+    .col.col-3 {
+        width: 25%;
+    }    
+    
+
+    .col.col-4 {
+        width: calc(100%/12*4);
+    }    
+    
+
+    .col.col-6 {
+        width: calc(100%/12*6);
+    }    
+    
+            
+            
+            
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+       
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+
+
+
+
+      
+body {
+    line-height: 1.5rem;
+    font-family: sans-serif;
+
+}  
+
+.container{
+        padding: 15px;
+}
+
+
+input[type="text"] {
+    border: #ccc thin solid;
+    height: 2rem;
+    padding: .5rem;
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+
+ul {
+    list-style: none;
+    width: 100%;
+}
+ul li:first-child {
+    /* border-top: red solid 1px; */
+    /* margin-top: -1px; */
+    /* margin-bottom: -9px; */
+}
+ul li {
+    border-bottom: green solid 1px;
+    padding: 0 .5rem;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    border-top: red 1px solid;
+    line-height: 1.5em;
+}
+
+ 
+ul li:hover{ 
+    background-color: #eee;
+}
+
+ 
+
+div.tabs {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+ 
+div.tabs div.tab-links .btn:hover{
+    background-color: #ccc;
+}
+
+.tab-content{
+    border: red 1px solid;
+    /*padding: .75rem;*/
+    margin: -1px;
+}

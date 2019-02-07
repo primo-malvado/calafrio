@@ -257,6 +257,8 @@ let run_instruction = function()
       // Read the byte at the PC and run the instruction it encodes.
       var opcode = core.mem_read(pc);
       decode_instruction(opcode);
+
+
       pc = (pc + 1) & 0xffff;
       
       // Actually do the delayed interrupt disable/enable if we have one.
@@ -1804,6 +1806,9 @@ instructions[0xcd] = function()
    pc =  core.mem_read((pc + 1) & 0xffff) |
             (core.mem_read((pc + 2) & 0xffff) << 8);
    pc = (pc - 1) & 0xffff;
+
+   console.log("CALL $"+pc.toString(16))
+
 };
 // 0xce : ADC A, n
 instructions[0xce] = function()
@@ -2080,7 +2085,7 @@ instructions[0xf2] = function()
 // 0xf3 : DI
 instructions[0xf3] = function()
 {
-    console.log("di");
+    console.log(`$${pc.toString(16)}: di`);
    // DI doesn't actually take effect until after the next instruction.
    do_delayed_di = true;
 };
@@ -2123,7 +2128,7 @@ instructions[0xfa] = function()
 // 0xfb : EI
 instructions[0xfb] = function()
 {
-     console.log("ei");
+     console.log(`$${pc.toString(16)}: ei`);
      
    // EI doesn't actually take effect until after the next instruction.
    do_delayed_ei = true;

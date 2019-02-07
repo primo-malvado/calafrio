@@ -4,19 +4,17 @@
 const expressSession = require('express-session');
 const express        = require('express');
 const cookieParser   = require('cookie-parser');
+const fs             = require('fs');
+const path           = require('path');
+const https          = require('http');
+const passport       = require('passport');
+const bodyParser     = require('body-parser');
+
 
 const site           = require('./site');
 const oauth2         = require('./oauth2');
 const token          = require('./token');
-const fs             = require('fs');
-const path           = require('path');
-const https          = require('https');
-
 const config         = require('./config');
-
-const passport       = require('passport');
- 
-const bodyParser     = require('body-parser');
 const client         = require('./client');
 const db             = require('./db');
 const user           = require('./user');
@@ -32,7 +30,6 @@ const app = express();
 
 
 app.set('view engine', 'ejs');
-
 app.use(cookieParser());
 
 // Session Configuration
@@ -45,10 +42,11 @@ app.use(expressSession({
   cookie            : { maxAge: config.session.maxAge },
 }));
 
+/*
  
+ */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
- 
 app.use(passport.initialize());
 app.use(passport.session());
 

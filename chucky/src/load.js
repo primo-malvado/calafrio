@@ -109,7 +109,7 @@ draw(mem);
 
 }
 
-
+var parser;
 
 function loadGame(filename){
   fetch(filename, {
@@ -122,12 +122,40 @@ function loadGame(filename){
 
 
       var data = Array.from(new Uint8Array(arrayBuffer));
-      var parser = new TzxParser(data);
+      parser = new TzxParser(data);
       parser.parseAll();
 
 
+ 
+      parser.blocks[2].tap.data.forEach(function(value, p){
+        mem.data[0x5ccb+p] = value;
 
-      
+      });
+
+
+
+
+      var run = 0x1EA1;
+      //var run = 24394; // chuchy start
+
+      var state = z80.getState();
+      state.pc = run;
+
+      z80.setState(state);
+
+
+
+
+
+      for(var i = 0; i< 6600; i++){
+
+          console.log(z80.getState().pc.toString(16));
+          z80.run_instruction();
+      }
+
+      draw(mem);
+
+
 
 
       

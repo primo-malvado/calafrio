@@ -21,9 +21,8 @@
     "passport-http-bearer": "^1.0.x",
     "passport-local": "^1.0.x",
     "passport-oauth2-client-password": "^0.1.x",
-    "request": "^2.48.x"
-  },
-  "devDependencies": {
+    "request": "^2.48.x",
+
     "eslint": "^3.10.x",
     "eslint-config-airbnb": "^13.0.x",
     "eslint-plugin-import": "^2.2.x",

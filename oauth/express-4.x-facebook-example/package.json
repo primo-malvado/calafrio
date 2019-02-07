@@ -9,7 +9,7 @@
   ],
 
   "scripts": {
-    "start": "node server.js"
+    "start": "node --inspect  server.js"
   },
 
   "author": "Jared Hanson",
