@@ -3,8 +3,8 @@ import { GET_CART_ITEMS } from './pages/cart';
 
 export const typeDefs = gql`
   extend type Query {
-    isLoggedIn: Boolean!
-    cartItems: [Launch]!
+    isLoggedIn: Boolean! @client
+    cartItems: [Launch]! @client
   }
 
   extend type Launch {
@@ -17,6 +17,20 @@ export const typeDefs = gql`
 `;
 
 export const resolvers = {
+  /*
+  Query:{
+
+      isLoggedIn: function(){
+        return !!localStorage.getItem('token');
+
+      }, 
+      cartItems: function(){
+        debugger;
+        return [];
+
+      }, 
+  },*/
+
   Launch: {
     isInCart: (launch, _, { cache }) => {
       const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });

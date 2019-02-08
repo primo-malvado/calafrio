@@ -1,4 +1,11 @@
-process.env.NODE_ENV = 'developement';
+const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
+
+process.env.NODE_ENV = 'development';
+
+var vevo = {
+
+	PUBLIC_URL : "dddd"
+}
 
 
 const path = require('path');
@@ -8,6 +15,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+
+ 
+		optimization:{
+			minimize: false,
+		},
+ 
 	mode: 'development',
 	entry: {
 		app: './src/index.js'
@@ -21,12 +34,20 @@ module.exports = {
   
     rules: [
 
+      {
+        test: [ /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        loader: require.resolve('url-loader'),
+        options: {
+          limit: 10000,
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      },
+
           {
-            test: /\.(js)$/,
-            //include: paths.appSrc,
+            test: /\.(js|mjs|jsx)$/,
+            include: "/var/www/html/calafrio/lerna-repo/packages/client/src",
             loader: require.resolve('babel-loader'),
-            options: {
-            	/*
+            /*options: {
               customize: require.resolve(
                 'babel-preset-react-app/webpack-overrides'
               ),
@@ -49,24 +70,27 @@ module.exports = {
               cacheDirectory: true,
               // Don't waste time on Gzipping the cache
               cacheCompression: false,
-              */
             },
+            */
           },
 
 
     ]
 },
 
-    plugins: [
+    plugins: [/*
      	new webpack.DefinePlugin({
-     		"process.env.NODE_ENV": JSON.stringify("development"),
-     		"process.env.BABEL_ENV": JSON.stringify("development"),
+     		"process.env.NODE_ENV": "development",
+     		//"process.env.BABEL_ENV": JSON.stringify("development"),
  		 }),
+ 		 */
 	    new HtmlWebpackPlugin({
 	      inject: true,
 	      template: "public/index.html",
 	    }),
+	    new InterpolateHtmlPlugin(HtmlWebpackPlugin, vevo),
 
+//new webpack.optimize.UglifyJsPlugin(),
 
 
      // new CleanWebpackPlugin(['public']),

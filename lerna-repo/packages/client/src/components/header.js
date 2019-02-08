@@ -1,8 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
-import { size } from 'polished';
-
-import { unit, colors } from '../styles';
+ 
 import dog1 from '../assets/images/dog-1.png';
 import dog2 from '../assets/images/dog-2.png';
 import dog3 from '../assets/images/dog-3.png';
@@ -21,32 +18,13 @@ export default function Header({ image, children = 'Space Explorer' }) {
   const email = atob(localStorage.getItem('token'));
   const avatar = image || pickAvatarByEmail(email);
   return (
-    <Container>
-      <Image round={!image} src={avatar} alt="Space dog" />
+    <div>
+      <img src={avatar} alt="Space dog" />
       <div>
         <h2>{children}</h2>
-        <Subheading>{email}</Subheading>
+        <h5>{email}</h5>
       </div>
-    </Container>
+    </div>
   );
 }
-
-/**
- * STYLED COMPONENTS USED IN THIS FILE ARE BELOW HERE
- */
-
-const Container = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: unit * 4.5,
-});
-
-const Image = styled('img')(size(134), props => ({
-  marginRight: unit * 2.5,
-  borderRadius: props.round && '50%',
-}));
-
-const Subheading = styled('h5')({
-  marginTop: unit / 2,
-  color: colors.textSecondary,
-});
+ 
