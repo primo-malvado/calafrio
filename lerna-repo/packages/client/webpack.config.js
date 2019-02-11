@@ -1,6 +1,6 @@
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 var vevo = {
     PUBLIC_URL: "http://localhost:8080"
@@ -13,15 +13,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     optimization: {
-        minimize: false,
+        minimize: process.env.NODE_ENV === 'production',
     },
 
-    mode: 'development',
+    mode: process.env.NODE_ENV === 'development'? 'development' : "production",
     entry: {
         app: './src/index.js'
         //print: './src/print.js'
     },
-    devtool: 'inline-source-map',
+    devtool: process.env.NODE_ENV === 'production' ? false: 'inline-source-map',
     devServer: {
         historyApiFallback: true,
         contentBase: './public'
@@ -62,8 +62,7 @@ module.exports = {
         }),
         new InterpolateHtmlPlugin(HtmlWebpackPlugin, vevo),
 
-        //new webpack.optimize.UglifyJsPlugin(),
-
+    
 
         // new CleanWebpackPlugin(['public']),
         // new HtmlWebpackPlugin({

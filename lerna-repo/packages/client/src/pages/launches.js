@@ -2,7 +2,9 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { LaunchTile, Header, Loading } from '../components';
+import LaunchTile from '../components/launch-tile';
+import Header from '../components/header';
+import Loading from '../components/loading';
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
@@ -43,11 +45,15 @@ export default function Launches() {
         return (
           <Fragment>
             <Header />
+            <table>
+              <tbody>
             {data.launches &&
               data.launches.launches &&
               data.launches.launches.map(launch => (
                 <LaunchTile key={launch.id} launch={launch} />
               ))}
+                </tbody>
+              </table>
             {data.launches &&
               data.launches.hasMore && (
                 <button

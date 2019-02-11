@@ -1,13 +1,7 @@
 import React from 'react';
 
-import { getBackgroundImage } from './launch-tile';
-
 const LaunchDetail = ({ id, site, rocket }) => (
-  <div
-    style={{
-      backgroundImage: getBackgroundImage(id),
-    }}
-  >
+  <div>
     <h3>
       {rocket.name} ({rocket.type})
     </h3>

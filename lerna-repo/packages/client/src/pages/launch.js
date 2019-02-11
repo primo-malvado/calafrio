@@ -3,8 +3,10 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { LAUNCH_TILE_DATA } from './launches';
-import { Loading, Header, LaunchDetail } from '../components';
-import { ActionButton } from '../containers';
+import Loading from '../components/loading';
+import Header from '../components/header';
+import LaunchDetail from '../components/launch-detail';
+import ActionButton from '../containers/action-button';
 
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {

@@ -2,7 +2,11 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, Header, LaunchTile } from '../components';
+import Header from '../components/header';
+import Loading from '../components/loading';
+import LaunchTile from '../components/launch-tile';
+
+
 import { LAUNCH_TILE_DATA } from './launches';
 
 export const GET_MY_TRIPS = gql`
@@ -29,9 +33,16 @@ export default function Profile() {
           <Fragment>
             <Header>My Trips</Header>
             {data.me.trips.length ? (
-              data.me.trips.map(launch => (
+ 
+                <table>
+                <tbody>
+                  {data.me.trips.map(launch => (
                 <LaunchTile key={launch.id} launch={launch} />
-              ))
+              ))}
+                </tbody>
+                </table>
+ 
+
             ) : (
               <p>You haven't booked any trips</p>
             )}

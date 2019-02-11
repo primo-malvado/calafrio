@@ -2,8 +2,11 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Header, Loading } from '../components';
-import { CartItem, BookTrips } from '../containers';
+import Header from '../components/header';
+import Loading from '../components/loading';
+
+import CartItem from '../containers/cart-item';
+import BookTrips from '../containers/book-trips';
 
 export const GET_CART_ITEMS = gql`
   query GetCartItems {
@@ -23,12 +26,16 @@ export default function Cart() {
             {!data.cartItems || !data.cartItems.length ? (
               <p data-testid="empty-message">No items in your cart</p>
             ) : (
-              <Fragment>
+          <Fragment>
+              <table>
+                <tbody>
                 {data.cartItems.map(launchId => (
                   <CartItem key={launchId} launchId={launchId} />
                 ))}
+                </tbody>
+                </table>
                 <BookTrips cartItems={data.cartItems} />
-              </Fragment>
+          </Fragment>
             )}
           </Fragment>
         );
