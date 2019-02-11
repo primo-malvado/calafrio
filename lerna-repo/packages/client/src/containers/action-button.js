@@ -3,7 +3,6 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
-//import Button from '../components/button';
 
 // export all queries used in this file for testing
 export { GET_LAUNCH_DETAILS };
@@ -28,7 +27,6 @@ export const CANCEL_TRIP = gql`
 `;
 
 export default function ActionButton({ isBooked, id, isInCart }) {
-  debugger;
   return (
     <Mutation
       mutation={isBooked ? CANCEL_TRIP : TOGGLE_CART}

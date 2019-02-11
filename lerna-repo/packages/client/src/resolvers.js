@@ -17,20 +17,7 @@ export const typeDefs = gql`
 `;
 
 export const resolvers = {
-  /*
-  Query:{
-
-      isLoggedIn: function(){
-        return !!localStorage.getItem('token');
-
-      }, 
-      cartItems: function(){
-        debugger;
-        return [];
-
-      }, 
-  },*/
-
+ 
   Launch: {
     isInCart: (launch, _, { cache }) => {
       const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });

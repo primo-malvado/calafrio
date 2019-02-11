@@ -1,23 +1,24 @@
 import React from 'react';
  
-import MenuItem from './menu-item';
+import { Link } from '@reach/router';
+
 import LogoutButton from '../containers/logout-button';
  
 export default function Footer() {
   return (
     <footer>
       <div>
-        <MenuItem to="/"> 
+        <Link to="/"> 
           Home
-        </MenuItem>
-        <MenuItem to="/cart">
+        </Link>
+        <Link to="/cart">
  
           Cart
-        </MenuItem>
-        <MenuItem to="/profile">
+        </Link>
+        <Link to="/profile">
  
           Profile
-        </MenuItem>
+        </Link>
         <LogoutButton />
       </div>
     </footer>

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { LaunchTile, Header, Button, Loading } from '../components';
+import { LaunchTile, Header, Loading } from '../components';
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
@@ -50,7 +50,7 @@ export default function Launches() {
               ))}
             {data.launches &&
               data.launches.hasMore && (
-                <Button
+                <button
                   onClick={() =>
                     fetchMore({
                       variables: {
@@ -73,7 +73,7 @@ export default function Launches() {
                   }
                 >
                   Load More
-                </Button>
+                </button>
               )}
           </Fragment>
         );

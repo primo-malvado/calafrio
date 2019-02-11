@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
  
-import Button from './button';
- 
  
 export default class LoginForm extends Component {
   state = { email: '' };
@@ -29,7 +27,7 @@ export default class LoginForm extends Component {
             data-testid="login-input"
             onChange={this.onChange}
           />
-          <Button type="submit">Log in</Button>
+          <button type="submit">Log in</button>
         </form>
       </div>
     );
