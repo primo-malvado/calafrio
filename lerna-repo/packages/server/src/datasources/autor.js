@@ -14,7 +14,7 @@ class AutorAPI extends DataSource {
   async getAll() {
 
     const res = await this.store.autores.findAll({
-      //where: { userId },
+      where: { userId },
     });
 
     return res;
