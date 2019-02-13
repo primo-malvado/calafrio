@@ -29,7 +29,7 @@
 
     // This must be hosted on the same server as this page - otherwise you get a Cross Site Scripting error
     //var audioUrl = "static/half-a-person.ogg";
-    var audioUrl = "static/sleep2.ogg";
+    var audioUrl = "static/maio.ogg";
     //var audioUrl = "static/almamater.ogg";
 
     // Global Variables for Drawing

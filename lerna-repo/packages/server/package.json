@@ -4,15 +4,14 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon --inspect src/index.js"
   },
   "author": "",
   "license": "ISC",
- 
- 
   "dependencies": {
     "apollo-datasource-rest": "^0.3.0",
     "apollo-server": "^2.4.0",
+    "dataloader": "^1.4.0",
     "graphql": "^14.1.1",
     "isemail": "^3.2.0",
     "nodemon": "^1.18.10",

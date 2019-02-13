@@ -26,10 +26,7 @@ module.exports = {
     },
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
-    me: async (_, __, { dataSources }) =>
-      dataSources.userAPI.findOrCreateUser(),
-
-
+    me: async (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser(),
     autores: (_, {}, { dataSources }) => dataSources.autorAPI.getAll(),
 
   },
@@ -79,7 +76,14 @@ module.exports = {
   
   Autor: {
     livros: async (autor, _, { dataSources }) => {
+
+        return  autor.getLivros();
        return dataSources.livroAPI.getAll({ autor_id: autor.id });
+    }
+  },  
+  Livro: {
+    autor: async (livro, _, { dataSources }) => {
+      return livro.getAutor();
     }
   },
  

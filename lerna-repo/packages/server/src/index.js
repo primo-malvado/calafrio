@@ -4,7 +4,7 @@ const isEmail = require('isemail');
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const { createStore } = require('./utils');
+const { createStore, createCon } = require('./db');
 
 const LaunchAPI = require('./datasources/launch');
 const UserAPI = require('./datasources/user');
@@ -14,7 +14,8 @@ const LivroAPI = require('./datasources/livro');
 
 
 // creates a sequelize connection once. NOT for every request
-const store = createStore();
+const db = createCon();
+const store = createStore(db);
 
 var data = {
   launchAPI: new LaunchAPI(),
