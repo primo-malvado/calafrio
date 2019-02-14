@@ -1,5 +1,8 @@
 const SQL = require('sequelize');
 
+
+const _cat = require("../models/category");
+
 module.exports.createCon = () => {
     const Op = SQL.Op;
     const operatorsAliases = {
@@ -75,12 +78,13 @@ module.exports.createStore = (db) => {
     Livro.belongsTo(Autor , { foreignKey: 'autor_id' }); 
     Autor.hasMany(Livro, {as: 'livros', foreignKey: 'autor_id' ,sourceKey: 'id' })
 
-
+    const category = _cat(db, SQL);
 
     return {
         users,
         trips,
         autores:Autor,
+        category:category,
         livros:Livro
     };
 };

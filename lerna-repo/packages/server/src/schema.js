@@ -17,6 +17,7 @@ const typeDefs = gql`
 
     autores: [Autor]
     books: [Livro]
+    categories: [Category]
 
   }
 
@@ -53,12 +54,16 @@ const typeDefs = gql`
     livros: [Livro]
   }
 
-
   type Livro {
     id: ID!
     nome: String
     autor: Autor
   }
+  type Category {
+    id: ID!
+    description: String
+  }
+
 
   type Launch {
     id: ID!

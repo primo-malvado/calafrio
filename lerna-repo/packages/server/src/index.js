@@ -71,12 +71,14 @@ const context = async ({ req }) => {
 
   // if the email isn't formatted validly, return null for user
   if (!isEmail.validate(email)) return { user: null ,
+    store:store,
     loaders: createLoaders()};
   // find a user by their email
   const users = await store.users.findOrCreate({ where: { email } });
   const user = users && users[0] ? users[0] : null;
 
   return { 
+    store:store,
     user: { ...user.dataValues } ,
     loaders: createLoaders()
 

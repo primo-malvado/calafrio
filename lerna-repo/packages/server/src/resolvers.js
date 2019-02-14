@@ -35,16 +35,39 @@ module.exports = {
     //autores: (_, {}, { dataSources }) => dataSources.autorAPI.getAll(),
 
     autores: (_, {},  context) =>{
-      //debugger;
       return context.dataSources.autorAPI.getAll();
-      //context.loaders.autor.load({});
     } ,
 
-    books: (_, {},  context) =>{
-      //debugger;
+    categories: (_, {},  context) =>{
+
+
+    return  context.store.category.findAll({
+      where: {},
+    });
+
+/*
       var _res = context.dataSources.livroAPI.getAll();
       //context.loaders.autor.load({});
-      debugger;
+      const dt = context.loaders.livro;
+
+      _res.then(function(res){
+
+        res.forEach(function(item){
+
+          dt.prime(item.id, item);
+        })
+
+
+      })
+
+
+      return _res;
+      */
+
+    } ,
+    books: (_, {},  context) =>{
+      var _res = context.dataSources.livroAPI.getAll();
+      //context.loaders.autor.load({});
       const dt = context.loaders.livro;
 
       _res.then(function(res){
@@ -125,7 +148,6 @@ module.exports = {
 */
 
     autor: (livro, {},  context) =>{
-      debugger;
       return context.loaders.autor.load(livro.autor_id);
     } 
 
