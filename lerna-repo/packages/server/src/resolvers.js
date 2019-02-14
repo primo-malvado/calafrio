@@ -1,5 +1,10 @@
 const { paginateResults } = require('./utils');
 
+
+
+
+
+
 module.exports = {
   Query: {
     launches: async (_, { pageSize = 20, after }, { dataSources }) => {
@@ -24,10 +29,40 @@ module.exports = {
           : false,
       };
     },
-    launch: (_, { id }, { dataSources }) =>
-      dataSources.launchAPI.getLaunchById({ launchId: id }),
+
+    launch: (_, { id }, { dataSources }) => dataSources.launchAPI.getLaunchById({ launchId: id }),
     me: async (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser(),
-    autores: (_, {}, { dataSources }) => dataSources.autorAPI.getAll(),
+    //autores: (_, {}, { dataSources }) => dataSources.autorAPI.getAll(),
+
+    autores: (_, {},  context) =>{
+      //debugger;
+      return context.dataSources.autorAPI.getAll();
+      //context.loaders.autor.load({});
+    } ,
+
+    books: (_, {},  context) =>{
+      //debugger;
+      var _res = context.dataSources.livroAPI.getAll();
+      //context.loaders.autor.load({});
+      debugger;
+      const dt = context.loaders.livro;
+
+      _res.then(function(res){
+
+        res.forEach(function(item){
+
+          dt.prime(item.id, item);
+        })
+
+
+      })
+
+
+      return _res;
+
+    } 
+
+
 
   },
   Mutation: {
@@ -75,16 +110,28 @@ module.exports = {
   },
   
   Autor: {
-    livros: async (autor, _, { dataSources }) => {
+    livros: async (autor, _,  context ) => {
+      return context.loaders.booksByAuthor.load(autor.id);
 
-        return  autor.getLivros();
-       return dataSources.livroAPI.getAll({ autor_id: autor.id });
+
+      //  return  autor.getLivros();
+      //return context.dataSources.livroAPI.getAll({ autor_id: autor.id });
     }
   },  
   Livro: {
-    autor: async (livro, _, { dataSources }) => {
+    /*autor: async (livro, _, { dataSources }) => {
       return livro.getAutor();
     }
+*/
+
+    autor: (livro, {},  context) =>{
+      debugger;
+      return context.loaders.autor.load(livro.autor_id);
+    } 
+
+
+
+
   },
  
 

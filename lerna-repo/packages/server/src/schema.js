@@ -16,6 +16,7 @@ const typeDefs = gql`
     me: User
 
     autores: [Autor]
+    books: [Livro]
 
   }
 

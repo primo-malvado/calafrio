@@ -11,7 +11,7 @@ const UserAPI = require('./datasources/user');
 const AutorAPI = require('./datasources/autor');
 
 const LivroAPI = require('./datasources/livro');
-
+var DataLoader = require('dataloader');
 
 // creates a sequelize connection once. NOT for every request
 const db = createCon();
@@ -29,7 +29,34 @@ const dataSources = function(){
 };
 
 
+async function getBooksByAuthor(author_ids) {
+  var res =  await data.livroAPI.getAll({autor_id:author_ids});
+ 
 
+  return author_ids.map(function(autor_id){
+    return res.filter(function(item){
+      return item.autor_id == autor_id;
+    })
+
+  })
+ 
+  return res;
+}
+function createLoaders() {
+  return {
+    booksByAuthor: new DataLoader(ids => getBooksByAuthor(ids)),
+    autor: new DataLoader(ids => function(_ids) {
+      return data.autorAPI.getAll({id: _ids});
+    }(ids)),
+
+
+    livro: new DataLoader(ids => function(_ids) {
+      return data.livroAPI.getAll({id: _ids});
+    }(ids))
+
+
+  };
+}
 
 
 const context = async ({ req }) => {
@@ -43,12 +70,17 @@ const context = async ({ req }) => {
   console.log("email", email);
 
   // if the email isn't formatted validly, return null for user
-  if (!isEmail.validate(email)) return { user: null };
+  if (!isEmail.validate(email)) return { user: null ,
+    loaders: createLoaders()};
   // find a user by their email
   const users = await store.users.findOrCreate({ where: { email } });
   const user = users && users[0] ? users[0] : null;
 
-  return { user: { ...user.dataValues } };
+  return { 
+    user: { ...user.dataValues } ,
+    loaders: createLoaders()
+
+  };
 };
 
 // Set up Apollo Server

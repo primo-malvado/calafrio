@@ -11,14 +11,10 @@ class LivroAPI extends DataSource {
   }
 
 
-  async getAll({autor_id}) {
-
-    const res = await this.store.livros.findAll({
-      where: { autor_id},
+  getAll(query) {
+    return  this.store.livros.findAll({
+      where: query,
     });
-
-    return res;
-
   }
 
 }

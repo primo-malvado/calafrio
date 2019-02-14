@@ -29,12 +29,18 @@ class AutorAPI extends DataSource {
 
 //score: ({ playthroughId }) => scoreLoader.load(playthroughId).then(getDataValues)
 
-  async getAll() {
+  async getAll(query) {
 
     const res = await this.store.autores.findAll({
-     // where: { userId },
+     where: query,
     });
+ 
+    const dt = this.context.loaders.autor;
+    res.forEach(function(item){
 
+      dt.prime(item.id, item);
+    })
+ 
     return res;
 
   }
