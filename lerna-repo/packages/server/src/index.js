@@ -4,7 +4,7 @@ const isEmail = require('isemail');
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const { createStore, createCon } = require('./db');
+const store = require('../models');
 
 const LaunchAPI = require('./datasources/launch');
 const UserAPI = require('./datasources/user');
@@ -14,9 +14,14 @@ const LivroAPI = require('./datasources/livro');
 var DataLoader = require('dataloader');
 
 // creates a sequelize connection once. NOT for every request
+/*
 const db = createCon();
 const store = createStore(db);
+*/
 
+
+
+ 
 var data = {
   launchAPI: new LaunchAPI(),
   userAPI: new UserAPI({ store }),
@@ -30,12 +35,12 @@ const dataSources = function(){
 
 
 async function getBooksByAuthor(author_ids) {
-  var res =  await data.livroAPI.getAll({autor_id:author_ids});
+  var res =  await data.livroAPI.getAll({AuthorId:author_ids});
  
 
   return author_ids.map(function(autor_id){
     return res.filter(function(item){
-      return item.autor_id == autor_id;
+      return item.AuthorId == autor_id;
     })
 
   })
@@ -64,17 +69,14 @@ const context = async ({ req }) => {
   const auth = (req.headers && req.headers.authorization) || '';
   const email = Buffer.from(auth, 'base64').toString('ascii');
 
-
-  //Buffer.from(string, encoding) 
-  console.log("auth", auth);
-  console.log("email", email);
+ 
 
   // if the email isn't formatted validly, return null for user
   if (!isEmail.validate(email)) return { user: null ,
     store:store,
     loaders: createLoaders()};
   // find a user by their email
-  const users = await store.users.findOrCreate({ where: { email } });
+  const users = await store.User.findOrCreate({ where: { email } });
   const user = users && users[0] ? users[0] : null;
 
   return { 

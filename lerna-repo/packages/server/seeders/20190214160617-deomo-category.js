@@ -3,14 +3,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
  
+      var list = [];
+      for(var i = 0;i< 100; i++){
+        list.push({description: 'Teste '+i, createdAt: new Date(), updatedAt: new Date()});
+      }
 
-      Example:
-      return queryInterface.bulkInsert('Categories', [
-        {description: 'Teste1', createdAt: new Date(), updatedAt: new Date()},
-        {description: 'Teste2', createdAt: new Date(), updatedAt: new Date()},
-        {description: 'Teste3', createdAt: new Date(), updatedAt: new Date()},
-        {description: 'Teste4', createdAt: new Date(), updatedAt: new Date()},
-        ], {});
+      return queryInterface.bulkInsert('Categories', list, {});
  
   },
 
@@ -20,7 +18,7 @@ module.exports = {
       Return a promise to correctly handle asynchronicity.
 
       Example:
-      return queryInterface.bulkDelete('People', null, {});
     */
+      return queryInterface.bulkDelete('Categories', null, {});
   }
 };

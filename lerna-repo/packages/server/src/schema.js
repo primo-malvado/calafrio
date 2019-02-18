@@ -3,13 +3,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type Query {
     launches(
-      """
-      The number of results to show. Must be >= 1. Default = 20
-      """
       pageSize: Int
-      """
-      If you add a cursor here, it will only return results _after_ this cursor
-      """
       after: String
     ): LaunchConnection!
     launch(id: ID!): Launch
@@ -29,7 +23,17 @@ const typeDefs = gql`
     cancelTrip(launchId: ID!): TripUpdateResponse!
 
     login(email: String): String # login token
+
+    createAuthor(data: AuthorReq!): Autor
+
   }
+
+
+  input AuthorReq {
+    name: String
+    #livros: [Livro]
+  }
+
 
   type TripUpdateResponse {
     success: Boolean!
@@ -56,7 +60,7 @@ const typeDefs = gql`
 
   type Livro {
     id: ID!
-    nome: String
+    name: String
     autor: Autor
   }
   type Category {

@@ -1,7 +1,5 @@
 const { DataSource } = require('apollo-datasource');
-var DataLoader = require('dataloader');
-
-
+//var DataLoader = require('dataloader');
 
 
 class AutorAPI extends DataSource {
@@ -9,29 +7,15 @@ class AutorAPI extends DataSource {
     super();
     this.store = store;
 
-/*
-    this.scoreLoader = new Dataloader(keys => {
-      return this.store.autores.findAll({ where: { id: keys } }).then(() => {
-        //Map the results back so they are in the same order as keys
-      })
-    });
-*/
-
   }
 
   initialize(config) {
     this.context = config.context;
   }
 
-
-
-
-
-//score: ({ playthroughId }) => scoreLoader.load(playthroughId).then(getDataValues)
-
   async getAll(query) {
 
-    const res = await this.store.autores.findAll({
+    const res = await this.store.Author.findAll({
      where: query,
     });
  
@@ -44,6 +28,18 @@ class AutorAPI extends DataSource {
     return res;
 
   }
+
+
+ 
+  async create(data) {
+
+    const res = await this.store.Author.create(data);
+
+
+    return res 
+  }
+ 
+
 
 
 

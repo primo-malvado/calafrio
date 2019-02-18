@@ -12,7 +12,7 @@ class LivroAPI extends DataSource {
 
 
   getAll(query) {
-    return  this.store.livros.findAll({
+    return  this.store.Book.findAll({
       where: query,
     });
   }

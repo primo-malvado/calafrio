@@ -1,7 +1,22 @@
 const { paginateResults } = require('./utils');
 
 
+/*
 
+
+mutation aa($dataz: AuthorReq!){
+  createAuthor(data: $dataz){
+    name
+  }
+}
+  
+{
+  "dataz": {
+    "name": "Fernando Pessoa"
+  }
+}
+
+*/
 
 
 
@@ -41,28 +56,11 @@ module.exports = {
     categories: (_, {},  context) =>{
 
 
-    return  context.store.category.findAll({
+    return  context.store.Category.findAll({
       where: {},
     });
 
-/*
-      var _res = context.dataSources.livroAPI.getAll();
-      //context.loaders.autor.load({});
-      const dt = context.loaders.livro;
-
-      _res.then(function(res){
-
-        res.forEach(function(item){
-
-          dt.prime(item.id, item);
-        })
-
-
-      })
-
-
-      return _res;
-      */
+ 
 
     } ,
     books: (_, {},  context) =>{
@@ -106,6 +104,13 @@ module.exports = {
         launches,
       };
     },
+
+    createAuthor: async (_, data, context) => {
+      const result = await context.dataSources.autorAPI.create(data.data);
+      return result;
+    },
+
+
     cancelTrip: async (_, { launchId }, { dataSources }) => {
       const result = dataSources.userAPI.cancelTrip({ launchId });
 
@@ -142,18 +147,9 @@ module.exports = {
     }
   },  
   Livro: {
-    /*autor: async (livro, _, { dataSources }) => {
-      return livro.getAutor();
-    }
-*/
-
     autor: (livro, {},  context) =>{
-      return context.loaders.autor.load(livro.autor_id);
+      return context.loaders.autor.load(livro.AuthorId);
     } 
-
-
-
-
   },
  
 

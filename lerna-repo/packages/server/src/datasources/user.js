@@ -27,7 +27,7 @@ class UserAPI extends DataSource {
       this.context && this.context.user ? this.context.user.email : emailArg;
     if (!email || !isEmail.validate(email)) return null;
 
-    const users = await this.store.users.findOrCreate({ where: { email } });
+    const users = await this.store.User.findOrCreate({ where: { email } });
     return users && users[0] ? users[0] : null;
   }
 
@@ -49,7 +49,7 @@ class UserAPI extends DataSource {
 
   async bookTrip({ launchId }) {
     const userId = this.context.user.id;
-    const res = await this.store.trips.findOrCreate({
+    const res = await this.store.Trip.findOrCreate({
       where: { userId, launchId },
     });
     return res && res.length ? res[0].get() : false;
@@ -57,12 +57,12 @@ class UserAPI extends DataSource {
 
   async cancelTrip({ launchId }) {
     const userId = this.context.user.id;
-    return !!this.store.trips.destroy({ where: { userId, launchId } });
+    return !!this.store.Trip.destroy({ where: { userId, launchId } });
   }
 
   async getLaunchIdsByUser() {
     const userId = this.context.user.id;
-    const found = await this.store.trips.findAll({
+    const found = await this.store.Trip.findAll({
       where: { userId },
     });
     return found && found.length
@@ -73,7 +73,7 @@ class UserAPI extends DataSource {
   async isBookedOnLaunch({ launchId }) {
     if (!this.context || !this.context.user) return false;
     const userId = this.context.user.id;
-    const found = await this.store.trips.findAll({
+    const found = await this.store.Trip.findAll({
       where: { userId, launchId },
     });
     return found && found.length > 0;
