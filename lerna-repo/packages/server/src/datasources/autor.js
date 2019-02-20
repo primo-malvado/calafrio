@@ -1,6 +1,4 @@
 const { DataSource } = require('apollo-datasource');
-//var DataLoader = require('dataloader');
-
 
 class AutorAPI extends DataSource {
   constructor({ store }) {
@@ -24,19 +22,11 @@ class AutorAPI extends DataSource {
 
       dt.prime(item.id, item);
     })
- 
     return res;
-
   }
 
-
- 
   async create(data) {
-
-    const res = await this.store.Author.create(data);
-
-
-    return res 
+    return await this.store.Author.create(data);
   }
  
 

@@ -7,11 +7,11 @@ import ApolloClient from "apollo-boost";
 import {InMemoryCache} from 'apollo-cache-inmemory';
 //import {HttpLink} from 'apollo-link-http';
 import {Query, ApolloProvider} from 'react-apollo';
-import gql from 'graphql-tag';
 
 import Pages from './pages';
 import Login from './pages/login';
-import {resolvers, typeDefs} from './resolvers';
+import typeDefs from './graphql/typeDefs.graphql';
+import {resolvers} from './resolvers';
  
 // Set up our apollo-client to point at the server we created
 // this can be local or a remote endpoint
@@ -51,13 +51,8 @@ const client = new ApolloClient({
 });
 
 
-
-const IS_LOGGED_IN = gql`
-  query IsUserLoggedIn {
-    isLoggedIn @client
-  }
-`;
-
+ 
+import IS_LOGGED_IN from './graphql/IS_LOGGED_IN.graphql';
  
 ReactDOM.render(
   <ApolloProvider client={client}>

@@ -1,22 +1,12 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+ 
+import GET_LAUNCH from '../graphql/GET_LAUNCH.graphql';
 
-import { GET_LAUNCH } from './cart-item';
 
-export { GET_LAUNCH };
-export const BOOK_TRIPS = gql`
-  mutation BookTrips($launchIds: [ID]!) {
-    bookTrips(launchIds: $launchIds) {
-      success
-      message
-      launches {
-        id
-        isBooked
-      }
-    }
-  }
-`;
+import BOOK_TRIPS from '../graphql/BOOK_TRIPS.graphql';
+ 
+ 
 
 export default function BookTrips({ cartItems }) {
   return (

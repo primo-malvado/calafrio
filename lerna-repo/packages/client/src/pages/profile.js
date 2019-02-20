@@ -1,26 +1,15 @@
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
 import Header from '../components/header';
 import Loading from '../components/loading';
 import LaunchTile from '../components/launch-tile';
 
 
-import { LAUNCH_TILE_DATA } from './launches';
+import GET_MY_TRIPS from '../graphql/GET_MY_TRIPS.graphql';
 
-export const GET_MY_TRIPS = gql`
-  query GetMyTrips {
-    me {
-      id
-      email
-      trips {
-        ...LaunchTile
-      }
-    }
-  }
-  ${LAUNCH_TILE_DATA}
-`;
+
+
 
 export default function Profile() {
   return (

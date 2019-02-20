@@ -12,14 +12,7 @@ const AutorAPI = require('./datasources/autor');
 
 const LivroAPI = require('./datasources/livro');
 var DataLoader = require('dataloader');
-
-// creates a sequelize connection once. NOT for every request
-/*
-const db = createCon();
-const store = createStore(db);
-*/
-
-
+ 
 
  
 var data = {

@@ -1,30 +1,10 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-
-import { GET_LAUNCH_DETAILS } from '../pages/launch';
-
-// export all queries used in this file for testing
-export { GET_LAUNCH_DETAILS };
-
-const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($launchId: ID!) {
-    addOrRemoveFromCart(id: $launchId) @client
-  }
-`;
-
-export const CANCEL_TRIP = gql`
-  mutation cancel($launchId: ID!) {
-    cancelTrip(launchId: $launchId) {
-      success
-      message
-      launches {
-        id
-        isBooked
-      }
-    }
-  }
-`;
+ 
+import GET_LAUNCH_DETAILS from '../graphql/GET_LAUNCH_DETAILS.graphql'; 
+import CANCEL_TRIP from '../graphql/CANCEL_TRIP.graphql'; 
+import TOGGLE_CART from '../graphql/TOGGLE_CART.graphql'; 
+ 
 
 export default function ActionButton({ isBooked, id, isInCart }) {
   return (

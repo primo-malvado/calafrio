@@ -1,0 +1,11 @@
+#import './LAUNCH_TILE_DATA.graphql';
+
+query GetMyTrips {
+  me {
+    id
+    email
+    trips {
+      ...LaunchTile
+    }
+  }
+}

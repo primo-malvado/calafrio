@@ -1,16 +1,13 @@
 import React from 'react';
 import { Mutation, ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
-
+ 
 import LoginForm from '../components/login-form';
 import Loading from '../components/loading';
 
-export const LOGIN_USER = gql`
-  mutation login($email: String!) {
-    login(email: $email)
-  }
-`;
 
+import LOGIN_USER from '../graphql/LOGIN_USER.graphql'; 
+ 
+ 
 export default function Login() {
   return (
     <ApolloConsumer>

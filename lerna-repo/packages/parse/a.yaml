@@ -1,0 +1,26 @@
+---
+models:
+  User:
+    attributes:
+      email:
+        type: string
+        allow_null: false
+    assossiations:
+      Post:
+          type: has_many
+          model: Post
+
+
+
+
+  Post:
+    attributes:
+      subject:
+        type: string
+        allow_null: false
+    associations:
+      User:
+          type: belongs_to
+
+
+...

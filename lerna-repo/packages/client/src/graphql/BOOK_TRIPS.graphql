@@ -1,0 +1,11 @@
+
+  mutation BookTrips($launchIds: [ID]!) {
+    bookTrips(launchIds: $launchIds) {
+      success
+      message
+      launches {
+        id
+        isBooked
+      }
+    }
+  }

@@ -1,0 +1,12 @@
+  extend type Query {
+    isLoggedIn: Boolean! @client
+    cartItems: [Launch]! @client
+  }
+
+  extend type Launch {
+    isInCart: Boolean!
+  }
+
+  extend type Mutation {
+    addOrRemoveFromCart(id: ID!): [Launch]
+  }

@@ -1,0 +1,13 @@
+#import './LAUNCH_TILE_DATA.graphql';
+
+query LaunchDetails($launchId: ID!) {
+    launch(id: $launchId) {
+      isInCart @client
+      site
+      rocket {
+        type
+      }
+      ...LaunchTile
+    }
+  }
+ 

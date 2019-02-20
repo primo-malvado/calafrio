@@ -1,20 +1,6 @@
-import gql from 'graphql-tag';
-import { GET_CART_ITEMS } from './pages/cart';
-
-export const typeDefs = gql`
-  extend type Query {
-    isLoggedIn: Boolean! @client
-    cartItems: [Launch]! @client
-  }
-
-  extend type Launch {
-    isInCart: Boolean!
-  }
-
-  extend type Mutation {
-    addOrRemoveFromCart(id: ID!): [Launch]
-  }
-`;
+ 
+import GET_CART_ITEMS from './graphql/GET_CART_ITEMS.graphql';
+ 
 
 export const resolvers = {
  

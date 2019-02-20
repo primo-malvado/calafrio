@@ -1,0 +1,8 @@
+#import './LAUNCH_TILE_DATA.graphql';
+
+
+query GetLaunch($launchId: ID!) {
+	launch(id: $launchId) {
+		...LaunchTile
+    }
+  }

@@ -1,19 +1,17 @@
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-
+ 
 import Header from '../components/header';
 import Loading from '../components/loading';
 
 import CartItem from '../containers/cart-item';
 import BookTrips from '../containers/book-trips';
 
-export const GET_CART_ITEMS = gql`
-  query GetCartItems {
-    cartItems @client
-  }
-`;
 
+
+import GET_CART_ITEMS from '../graphql/GET_CART_ITEMS.graphql';
+
+ 
 export default function Cart() {
   return (
     <Query query={GET_CART_ITEMS}>
