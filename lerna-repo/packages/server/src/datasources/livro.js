@@ -11,10 +11,40 @@ class LivroAPI extends DataSource {
   }
 
 
-  getAll(query) {
+  async getAll(query) { 
+
+ 
+    const res =  this.store.select().from("Books");
+
+
+    if(query && query.AuthorId !== undefined ){
+      res.whereIn('AuthorId', query.AuthorId);
+    }
+
+
+
+    const data = await res;
+      
+
+
+    const dt = this.context.loaders.livro;
+    data.forEach(function(item){
+
+      dt.prime(item.id, item);
+    })
+
+ 
+    return data;
+
+
+
+
+/*
+
     return  this.store.Book.findAll({
       where: query,
     });
+    */
   }
 
 }

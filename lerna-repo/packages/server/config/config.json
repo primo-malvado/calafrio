@@ -1,11 +1,12 @@
 {
   "development": {
-    "username": "username",
-    "password": "password",
-    "database": "database",
-      "dialect": "sqlite",
-      "storage": "./store.sqlite",
-      "logging": true
+
+    "client": "sqlite3",
+    "connection": {
+      "filename": "./store.sqlite"
+    }
+
+ 
   },
   "test": {
     "username": "root",

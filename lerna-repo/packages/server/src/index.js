@@ -4,31 +4,15 @@ const isEmail = require('isemail');
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const store = require('../models');
 
-const LaunchAPI = require('./datasources/launch');
-const UserAPI = require('./datasources/user');
-const AutorAPI = require('./datasources/autor');
+const store = require('./db');
+const dataSources = require('./datasources')(store)();
 
-const LivroAPI = require('./datasources/livro');
+
 var DataLoader = require('dataloader');
- 
-
- 
-var data = {
-  launchAPI: new LaunchAPI(),
-  userAPI: new UserAPI({ store }),
-  autorAPI: new AutorAPI({store}),
-  livroAPI: new LivroAPI({store}),
-};
-
-const dataSources = function(){
-  return data;
-};
-
 
 async function getBooksByAuthor(author_ids) {
-  var res =  await data.livroAPI.getAll({AuthorId:author_ids});
+  var res =  await dataSources.livroAPI.getAll({AuthorId:author_ids});
  
 
   return author_ids.map(function(autor_id){
@@ -44,14 +28,15 @@ function createLoaders() {
   return {
     booksByAuthor: new DataLoader(ids => getBooksByAuthor(ids)),
     autor: new DataLoader(ids => function(_ids) {
-      return data.autorAPI.getAll({id: _ids});
+
+ 
+      return dataSources.autorAPI.getAll({id: _ids});
     }(ids)),
 
 
     livro: new DataLoader(ids => function(_ids) {
-      return data.livroAPI.getAll({id: _ids});
+      return dataSources.livroAPI.getAll({id: _ids});
     }(ids))
-
 
   };
 }
@@ -84,7 +69,9 @@ const context = async ({ req }) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  dataSources,
+  dataSources: function(){
+    return dataSources;
+  },
   context,
 
 });

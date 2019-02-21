@@ -9,9 +9,6 @@ models:
       Post:
           type: has_many
           model: Post
-          
-
-
 
   Post:
     attributes:
@@ -24,8 +21,6 @@ models:
     associations:
       User:
           type: belongs_to
-
-
 
   Coment:
     attributes:

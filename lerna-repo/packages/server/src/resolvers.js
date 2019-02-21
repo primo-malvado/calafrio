@@ -65,7 +65,8 @@ module.exports = {
     } ,
     books: (_, {},  context) =>{
       var _res = context.dataSources.livroAPI.getAll();
-      //context.loaders.autor.load({});
+      
+      /*
       const dt = context.loaders.livro;
 
       _res.then(function(res){
@@ -77,7 +78,7 @@ module.exports = {
 
 
       })
-
+*/
 
       return _res;
 
