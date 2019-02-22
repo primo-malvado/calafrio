@@ -1,4 +1,3 @@
-
 const { ApolloServer } = require('apollo-server');
 const isEmail = require('isemail');
 
@@ -8,13 +7,11 @@ const resolvers = require('./resolvers');
 const store = require('./db');
 const dataSources = require('./datasources')(store)();
 
-
 var DataLoader = require('dataloader');
 
 async function getBooksByAuthor(author_ids) {
-  var res =  await dataSources.livroAPI.getAll({AuthorId:author_ids});
+  var res =  await dataSources.DbApi.getAllBooks({AuthorId:author_ids});
  
-
   return author_ids.map(function(autor_id){
     return res.filter(function(item){
       return item.AuthorId == autor_id;
@@ -26,16 +23,16 @@ async function getBooksByAuthor(author_ids) {
 }
 function createLoaders() {
   return {
-    booksByAuthor: new DataLoader(ids => getBooksByAuthor(ids)),
+    booksByAuthor: new DataLoader(author_ids => getBooksByAuthor(author_ids)),
     autor: new DataLoader(ids => function(_ids) {
 
  
-      return dataSources.autorAPI.getAll({id: _ids});
+      return dataSources.DbApi.getAllAuthors({id: _ids});
     }(ids)),
 
 
     livro: new DataLoader(ids => function(_ids) {
-      return dataSources.livroAPI.getAll({id: _ids});
+      return dataSources.DbApi.getAllBooks({id: _ids});
     }(ids))
 
   };

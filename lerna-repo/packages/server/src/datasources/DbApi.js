@@ -1,18 +1,40 @@
 const { DataSource } = require('apollo-datasource');
 
-class AutorAPI extends DataSource {
+class DbApi extends DataSource {
   constructor({ store }) {
-    super(); 
+    super();
     this.store = store;
-
   }
-
   initialize(config) {
-
     this.context = config.context;
   }
+  async getAllBooks(query) { 
+    const res =  this.store.select().from("Books");
 
-  async getAll(query) {
+    if(query && query.AuthorId !== undefined ){
+      res.whereIn('AuthorId', query.AuthorId);
+    }
+
+
+
+    const data = await res;
+      
+
+
+    const dt = this.context.loaders.livro;
+    data.forEach(function(item){
+
+      dt.prime(item.id, item);
+    })
+
+ 
+    return data;
+
+  }
+
+
+
+  async getAllAuthors(query) {
     const res = this.store
       .from("Authors")
       .select();
@@ -22,22 +44,21 @@ class AutorAPI extends DataSource {
     }
     
     const data = await res;
-      
-
 
     const dt = this.context.loaders.autor;
     data.forEach(function(item){
-
       dt.prime(item.id, item);
     })
-
- 
     return data;
   }
 
-  async create(data) {
+  async createAuthor(data) {
     return await this.store.Author.create(data);
   }
+
+
+
+
 }
 
-module.exports = AutorAPI;
+module.exports = DbApi;

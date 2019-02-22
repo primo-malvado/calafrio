@@ -47,10 +47,10 @@ module.exports = {
 
     launch: (_, { id }, { dataSources }) => dataSources.launchAPI.getLaunchById({ launchId: id }),
     me: async (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser(),
-    //autores: (_, {}, { dataSources }) => dataSources.autorAPI.getAll(),
+    //autores: (_, {}, { dataSources }) => dataSources.DbApi.getAllAuthors(),
 
     autores: (_, {},  context) =>{
-      return context.dataSources.autorAPI.getAll();
+      return context.dataSources.DbApi.getAllAuthors();
     } ,
 
     categories: (_, {},  context) =>{
@@ -64,9 +64,8 @@ module.exports = {
 
     } ,
     books: (_, {},  context) =>{
-      return context.dataSources.livroAPI.getAll();
-      var _res = context.dataSources.livroAPI.getAll();
-      
+      var _res = context.dataSources.DbApi.getAllBooks();
+    
  
       const dt = context.loaders.livro;
 
@@ -142,10 +141,6 @@ module.exports = {
   Autor: {
     livros: async (autor, _,  context ) => {
       return context.loaders.booksByAuthor.load(autor.id);
-
-
-      //  return  autor.getLivros();
-      //return context.dataSources.livroAPI.getAll({ autor_id: autor.id });
     }
   },  
   Livro: {
