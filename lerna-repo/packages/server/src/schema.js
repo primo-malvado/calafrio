@@ -122,6 +122,7 @@ const typeDefs = gql`
     id: ID!
     email: String!
     name: String!
+    posts: [Post]
   }
 
   type Comment {
