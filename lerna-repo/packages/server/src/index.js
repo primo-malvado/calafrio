@@ -9,31 +9,73 @@ const dataSources = require('./datasources')(store)();
 
 var DataLoader = require('dataloader');
 
-async function getBooksByAuthor(author_ids) {
-  var res =  await dataSources.DbApi.getAllBooks({AuthorId:author_ids});
  
-  return author_ids.map(function(autor_id){
-    return res.filter(function(item){
-      return item.AuthorId == autor_id;
-    })
-
-  })
- 
-  return res;
-}
 function createLoaders() {
   return {
-    booksByAuthor: new DataLoader(author_ids => getBooksByAuthor(author_ids)),
-    autor: new DataLoader(ids => function(_ids) {
 
+    user: new DataLoader(ids => function(ids) {
+
+       return store.table('users')
+            .whereIn('id', ids)
+            .select()
+            .then(rows => ids.map(id => rows.find(x => x.id === id)));
+   
+      }(ids)),
+
+    commentsByPostId: new DataLoader(ids => function(ids) {
+
+     return store.table('comments')
+          .whereIn('post_id',  ids)
+          .select()
+          .then(rows => { 
+            return ids.map(id => rows.filter(x => x.post_id === id))
+
+          });
  
-      return dataSources.DbApi.getAllAuthors({id: _ids});
     }(ids)),
 
 
+
+/*
+
+    //booksByAuthor: new DataLoader(author_ids => getBooksByAuthor(author_ids)),
+
+    booksByAuthor: new DataLoader(ids => function(ids) {
+
+     return store.table('Books')
+          .whereIn('AuthorId',  ids)
+          .select()
+          .then(rows => { 
+            return ids.map(id => rows.filter(x => x.AuthorId === id))
+
+          });
+ 
+    }(ids)),
+
+
+
+
+
+    autor: new DataLoader(ids => function(ids) {
+
+       return store.table('Authors')
+            .whereIn('id', ids)
+            .select()
+            .then(rows => ids.map(id => rows.find(x => x.id === id)));
+   
+      }(ids)),
+
+
     livro: new DataLoader(ids => function(_ids) {
-      return dataSources.DbApi.getAllBooks({id: _ids});
+
+
+     return store.table('Books')
+          .whereIn('id', _ids)
+          .select()
+          .then(rows => _ids.map(id => rows.find(x => x.id === id)));
+
     }(ids))
+    */
 
   };
 }
@@ -74,6 +116,6 @@ const server = new ApolloServer({
 });
 
 
-  server
-    .listen({ port: 4000 })
-    .then(({ url }) => console.log(`🚀 app running at ${url}`));
+server
+  .listen({ port: 4000 })
+  .then(({ url }) => console.log(`🚀 app running at ${url}`));

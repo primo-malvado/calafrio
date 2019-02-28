@@ -8,6 +8,7 @@ class DbApi extends DataSource {
   initialize(config) {
     this.context = config.context;
   }
+ 
   async getAllBooks(query) { 
     const res =  this.store.select().from("Books");
 
@@ -51,7 +52,7 @@ class DbApi extends DataSource {
     })
     return data;
   }
-
+ 
   async createAuthor(data) {
     return await this.store.Author.create(data);
   }

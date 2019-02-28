@@ -8,7 +8,7 @@ module.exports = {
       filename: './dev.sqlite3'
     }
   },
-
+/*
   staging: {
     client: 'postgresql',
     connection: {
@@ -40,5 +40,6 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   }
+  */
 
 };

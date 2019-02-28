@@ -1,14 +1,17 @@
 const { gql } = require('apollo-server');
-
+/*
 const typeDefs = gql`
   type Query {
+    
     launches(
       pageSize: Int
       after: String
     ): LaunchConnection!
     launch(id: ID!): Launch
     me: User
-
+    
+    posts: [Post]
+    
     autores: [Autor]
     books: [Livro]
     categories: [Category]
@@ -99,5 +102,37 @@ const typeDefs = gql`
     LARGE
   }
 `;
+*/
+
+
+
+
+const typeDefs = gql`
+  type Query {
+    posts: [Post]
+  }
+  type Post {
+    id: ID!
+    title: String!
+    body: String!
+    author: User
+    comments: [Comment]
+  }
+  type User {
+    id: ID!
+    email: String!
+    name: String!
+  }
+
+  type Comment {
+    id: ID!
+    text: String!
+    author: User!
+    post: Post!
+  }
+ 
+`;
+
+
 
 module.exports = typeDefs;
