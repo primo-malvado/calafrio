@@ -5,14 +5,10 @@ const DbApi = require('./DbApi');
 var data = {};
 
 module.exports = function(store){
-	
-	data = {
+	return {
 	  launchAPI: new LaunchAPI(),
 	  userAPI: new UserAPI({ store }),
 	  DbApi: new DbApi({store}),
 	};
 
-	return function(){
-	  return data;
-	};
 }

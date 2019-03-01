@@ -14,9 +14,13 @@ module.exports = {
   },
   User: {
     posts: (user, {},  context) =>{
+      return context.loaders.postsByAuthorId.load(user.id);
+      
+      /*
       return context.dataSources.DbApi.store.from("posts")
       .where("author_id", user.id)
       .select();
+      */
     } ,
   },  
   Comment: {

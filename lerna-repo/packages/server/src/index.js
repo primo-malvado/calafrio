@@ -5,80 +5,9 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 
 const store = require('./db');
-const dataSources = require('./datasources')(store)();
 
-var DataLoader = require('dataloader');
-
- 
-function createLoaders() {
-  return {
-
-    user: new DataLoader(ids => function(ids) {
-
-       return store.table('users')
-            .whereIn('id', ids)
-            .select()
-            .then(rows => ids.map(id => rows.find(x => x.id === id)));
-   
-      }(ids)),
-
-    commentsByPostId: new DataLoader(ids => function(ids) {
-
-     return store.table('comments')
-          .whereIn('post_id',  ids)
-          .select()
-          .then(rows => { 
-            return ids.map(id => rows.filter(x => x.post_id === id))
-
-          });
- 
-    }(ids)),
-
-
-
-/*
-
-    //booksByAuthor: new DataLoader(author_ids => getBooksByAuthor(author_ids)),
-
-    booksByAuthor: new DataLoader(ids => function(ids) {
-
-     return store.table('Books')
-          .whereIn('AuthorId',  ids)
-          .select()
-          .then(rows => { 
-            return ids.map(id => rows.filter(x => x.AuthorId === id))
-
-          });
- 
-    }(ids)),
-
-
-
-
-
-    autor: new DataLoader(ids => function(ids) {
-
-       return store.table('Authors')
-            .whereIn('id', ids)
-            .select()
-            .then(rows => ids.map(id => rows.find(x => x.id === id)));
-   
-      }(ids)),
-
-
-    livro: new DataLoader(ids => function(_ids) {
-
-
-     return store.table('Books')
-          .whereIn('id', _ids)
-          .select()
-          .then(rows => _ids.map(id => rows.find(x => x.id === id)));
-
-    }(ids))
-    */
-
-  };
-}
+const dataSources = require('./datasources')(store);
+const createLoaders = require('./createLoaders')(store);
 
 
 const context = async ({ req }) => {
