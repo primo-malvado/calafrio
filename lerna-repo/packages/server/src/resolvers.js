@@ -3,6 +3,11 @@ module.exports = {
     posts: (_, {},  context) =>{
       return context.dataSources.DbApi.store.from("posts").select();
     } ,
+
+    me: (_, {},  context) =>{
+      return context.user;
+    } ,
+
   },
   Post: {
     author: (post, {},  context) =>{
