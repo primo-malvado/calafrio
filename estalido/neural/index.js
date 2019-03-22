@@ -168,7 +168,7 @@ function derivateActivationFromResult(value){
 }
 
 var learningRate = 0.050;
-for(var iter = 0; iter <10000000; iter++){
+for(var iter = 0; iter <1000000; iter++){
 	for(var pos = 0; pos < real.length ; pos++){
 		var nh0 = real[pos][0] *w1 +  real[pos][1] *w3;
 		var h0 = activation(nh0);
