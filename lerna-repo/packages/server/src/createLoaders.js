@@ -2,7 +2,7 @@ var DataLoader = require('dataloader');
  
 
 
-module.exports = function(store){
+module.exports = function(store, models){
 
   return function createLoaders() {
     return {
@@ -18,11 +18,14 @@ module.exports = function(store){
 
       commentsByPostId: new DataLoader(ids => function(ids) {
 
+
+        return models.Comment.where('post_id', 'in',  ids).fetchAll()
+/*
        return store.table('comments')
             .whereIn('post_id',  ids)
-            .select()
+            .select()*/
             .then(rows => { 
-              return ids.map(id => rows.filter(x => x.post_id === id))
+              return ids.map(id => rows.serialize().filter(x => x.post_id === id))
 
             });
    

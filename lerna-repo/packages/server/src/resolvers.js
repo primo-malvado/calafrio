@@ -1,7 +1,11 @@
 module.exports = {
   Query: {
-    posts: (_, {},  context) =>{
-      return context.dataSources.DbApi.store.from("posts").select();
+    posts: async (parent, args,  context) =>{
+
+      const output = await context.models.Post.fetchAll();
+      return output && output.serialize();
+
+      //return context.dataSources.DbApi.store.from("posts").select();
     } ,
 
     me: (_, {},  context) =>{
@@ -13,6 +17,8 @@ module.exports = {
     author: (post, {},  context) =>{
       return context.loaders.user.load(post.author_id);
     } ,
+
+
     comments: (post, {},  context) =>{
       return context.loaders.commentsByPostId.load(post.id);
     }     
