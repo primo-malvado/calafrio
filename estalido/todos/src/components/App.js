@@ -180,7 +180,7 @@ var list = {
     },
 
 
-        /*
+/*
     c: {
         parent: "",
         output: 0,
@@ -211,27 +211,22 @@ var list = {
         output: 0,
         type: "switch"
     }
-    */
+*/
 
 }
  
- /*
+/*
 createShiftAdd3(list, "c1", "", "zero","a","b","c");
-
- createShiftAdd3(list, "c2", "", "c1.B","c1.C","c1.D","d");
+createShiftAdd3(list, "c2", "", "c1.B","c1.C","c1.D","d");
 createShiftAdd3(list, "c3", "", "c2.B","c2.C","c2.D","e");
 createShiftAdd3(list, "c4", "", "c3.B","c3.C","c3.D","f");
 createShiftAdd3(list, "c5", "", "c4.B","c4.C","c4.D","g");
 createShiftAdd3(list, "c6", "", "zero","c1.A","c2.A","c3.A");
 createShiftAdd3(list, "c7", "", "c6.B","c6.C","c6.D","c4.A");
 
-
 create7SegmentDecoder(list, "decCen", "", "zero", "zero", "c6.A", "c7.A")
 create7SegmentDecoder(list, "decDez", "", "c7.B", "c7.C", "c7.D", "c5.A")
 create7SegmentDecoder(list, "decUni", "", "c5.B", "c5.C", "c5.D", "h")
-
-
-
 
 create7Seg(list, "displayCen", "decCen.A", "decCen.B", "decCen.C", "decCen.D", "decCen.E", "decCen.F", "decCen.G");
 create7Seg(list, "displayDez", "decDez.A", "decDez.B", "decDez.C", "decDez.D", "decDez.E", "decDez.F", "decDez.G");
@@ -243,8 +238,8 @@ create7Seg(list, "displayUni", "decUni.A", "decUni.B", "decUni.C", "decUni.D", "
 createRelay(list, "reset", "", "a", "zero", "one");
 createRelay(list, "set", "", "b", "reset", "zero");
 
-const openTime = 40;
-const closeTime = 60;
+const openTime = 320;
+const closeTime = 480;
 
 
 
@@ -482,27 +477,26 @@ class App extends React.Component{
     	this.toogleSwitch = this.toogleSwitch.bind(this)
 
 
-
+/*
         var _this = this;
 
-/*
+ 
         setInterval(function(){
 
 
 
-            toogleSwitch("d", _this);
+            toogleSwitch("b", _this);
 
-        }, 100)
+        }, 3440)
         setInterval(function(){
 
 
 
-            toogleSwitch("f", _this);
+            toogleSwitch("a", _this);
 
-        }, 100)
+        }, 2323)
+ 
 */
-
-
   	}
 
   	toogleSwitch(swId){
