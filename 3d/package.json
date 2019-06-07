@@ -1,0 +1,13 @@
+{
+  "name": "3d",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts":{
+    "dev" : "tsc --watch main.ts"
+  },
+
+  "dependencies": {
+    "typescript": "^3.5.1"
+  }
+}

@@ -1,0 +1,45 @@
+circle{
+
+    stroke: black;
+    stroke-width: 0;
+    fill: red;
+}
+
+line{
+    stroke: black;
+    stroke-width: 3px;
+}
+
+#line0{stroke: orange;}
+#line1{stroke: orange;}
+#line2{stroke: orange;}
+
+#line3{stroke: green;}
+#line4{stroke: green;}
+#line5{stroke: green;}
+
+
+#line6{stroke: blue;}
+#line7{stroke: blue;}
+#line8{stroke: blue;}
+
+#line8{stroke: red;}
+#line9{stroke: red;}
+#line10{stroke: red;}
+#line11{stroke: red;}
+
+svg{
+
+    background-color: antiquewhite;
+}
+
+polygon{
+
+    fill-opacity:0.4
+}
+#face0{fill: aqua;}
+#face1{fill: red;}
+#face2{fill: #dd21aa;}
+#face3{fill: #2d21dd;}
+#face4{fill: rgb(172, 224, 50);}
+#face5{fill: rgb(154, 55, 219);}
