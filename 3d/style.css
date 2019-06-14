@@ -35,11 +35,23 @@ svg{
 
 polygon{
 
-    fill-opacity:0.4
+    fill-opacity:1
 }
-#face0{fill: aqua;}
-#face1{fill: red;}
-#face2{fill: #dd21aa;}
-#face3{fill: #2d21dd;}
-#face4{fill: rgb(172, 224, 50);}
-#face5{fill: rgb(154, 55, 219);}
+
+
+polygon {
+    fill: white;
+}
+
+
+
+
+
+/*
+polygon:nth-child(6n+1) {fill: aqua;}
+polygon:nth-child(6n+2) {fill: red;}
+polygon:nth-child(6n+3) {fill: #dd21aa;}
+polygon:nth-child(6n+4) {fill: #2d21dd;}
+polygon:nth-child(6n+5) {fill: rgb(172, 224, 50);}
+polygon:nth-child(6n+6) {fill: rgb(154, 55, 219);} 
+*/

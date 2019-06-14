@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts":{
-    "dev" : "tsc --watch main.ts"
+    "dev" : "tsc --watch main.ts --module 'amd' --outFile dist/main.js"
   },
 
   "dependencies": {

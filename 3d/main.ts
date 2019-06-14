@@ -1,53 +1,5 @@
-var cube = [
-    [1,1,1],
-    [1,-1,1],
-    [-1,-1,1],
-    [-1,1,1],
 
-    [1,1,-1],
-    [1,-1,-1],
-    [-1,-1,-1],
-    [-1,1,-1],
-    
-
-
-]
-
-/*
-
-                7--------------4
-               /|             /|                 
-              / |            / |                
-             3--------------0  |                 
-             |  |           |  |                 
-             |  |           |  |      
-             |  6-----------|--5                   
-             | /            | /                 
-             |/             |/                  
-             2--------------1                   
-                                               
-                                               
-*/                                     
-
-var m_persProj= {
-    Width:80,
-    Height:60,
-    zNear: 10,
-    zFar: 1000,
-    FOV: 30,
-
-}
-
-cube = cube.map(function(point){
-    return [point[0]*100 , point[1]*100 , point[2]*100 ]
-})
- /*
-cube = cube.map(function(point){
-    return [point[0]+200 , point[1]+200 , point[2] ]
-})
- */
-
-
+import solid from "./sphere";
 
 var screenHeight=768;
 var screenWidth=1024;
@@ -59,31 +11,10 @@ var angleY = 0;
 var angleXRad = ToRadian(angleX);
 var angleYRad = ToRadian(angleY);
 
-
-//var viewMatrix = InitPerspectiveProj();
-
- function drawCube(){
-    /*
-    map = [
-        [0, 1],
-        [3, 0],
-        [0, 4],
-
-        [2, 6],
-        [5, 6],
-        [6, 7],
-
-
-        [1, 2],
-        [2, 3],
-        [1, 5],
-        [3, 7],
-
-        [4, 5],
-        [7, 4],
+var light = [2,-2,-5];
+light = normalize(light);
  
-    ];
-    */
+ function drawCube(){
 
     const cosX = Math.cos(angleXRad);
     const sinX = Math.sin(angleXRad);
@@ -98,7 +29,7 @@ var angleYRad = ToRadian(angleY);
         [1,0,0,0],
         [0,1,0,0],
         [0,0,1,0],
-        [0,0,800,1],
+        [0,0,500,1],
     ]
 
 
@@ -126,7 +57,7 @@ var angleYRad = ToRadian(angleY);
 
     var near = 600;
 
-    var cubeT = cube.map(function(point){
+    var solidT = solid.vertices.map(function(point){
         
         point[3] = 1;
 
@@ -136,65 +67,45 @@ var angleYRad = ToRadian(angleY);
         var p2 = Matrix_MultiplyVector(translation, p2);
         var p2 = Matrix_MultiplyVector(rotationX, p2);
 
-        p2[0] = p2[0]/p2[2]*near + screenWidth/2 
+
+        p2[0] = p2[0]/p2[2]*near + screenWidth/2 ;
         p2[1] = screenHeight - (p2[1]/p2[2]*near + screenHeight/2);
-
-        //var p2 = Matrix_MultiplyVector(viewMatrix, p2);
-
+  
+ 
         return p2;
 
 
     })
 
-/*
-
-    map.forEach((line, idx) => {
-        
-        var p = document.getElementById("line"+idx);
-        p.setAttribute("x1",   cubeT[line[0]][0] );
-        p.setAttribute("y1", cubeT[line[0]][1]  );
-        p.setAttribute("x2",  cubeT[line[1]][0] );
-        p.setAttribute("y2",   cubeT[line[1]][1] );
-    });
-*/
-/*
  
 
-                7--------------4
-               /|             /|                 
-              / |            / |                
-             3--------------0  |                 
-             |  |           |  |                 
-             |  |           |  |      
-             |  6-----------|--5                   
-             | /            | /                 
-             |/             |/                  
-             2--------------1                   
-                                               
-                                               
-*/   
-    
- 
-    var faces = [
-        [0,4,5,1],
-        [4,7,6,5],
-        [2,6,7,3],
-        [0,1,2,3],
+
+    solid.faces.forEach(function(facePoints, faceIdx){
+
+
+        var face = solid.dom[faceIdx];
+
+        var normal = CalculateSurfaceNormal(solidT[facePoints[0]], solidT[facePoints[1]] , solidT[facePoints[2]]);
+
         
-        [0,3,7,4],
-        [1,5,6,2],
-    ];
+        
+        if(normal[2] > 0 ){
+            face.style.opacity= "0";
+        }else{
+            var lightVal = dotProduct(normal, light);
 
-    faces.forEach(function(facePoints, faceIdx){
+            var color = 255 * lightVal;
+            var points = facePoints.map(function(i){
+                return solidT[i][0]+" "+solidT[i][1];
+            }).join(", ")
+        
+            face.setAttribute("points",  points); 
 
 
-        var face = document.getElementById("face"+faceIdx);
-    
-        var points = facePoints.map(function(i){
-            return cubeT[i][0]+" "+cubeT[i][1];
-        }).join(", ")
-    
-        face.setAttribute("points",  points);
+            face.style.opacity= "1";
+            face.style.fill = "rgb("+color+","+color+","+color+")";
+
+        }
 
     });
 
@@ -255,55 +166,53 @@ function Matrix_MultiplyVector(m, i)
 }
 
 
-/*
-function InitPerspectiveProj()
-{
-
- 
-    var ar = m_persProj.Width / m_persProj.Height;
-    var zNear = m_persProj.zNear;
-    var zFar = m_persProj.zFar;
-    var zRange = zNear - zFar;
-    var tanHalfFOV = Math.atan(ToRadian(m_persProj.FOV / 2.0));
-
- 
-
-    var m = [
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-    ]
-
- 
-    m[0][0] = 1.0 ; 
-    m[0][1] = 0.0;
-    m[0][2] = 0.0;
-    m[0][3] = 0.0;
-
-    m[1][0] = 0.0;
-    m[1][1] = 1.0 ; 
-    m[1][2] = 0.0; 
-    m[1][3] = 0.0;
-
-    m[2][0] = 0.0; 
-    m[2][1] = 0.0; 
-    m[2][2] = (zNear - zFar) / zRange; 
-    m[2][3] = 1.0 * zFar * zNear / zRange;
-
-    m[3][0] = 0.0;
-    m[3][1] = 0.0; 
-    m[3][2] = -1.0; 
-    m[3][3] = 0.0;
-  
-    return m;
- 
-}
-*/
 
 function ToRadian(angle){
     return angle*Math.PI/180;
 }
+ 
+
+
+function CalculateSurfaceNormal(p1, p2 , p3) {
+    var u = [
+        p2[0]-p1[0], 
+        p2[1]-p1[1], 
+        p2[2]-p1[2]
+    ];
+
+    var v = [
+        p3[0]-p1[0], 
+        p3[1]-p1[1], 
+        p3[2]-p1[2]
+    ]
+
+    var n = [0,0,0];
+  
+    n[0]=u[1]*v[2] - u[2]*v[1];
+    n[1]=u[2]*v[0] - u[0]*v[2];
+    n[2]=u[0]*v[1] - u[1]*v[0];
+    
+ 
+    return normalize(n);
+
+//    return n;
+  }
+
+
+function normalize(n) {
+    var d = Math.sqrt(n[0]*n[0] + n[1]*n[1] + n[2]*n[2]  );
+    return [
+        n[0]/d,
+        n[1]/d,
+        n[2]/d,
+    ];
+  }
+
+
+
+function dotProduct (v0, v1) {
+    return v0[0] * v1[0]  +  v0[1] * v1[1]  +  v0[2] * v1[2];
+};
  
 
 setInterval(function(){
@@ -311,6 +220,5 @@ setInterval(function(){
     angleYRad = ToRadian(angleY);
     drawCube();
 }, 40)
-
  
-//drawCube();
+ //drawCube();
