@@ -1,5 +1,5 @@
 
-var relayCount =1;
+var relayCount =3;
 
 function print(relays) {
     var text = "";
@@ -35,9 +35,9 @@ var list = [
 
 ];
  
-/*
+ 
 var xxx = [
-    "a", "b", "c", "d", "c_d", "A" , "B", "C", "D"
+    "a", "b", "c", "d" //, "c_d", "A" , "B", "C", "D"
    
       ];
 
@@ -53,13 +53,18 @@ var list = [
     [1,0,0,0,1,0,1,1,], 
     [1,0,0,1,1,1,0,0,], 
 ];
- */
+ 
 var real = list.map(function (item) {
 
     var a = item[0];
     var b = item[1];
-    var _and = item[2];
-    var _or = item[3];
+    var c = item[2];
+    var d = item[3];
+    var A = item[4];
+    var B = item[5];
+    var C = item[6];
+    var D = item[7];
+
 
  
 
@@ -68,6 +73,8 @@ var real = list.map(function (item) {
             
             a, 
             b, 
+            c,
+            d
  
             //c_d,
             //A,
@@ -76,14 +83,14 @@ var real = list.map(function (item) {
         ],
         o: [
             //_and,
-           _or
+          C
             
         // res
         ]
     }
 })
  
-inCount =2
+inCount =4
 outCount = 1;
 
  
@@ -134,10 +141,11 @@ function test(relays, values) {
     print(relays);
     
 }
+/*
 relayList.forEach(function (relay) {
     test(relay, real);
 })
-
+*/
 function f(_i1, inCount) {
     if (_i1 < 2) {
         return {
@@ -157,18 +165,21 @@ function f(_i1, inCount) {
     }
 }
 
-function _generateRelays(inCount, incount, m, listlevel, listGlobal, count) {
+function _generateRelays(inCount, xxx, m, listlevel/*, listGlobal*/, count) {
     var listlevelClone = listlevel.slice(0);
     if (count === 0) {
-        listGlobal.push(listlevel);
+
+        test(listlevel, real);
+
+        //listGlobal.push(listlevel);
         //console.log(listlevel);
     } else {
-        for (var _j0 = 0; _j0 < incount+m; _j0++) {
+        for (var _j0 = 0; _j0 < xxx+m; _j0++) {
             var a1 = f(_j0, inCount);
-            for (var _j1 = 0; _j1 < incount+m; _j1++) {
+            for (var _j1 = 0; _j1 < xxx+m; _j1++) {
                 if (_j0 != _j1) {
                     var b1 = f(_j1, inCount);
-                    for (var _j2 = 2; _j2 < incount+m; _j2++) {
+                    for (var _j2 = 2; _j2 < xxx+m; _j2++) {
                         if (_j1 != _j2) {
                             var c1 = f(_j2, inCount);
                                 
@@ -176,7 +187,7 @@ function _generateRelays(inCount, incount, m, listlevel, listGlobal, count) {
                             listlevelClone2.push(
                                 [a1, b1, c1]
                             );
-                            _generateRelays(inCount, incount, m + 1, listlevelClone2, listGlobal, count - 1);
+                            _generateRelays(inCount, xxx, m + 1, listlevelClone2, /* listGlobal,*/ count - 1);
                         
                         }
                     }
@@ -191,7 +202,7 @@ function generateRelays(inCount) {
     var listlevel = [];
     var listGlobal = [];
     var m = 2 + inCount;
-    _generateRelays(inCount, m, 0, listlevel, listGlobal, relayCount);
+    _generateRelays(inCount, m, 0, listlevel, /*listGlobal,*/ relayCount);
     //console.log(listlevel);
     return listGlobal;
 }
