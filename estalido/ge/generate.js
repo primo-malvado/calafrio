@@ -1,5 +1,5 @@
 
-var relayCount =4;
+var relayCount =3;
 
 function print(relays) {
     var text = "";
@@ -40,32 +40,61 @@ var list = [
 
 ];
  
+
+var xxx = [
+    "a", "b", "c", "d", "c_d", "A" , "B", "C", "D"
+   
+      ];
+
+var list = [
+    [0,0,0,0,0,0,0,0], 
+    [0,0,0,1,0,0,0,1,], 
+    [0,0,1,0,0,0,1,0,], 
+    [0,0,1,1,0,0,1,1,], 
+    [0,1,0,0,0,1,0,0,], 
+    [0,1,0,1,1,0,0,0,], 
+    [0,1,1,0,1,0,0,1,], 
+    [0,1,1,1,1,0,1,0,], 
+    [1,0,0,0,1,0,1,1,], 
+    [1,0,0,1,1,1,0,0,], 
+];
  
 var real = list.map(function (item) {
 
     var a = item[0];
     var b = item[1];
     var c = item[2];
-    var cout = item[3];
-    var res = item[4];
+    var d = item[3];
+    //var c_d = item[2] ? 1 : item[3];
+    var A = item[4];
+    var B = item[5];
+    var C = item[6];
+    var D = item[7];
      
 
  
 
     return {
         i: [
+            
             a, 
             b, 
             c, 
+            d,
+            //c_d,
+            //A,
+            //B,
+            //C,
         ],
         o: [
-         cout, 
-         res
+            D
+            
+        // res
         ]
     }
 })
  
-inCount =3
+inCount =4
 outCount = 1;
 
  
@@ -155,7 +184,8 @@ function _generateRelays(inCount, incount, m, listlevel, listGlobal, count) {
 
 
                         //for(var _j3 = _j2+1 ; _j3< m; _j3++){
-                        _j3 = 1; {
+                        _j3 = 1;
+                         {
 
                             if(_j2 !== _j3){
 
