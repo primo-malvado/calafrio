@@ -63,9 +63,9 @@ light = normalize(light);
 
         
       //  var p2 = Matrix_MultiplyVector(up, point);
-      var p2 = Matrix_MultiplyVector(rotationY, point);
-        var p2 = Matrix_MultiplyVector(translation, p2);
-        var p2 = Matrix_MultiplyVector(rotationX, p2);
+      var p2 = Matrix_MultiplyVector(rotationX, point);
+      var p2 = Matrix_MultiplyVector(rotationY, p2);
+      var p2 = Matrix_MultiplyVector(translation, p2);
 
 
         p2[0] = p2[0]/p2[2]*near + screenWidth/2 ;
@@ -112,11 +112,7 @@ light = normalize(light);
  }
  
 
-var fYaw = 0;
-var vCamera = [0,0,0];	// Location of camera in world space
-
-var vLookDir = [0,0,1];	// Direction vector along the direction camera points
-
+ 
  document.addEventListener("keydown", function(event) {
  
     console.log(event.keyCode);
@@ -125,22 +121,22 @@ var vLookDir = [0,0,1];	// Direction vector along the direction camera points
   
     switch (event.keyCode) {
       case 38: //up
-            angleX -= 1;
+            angleX += 1;
             angleXRad =ToRadian(angleX);
             break;
         
         case 40: //down
-            angleX += 1.0;
+            angleX -= 1.0;
             angleXRad = ToRadian(angleX);
             break;
  
         case 37: //left
-            angleY -= 1.0;
+            angleY += 1.0;
             angleYRad = ToRadian(angleY);
             break;
     
         case 39: //right
-            angleY += 1.0;
+            angleY -= 1.0;
             angleYRad = ToRadian(angleY);
             break;
 
@@ -214,11 +210,11 @@ function dotProduct (v0, v1) {
     return v0[0] * v1[0]  +  v0[1] * v1[1]  +  v0[2] * v1[2];
 };
  
-
+/*
 setInterval(function(){
     angleY -= 1.0;
     angleYRad = ToRadian(angleY);
     drawCube();
 }, 40)
- 
- //drawCube();
+*/ 
+drawCube();
