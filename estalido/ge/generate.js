@@ -1,11 +1,10 @@
 
-var relayCount =3;
+var relayCount =1;
 
 function print(relays) {
     var text = "";
     relays.forEach(function (relay, idx) {
-        //!=${printX(relay[3])}
-        text += `o${idx}=${printX(relay[2])}!=${printX(relay[3])}?${printX(relay[1])}:${printX(relay[0])}    `;
+        text += `o${idx}=${printX(relay[2])}?${printX(relay[1])}:${printX(relay[0])}    `;
     })
     console.log(text);
 }
@@ -25,22 +24,18 @@ function printX(pin) {
 
 
 var xxx = [
-"a", "b", "c", "cout" , "res"
+"a", "b" //, "and", "or"
   ];
 
 var list = [
-    [0,0,0,0,0],
-    [0,0,1,0,1],
-    [0,1,0,0,1],
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [1,0,1,1,0],
-    [1,1,0,1,0],
-    [1,1,1,1,1],
+    [0,0,0,0],
+    [0,1,0,1],
+    [1,0,0,1],
+    [1,1,1,1],
 
 ];
  
-
+/*
 var xxx = [
     "a", "b", "c", "d", "c_d", "A" , "B", "C", "D"
    
@@ -58,19 +53,13 @@ var list = [
     [1,0,0,0,1,0,1,1,], 
     [1,0,0,1,1,1,0,0,], 
 ];
- 
+ */
 var real = list.map(function (item) {
 
     var a = item[0];
     var b = item[1];
-    var c = item[2];
-    var d = item[3];
-    //var c_d = item[2] ? 1 : item[3];
-    var A = item[4];
-    var B = item[5];
-    var C = item[6];
-    var D = item[7];
-     
+    var _and = item[2];
+    var _or = item[3];
 
  
 
@@ -79,22 +68,22 @@ var real = list.map(function (item) {
             
             a, 
             b, 
-            c, 
-            d,
+ 
             //c_d,
             //A,
             //B,
             //C,
         ],
         o: [
-            D
+            //_and,
+           _or
             
         // res
         ]
     }
 })
  
-inCount =4
+inCount =2
 outCount = 1;
 
  
@@ -105,8 +94,8 @@ outCount = 1;
 
 var relayList = generateRelays(inCount);
 
-function relay(a, b, c, d) {
-    return c == d ? a : b;
+function relay(a, b, c) {
+    return !c ? a : b;
 }
 
 function calc(relay_pos, inputs, ouputs) {
@@ -126,23 +115,24 @@ function test(relays, values) {
     for (var i = 0; i < values.length; i++) {
         var _out = [];
         for (var j = 0; j < relays.length; j++) {
-            _out.push(relay(calc(relays[j][0], values[i].i, _out), calc(relays[j][1], values[i].i, _out), calc(relays[j][2], values[i].i, _out), calc(relays[j][3], values[i].i, _out)));
+            _out.push(relay(
+                calc(relays[j][0], values[i].i, _out), 
+                calc(relays[j][1], values[i].i, _out), 
+                calc(relays[j][2], values[i].i, _out)
+            ));
         }
         ouputs.push(_out);
     }
-    var ok = true;
-    for (var i = 0; i < values.length && ok; i++) {
-        if (values[i].o[0] != ouputs[i][relayCount - 1] /* ||  values[i].o[1] !=  ouputs[i][relayCount-2] */ ) {
-            return;
-            ok = false;
+ 
+    for (var i = 0; i < values.length ; i++) {
+        if (values[i].o[0] != ouputs[i][relayCount - 1]  ) {
+            return; 
         }
-        //for(var j = 0; j < ouputs.length; j++){
-        //console.log(values[i].o, ouputs[i])
-        //}
+ 
     }
-    if (ok) {
-        print(relays);
-    }
+    
+    print(relays);
+    
 }
 relayList.forEach(function (relay) {
     test(relay, real);
@@ -180,23 +170,15 @@ function _generateRelays(inCount, incount, m, listlevel, listGlobal, count) {
                     var b1 = f(_j1, inCount);
                     for (var _j2 = 2; _j2 < incount+m; _j2++) {
                         if (_j1 != _j2) {
-                        var c1 = f(_j2, inCount);
-
-
-                        //for(var _j3 = _j2+1 ; _j3< m; _j3++){
-                        _j3 = 1;
-                         {
-
-                            if(_j2 !== _j3){
-
-                                var d1 = f(_j3, inCount);
-                                var listlevelClone2 = listlevelClone.slice(0);
-                                listlevelClone2.push(
-                                    [a1, b1, c1, d1] );
-                                _generateRelays(inCount, incount, m + 1, listlevelClone2, listGlobal, count - 1);
-                            }
+                            var c1 = f(_j2, inCount);
+                                
+                            var listlevelClone2 = listlevelClone.slice(0);
+                            listlevelClone2.push(
+                                [a1, b1, c1]
+                            );
+                            _generateRelays(inCount, incount, m + 1, listlevelClone2, listGlobal, count - 1);
+                        
                         }
-                    }
                     }
 
                 }
