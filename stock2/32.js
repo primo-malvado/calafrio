@@ -8,22 +8,61 @@ var candles = a.Candles[0].Candles.sort(function(a,b){
 	return a.FromDate < b.FromDate ? -1:1;
 })
 
-/*
+ 
 
-for(var i = 1; i< candles.length; i++){
+for(var i = 1; i< candles.length-1; i++){
 	if(candles[i].Low < candles[i-1].Low && candles[i].Low < candles[i+1].Low )
 	{
-		console.log("low", i, candles[i].Low);
+		candles[i].bottom = true;
+//		console.log("low", i, candles[i].Low);
 	}
 	
 	
 	
 	if(candles[i].High > candles[i-1].High && candles[i].High >candles[i+1].High )
 	{
-		console.log("High", i, candles[i].High);
+		candles[i].top = true;
+		//console.log("High", i, candles[i].High);
 	}
-	
-	
-}
+} 
 
-*/
+
+
+for(var x = 0; x< candles.length; x++){
+	var candleX = candles[x];
+	if(candleX.bottom){
+
+		for(var a = x+1; a< candles.length; a++){
+			var candleA = candles[a];
+			if(candleA.top){
+				
+		
+
+				for(var b = a+1; b< candles.length; b++){
+					var candleB = candles[b];
+					if(candleB.bottom){
+				
+						for(var c = b+1; c< candles.length; c++){
+							var candleC = candles[c];
+							if(candleC.top){
+								
+								console.log(
+									candleX,
+									candleA,
+									candleB,
+									candleC,
+								)
+						
+				
+				
+								
+							}	
+						} 
+					}	
+				} 
+			}	
+		} 
+	}	
+} 
+
+
