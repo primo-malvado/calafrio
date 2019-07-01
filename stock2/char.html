@@ -1,0 +1,136 @@
+<html>
+<head>
+
+
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="32.js"></script>
+
+<!-- Chart code -->
+<script>
+
+
+
+
+
+
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+chart.paddingRight = 20;
+
+chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.grid.template.location = 0;
+
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis.tooltip.disabled = true;
+
+
+
+
+
+
+
+  var trend = chart.series.push(new am4charts.LineSeries());
+  trend.dataFields.valueY = "value";
+  trend.dataFields.dateX = "date";
+  trend.strokeWidth = 2
+  trend.stroke = trend.fill = am4core.color("#c00");
+  trend.data = [
+	{date: "2019-06-20", value: 12000},
+	{date: "2019-07-20", value: 12500},
+  ];
+/*
+  var bullet = trend.bullets.push(new am4charts.CircleBullet());
+  bullet.tooltipText = "{date}\n[bold font-size: 17px]value: {valueY}[/]";
+  bullet.strokeWidth = 2;
+  bullet.stroke = am4core.color("#fff")
+  bullet.circle.fill = trend.stroke;
+
+  var hoverState = bullet.states.create("hover");
+  hoverState.properties.scale = 1.7;
+ */
+
+
+
+
+
+
+
+var series = chart.series.push(new am4charts.CandlestickSeries());
+series.dataFields.dateX = "date";
+series.dataFields.valueY = "close";
+series.dataFields.openValueY = "open";
+series.dataFields.lowValueY = "low";
+series.dataFields.highValueY = "high";
+series.simplifiedProcessing = true;
+series.tooltipText = "Open:${openValueY.value}\nLow:${lowValueY.value}\nHigh:${highValueY.value}\nClose:${valueY.value}";
+
+chart.cursor = new am4charts.XYCursor();
+
+// a separate series for scrollbar
+var lineSeries = chart.series.push(new am4charts.LineSeries());
+lineSeries.dataFields.dateX = "date";
+lineSeries.dataFields.valueY = "close";
+// need to set on default state, as initially series is "show"
+lineSeries.defaultState.properties.visible = false;
+
+// hide from legend too (in case there is one)
+lineSeries.hiddenInLegend = true;
+lineSeries.fillOpacity = 0.5;
+lineSeries.strokeOpacity = 0.5;
+
+var scrollbarX = new am4charts.XYChartScrollbar();
+scrollbarX.series.push(lineSeries);
+chart.scrollbarX = scrollbarX;
+
+chart.data = candles.map(function(c){
+
+ 
+	return {
+    "date": c.FromDate,
+    "open": c.Open,
+    "high": c.High,
+    "low": c.Low,
+    "close": c.Close,
+  }
+
+})
+ 
+
+}); // end am4core.ready()
+
+
+
+/*
+
+
+*/
+
+
+
+</script>
+
+<!-- HTML -->
+</head>
+<body>
+
+<div id="chartdiv"></div>
+
+<body>
