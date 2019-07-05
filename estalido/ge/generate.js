@@ -1,5 +1,5 @@
 
-var relayCount =3;
+var relayCount =4;
 
 function print(relays) {
     var text = "";
@@ -24,18 +24,22 @@ function printX(pin) {
 
 
 var xxx = [
-"a", "b" //, "and", "or"
+"a", "b" , "c", "C", "s"
   ];
 
 var list = [
-    [0,0,0,0],
-    [0,1,0,1],
-    [1,0,0,1],
-    [1,1,1,1],
+    [0,0,0,0,0],
+    [0,0,1,0,1],
+    [0,1,0,0,1],
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [1,0,1,1,0],
+    [1,1,0,1,0],
+    [1,1,1,1,1],
 
 ];
  
- 
+ /*
 var xxx = [
     "a", "b", "c", "d" //, "c_d", "A" , "B", "C", "D"
    
@@ -53,17 +57,15 @@ var list = [
     [1,0,0,0,1,0,1,1,], 
     [1,0,0,1,1,1,0,0,], 
 ];
- 
+ */
 var real = list.map(function (item) {
 
     var a = item[0];
     var b = item[1];
     var c = item[2];
-    var d = item[3];
-    var A = item[4];
-    var B = item[5];
-    var C = item[6];
-    var D = item[7];
+
+    var C = item[3];
+    var s = item[4];
 
 
  
@@ -74,7 +76,6 @@ var real = list.map(function (item) {
             a, 
             b, 
             c,
-            d
  
             //c_d,
             //A,
@@ -83,14 +84,14 @@ var real = list.map(function (item) {
         ],
         o: [
             //_and,
-          C
+           s
             
         // res
         ]
     }
 })
  
-inCount =4
+inCount =3
 outCount = 1;
 
  
