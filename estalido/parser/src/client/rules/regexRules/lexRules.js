@@ -11,7 +11,6 @@ lexerRulesList.push({
         return {
             tokenType: '?'
         };
-
     }
 });
 

@@ -100,16 +100,16 @@ class Parser {
                     break;
                 }
             } else {
-
                 console.log(`%c${
                     this.lexer.input.substring(this.lexer.nextToken.startPosition - 10, this.lexer.nextToken.startPosition)
                 }%c${
                     this.lexer.input.substring(this.lexer.nextToken.startPosition, this.lexer.nextToken.toPos)
                 }%c${
                     this.lexer.input.substring(this.lexer.nextToken.toPos, this.lexer.YYCURSOR + 10)}`,
-
-                'background:#fff;color:#000', 'background:#f00;color:#fff', 'background:#fff;color:#000');
-
+                    
+                    'background:#fff;color:#000', 'background:#f00;color:#fff', 'background:#fff;color:#000');
+                    
+                
                 throw 'unexpeted ';
             }
         }
