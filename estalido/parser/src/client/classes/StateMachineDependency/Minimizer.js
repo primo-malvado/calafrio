@@ -1,5 +1,5 @@
-import getStateList from '../getStateList';
-import expandTable from '../expandTable';
+import getStateList from '../../misc/getStateList';
+import expandTable from '../../misc/expandTable';
 
 
 function intersept (array1, array2){

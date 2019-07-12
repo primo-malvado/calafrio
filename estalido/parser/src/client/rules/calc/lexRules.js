@@ -1,5 +1,6 @@
-import RegexToDfa from '../../classes/RegexToDfa';
 
+
+import RegexToDfa from '../../classes/RegexToDfa';
 
 let lexerRulesList = [];
 let WHITESPACE = '(\\n|\\r|\\t|\\s)';

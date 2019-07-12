@@ -1,6 +1,6 @@
 // import Viz from "viz.js/viz.js";
 // globals Viz
-import getStateList from '../getStateList';
+import getStateList from '../../misc/getStateList';
 
 
 function getId (name){

@@ -1,16 +1,23 @@
 import Parser from './classes/Parser';
 import Lexer from './classes/Lexer';
-import { createParser } from './classes/GenerateLalrParser';
 
+
+/*
+//dev
+import { createParser } from './classes/GenerateLalrParser';
 import { lexerRules } from './rules/calc/lexRules';
 import { parserRules } from './rules/calc/parserRules';
-
-var text = "3 -65 / 17  - 5 * ( 5 / 12 ) * 3 ";
-
-
 const parserTable = createParser(parserRules);
+*/
 
-let lexer = new Lexer(lexerRules, false);
+//prod
+import { lexerRules } from './rules/calc/dist/lexRules';
+import parserTable from './rules/calc/dist/parser';
+ 
+
+
+var text = "3 + 2 ";
+let lexer = new Lexer(lexerRules);
 
 let parser = new Parser(lexer, parserTable);
 
@@ -21,7 +28,6 @@ console.log('resultado', JSON.stringify(a));
 
  
  
-
 import { dotRenderer } from './classes/StateMachineDependency/DotRenderer';
 import RegexToNfa from './classes/RegexToNfa';
 

@@ -1,6 +1,6 @@
 
 
-import expandTable from '../expandTable';
+import expandTable from '../../misc/expandTable';
 
 
 function intersection (x, y) {

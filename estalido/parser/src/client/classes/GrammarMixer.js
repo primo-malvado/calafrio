@@ -1,4 +1,4 @@
-import getStateList from './getStateList';
+import getStateList from '../misc/getStateList';
 
 export function grammarMixer (lexerList) {
     const structure = {
