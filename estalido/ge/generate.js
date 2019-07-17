@@ -1,5 +1,5 @@
 
-var relayCount =4;
+var relayCount =1;
 
 function print(relays) {
     var text = "";
@@ -24,48 +24,20 @@ function printX(pin) {
 
 
 var xxx = [
-"a", "b" , "c", "C", "s"
+    //"a3","a2", 
+    "a1" , "a0",
+     //"b1",
+      "b0",
+       "b3"
   ];
 
-var list = [
-    [0,0,0,0,0],
-    [0,0,1,0,1],
-    [0,1,0,0,1],
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [1,0,1,1,0],
-    [1,1,0,1,0],
-    [1,1,1,1,1],
 
-];
+var list = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
  
- /*
-var xxx = [
-    "a", "b", "c", "d" //, "c_d", "A" , "B", "C", "D"
-   
-      ];
-
-var list = [
-    [0,0,0,0,0,0,0,0], 
-    [0,0,0,1,0,0,0,1,], 
-    [0,0,1,0,0,0,1,0,], 
-    [0,0,1,1,0,0,1,1,], 
-    [0,1,0,0,0,1,0,0,], 
-    [0,1,0,1,1,0,0,0,], 
-    [0,1,1,0,1,0,0,1,], 
-    [0,1,1,1,1,0,1,0,], 
-    [1,0,0,0,1,0,1,1,], 
-    [1,0,0,1,1,1,0,0,], 
-];
- */
+ 
 var real = list.map(function (item) {
 
-    var a = item[0];
-    var b = item[1];
-    var c = item[2];
-
-    var C = item[3];
-    var s = item[4];
+     
 
 
  
@@ -73,20 +45,20 @@ var real = list.map(function (item) {
     return {
         i: [
             
-            a, 
-            b, 
-            c,
+            //(item & 8)>3, 
+           // (item & 4)>2, 
+            (item & 2)>1,
+            item & 1,
  
-            //c_d,
-            //A,
-            //B,
-            //C,
+           // ((item+1) & 4)>2,
+            //((item+1) & 2)>1,
+            (item+1) & 1,
         ],
         o: [
-            //_and,
-           s
-            
-        // res
+           // ((item+1) & 8)>3,
+          // (item+1) & 1,
+
+          ((item+1) & 2)>1,
         ]
     }
 })
@@ -180,7 +152,7 @@ function _generateRelays(inCount, xxx, m, listlevel/*, listGlobal*/, count) {
             for (var _j1 = 0; _j1 < xxx+m; _j1++) {
                 if (_j0 != _j1) {
                     var b1 = f(_j1, inCount);
-                    for (var _j2 = 2; _j2 < xxx+m; _j2++) {
+                    for (var _j2 = 2; _j2 < xxx/*+m*/; _j2++) {
                         if (_j1 != _j2) {
                             var c1 = f(_j2, inCount);
                                 
