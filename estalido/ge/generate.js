@@ -32,12 +32,11 @@ function printX(pin) {
 
 
 var xxx = [
-    "a0",
-    "b0",
     "cn",
     "m",
-    "s0",
-    "s1",
+ 
+    "nor4",
+    "nor5",
     "s2",
     "s3",
     "xor1"
@@ -53,56 +52,52 @@ var real = [];
 
 
 
-for(var i = 0; i< Math.pow(2,8); i++) {
+for(var i = 0; i< Math.pow(2,4); i++) {
 
-    var a0 = ((i & 1)>0)?1:0;
-    var b0 = ((i & 2)>1)?1:0;
-    var cn =( (i & 4)>2)?1:0;
-    var m = ((i & 8)>3)?1:0;
-    var s0 = ((i & 16)>4)?1:0;
-    var s1 = ((i & 32)>5)?1:0;
+    var x0 = ((i & 1)>0)?1:0;
+    var x1 = ((i & 2)>1)?1:0;
+    var x2 =( (i & 4)>2)?1:0;
+    var x3 = ((i & 8)>3)?1:0;
+
+    /*var x4 = ((i & 16)>4)?1:0;
+    var x5 = ((i & 32)>5)?1:0;
     var s2 = ((i & 64)>6)?1:0;
     var s3 =( (i & 128)>7)?1:0;
+*/
 
-    var result = a0 ? (b0?s0:s1) : (b0?s2:s3) ;
+    var cn = x0;
+    var m = x1; 
+    var nor4 = x2; 
+    var nor5 = x3; 
 
-    if(!m){
-        result = result+ a0 + cn;
-    } 
+    var not11 = !m;
+
+
+    var nand2  = !(cn & not11);
+    
+    var and16 = not11 & nor5 & cn
+    var and15 = nor4 & not11;
+    var nor14 = !(and15 | and16);
 
 
  
-    // console.log(
-    //     a0?0:1,
-    //     b0?0:1,
-    //     cn?0:1,
-    //     m?0:1,
-    //     s0?0:1,
-    //     s1?0:1,
-    //     s2?0:1,
-    //     s3?0:1
-    // );
- 
+
     real.push( {
         i: [
-            a0,
-            b0,
             cn,
-            m,
-            //s0,
-            //s1,
-            s2,
-            s3,
+            m, 
+            nor4, 
+            nor5
         ],
         o: [
             
-            ((result & 2)>1)?0:1
+            nor14
         ]
     });
 }
   
  
-inCount =6
+inCount =4
 outCount = 1;
  
 
