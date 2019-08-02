@@ -1,0 +1,72 @@
+Arguments: 
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add webpack-dev-server:
+
+PATH: 
+  /home/rcosta/.sdkman/candidates/gradle/current/bin:/home/rcosta/android-studio/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/opt/puppetlabs/bin:/home/rcosta/Android/Sdk//tools:/home/rcosta/Android/Sdk//platform-tools:/home/rcosta/Android/Sdk//tools/lib/x86_64
+
+Yarn version: 
+  1.9.4
+
+Node version: 
+  10.16.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: webpack-dev-server:: Invalid URI "webpack-dev-server:/"
+      at Request.module.exports.Request.init (/usr/share/yarn/lib/cli.js:137556:31)
+      at new Request (/usr/share/yarn/lib/cli.js:137410:8)
+      at request (/usr/share/yarn/lib/cli.js:126685:10)
+      at RequestManager.execute (/usr/share/yarn/lib/cli.js:64254:15)
+      at RequestManager.shiftQueue (/usr/share/yarn/lib/cli.js:64281:10)
+      at /usr/share/yarn/lib/cli.js:64032:13
+      at new Promise (<anonymous>)
+      at new F (/usr/share/yarn/lib/cli.js:23624:28)
+      at RequestManager.request (/usr/share/yarn/lib/cli.js:64030:19)
+      at NpmRegistry.request (/usr/share/yarn/lib/cli.js:33715:32)
+
+npm manifest: 
+  {
+    "name": "client",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "dev": "NODE_ENV=development webpack-dev-server --config webpack.config.js"
+    },
+    "browserslist": [
+      ">0.2%",
+      "not dead",
+      "not ie <= 11",
+      "not op_mini all"
+    ],
+    "_dependencies": {
+      "@babel/core": "^7.2.2",
+      "@reach/router": "^1.2.1",
+      "apollo-boost": "^0.1.27",
+      "apollo-cache-inmemory": "^1.4.2",
+      "apollo-client": "^2.4.12",
+      "apollo-link-http": "^1.5.11",
+      "babel-loader": "^8.0.5",
+      "babel-preset-react-app": "^7.0.0",
+      "file-loader": "^3.0.1",
+      "graphql": "^14.1.1",
+      "graphql-tag": "^2.10.1",
+      "html-webpack-plugin": "^4.0.0-beta.5",
+      "react": "^16.8.1",
+      "react-apollo": "^2.4.1",
+      "react-dev-utils": "^7.0.1",
+      "react-dom": "^16.8.1",
+      "url-loader": "^1.1.2",
+      "webpack": "^4.29.3",
+      "webpack-cli": "^3.2.3",
+      "webpack-dev-server": "^3.1.14",
+      "babel-plugin-import-graphql": "^2.6.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

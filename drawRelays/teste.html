@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.relaybody{
+			fill:#f0f0ef;
+			fill-opacity:1;
+			stroke:none;
+			stroke-width:0.59332842;
+			stroke-miterlimit:4;
+			stroke-dasharray:none;
+			stroke-opacity:1
+		
+		
+		
+		}
+		
+		.relay-wire{
+			fill:none;
+			stroke:#000000;
+			stroke-width:1;
+			stroke-linecap:round;
+			stroke-linejoin:miter;
+			stroke-miterlimit:4;
+			stroke-dasharray:none;
+			stroke-opacity:1
+		
+		}
+		
+		
+		.relay-point{
+			fill:#ff0000;stroke:none;
+			r:4;
+		
+		}		
+	</style>
+</head>
+<body>
+<svg
+	width="480"
+	height="320"
+>
+
+	<g>
+		<rect class="relaybody"
+			width="120"
+			height="160"
+			x="0"
+			y="0" 
+		/>
+    
+		<path 
+			class="relay-wire"
+			d="M 10,10 V 50"
+		/>
+     
+		<path class="relay-wire"
+			d="M 110,10 V 50"
+		/>
+		<path class="relay-wire"
+			d="M 110,50 60,110"
+		 />
+		
+		<path class="relay-wire"
+			d="m 60,110 v 40"
+		/>
+    
+     
+			<circle class="relay-point" 
+				cx="10"
+				cy="10" 
+			/>
+			<text x="10" y="10" 
+			
+				dy="-10"
+				dx="0"
+				
+				text-anchor="middle"
+				alignment-baseline="middle"
+			
+			>old my 1</text>
+ 
+
+		<circle class="relay-point" 
+			cx="110"
+			cy="10"
+			  />
+			<text x="110" y="10" 
+			
+				dy="-10"
+				dx="0"
+				
+				text-anchor="middle"
+				alignment-baseline="middle"
+			
+			>old my 2</text>			
+			
+
+		<circle class="relay-point" 
+			cx="60"
+			cy="150" 
+			/>
+			<text x="60" y="150" 
+			
+				dy="-10"
+				dx="0"
+				
+				text-anchor="middle"
+				alignment-baseline="middle"
+			
+			>old my 3</text>	
+
+
+		<circle class="relay-point" 
+			cx="10"
+			cy="140"
+			 />
+			
+			<text x="10" y="140" 
+			
+				dy="-10"
+				dx="0"
+				
+				text-anchor="middle"
+				alignment-baseline="middle"
+			
+			>old my 4</text>				
+			
+			
+		<circle class="relay-point" 
+			cx="110"
+			cy="140"
+			  />
+			
+			<text x="110" y="140" 
+			
+				dy="-10"
+				dx="0"
+				
+				text-anchor="middle"
+				alignment-baseline="middle"
+			
+			>old my 5</text>				
+			
+	</g>
+
+	<path class="relay-wire" d="M 10,10 C 20,10 20,60 10, 60"/>
+</svg>
+
+
+</body>
+</html>
