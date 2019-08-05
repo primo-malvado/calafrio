@@ -1,30 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Todo from './Todo'
+import Edge from './Edge'
 
-const TodoList = ({ todos, toggleTodo }) => (
+const TodoList = ({ todos,   toggleTodo }) => (
 
 
 <svg
 	width="640"
 	height="480">
 
-        {todos.relays.map( (todo, idz) => (
-          <Todo key={idz} {...todo} onClick={() => toggleTodo(todo.id)} />
+        {todos.relays.map( (todo) => (
+          <Todo key={todo.id}  {...todo} onClick={() => toggleTodo(todo.id)} />
         ))}
 
-
-        <path className="edge" d="M 10,70 C 20,20 200,20 210,70"></path>
+        {todos.edges.map( (edge, idg) => (
+          <Edge key={idg} {...edge} relays={todos.relays}  />
+        ))}        
 
     </svg>
 
 
-
-
-
-
-
-    
   
 )
 
