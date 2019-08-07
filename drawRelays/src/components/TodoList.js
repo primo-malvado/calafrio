@@ -7,15 +7,16 @@ const TodoList = ({ todos,   toggleTodo }) => (
 
 
 <svg
-	width="640"
-	height="480">
+	width="1000"
+	height="600">
+    <rect width="100%" height="100%" fill="aliceblue"/>
 
-        {todos.relays.map( (todo) => (
-          <Todo key={todo.id}  {...todo} onClick={() => toggleTodo(todo.id)} />
+        {todos.relays.map( (todo, relayIdx) => (
+          <Todo key={relayIdx}  {...todo} onClick={() => toggleTodo(todo.id)} />
         ))}
 
-        {todos.edges.map( (edge, idg) => (
-          <Edge key={idg} {...edge} relays={todos.relays}  />
+        {todos.edges.map( (edge, edgeIdx) => (
+          <Edge key={edgeIdx} {...edge} />
         ))}        
 
     </svg>

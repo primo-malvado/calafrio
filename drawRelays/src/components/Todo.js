@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
  
 
 const Todo = (relay) => {
-
-
+ 
 
     // x = x cos(s)  - y *sin(s);
     // y = x sin(s)  + y *cos(s);
@@ -29,16 +28,16 @@ const Todo = (relay) => {
 
 
         <circle className="relay-point" cx={relay.points[4][0]} cy={relay.points[4][1]} />
-        <text x={relay.points[4][0]} y={relay.points[4][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">no</text>
+        <text x={relay.points[4][0]} y={relay.points[4][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">{relay.labels.no}</text>
 
         <circle className="relay-point" cx={relay.points[6][0]} cy={relay.points[6][1]} />
-        <text x={relay.points[6][0]} y={relay.points[6][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">nc</text>
+        <text x={relay.points[6][0]} y={relay.points[6][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">{relay.labels.nc}</text>
         <circle className="relay-point" cx={relay.points[9][0]} cy={relay.points[9][1]} />
-        <text x={relay.points[9][0]} y={relay.points[9][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">f</text>
+        <text x={relay.points[9][0]} y={relay.points[9][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">{relay.labels.com}</text>
         <circle className="relay-point" cx={relay.points[10][0]} cy={relay.points[10][1]} />
-        <text x={relay.points[10][0]} y={relay.points[10][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">c1</text>
+        <text x={relay.points[10][0]} y={relay.points[10][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">{relay.labels.coil1}</text>
         <circle className="relay-point" cx={relay.points[11][0]} cy={relay.points[11][1]} />
-        <text x={relay.points[11][0]} y={relay.points[11][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">c2</text>
+        <text x={relay.points[11][0]} y={relay.points[11][1]} dy="-10" dx="0" textAnchor="middle" alignmentBaseline="middle">{relay.labels.coil2}</text>
 
 
 

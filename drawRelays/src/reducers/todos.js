@@ -1,132 +1,124 @@
+import Relay from "../misc/Relay";
 
-var a = 11;
-var b = 9;
-var c = 3;
-var d = 3;
+var reset = new Relay();
+reset.setPos({x: 2, y: 25, r: 0, labels : {coil2: "reset", com: "5v"}});
 
+var set7 = new Relay();
+set7.setPos({x: 15,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable7 = new Relay();
+enable7.setPos({x: 15,  y: 25,  r: 0 , labels : {coil1: "enable", com: "bus7"}});
 
-const points = [
-  [0, 0],
-  [b, 0],
-  [b, a],
-  [0, a],
-
-  [1, 1], //no 4
-  [1, 1+d],
-  [b-1, 1], //nc 6 
-  [b-1, 1+d],  
-
-  [b/2, a-1-d],  
-  [b/2, a-1], // f 9 
-
-  [1, a-c], //10
-  [b-1, a-c], //11
-]
-
-var factor = 6;
+var set6 = new Relay();
+set6.setPos({x: 25,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable6 = new Relay();
+enable6.setPos({x: 25,  y: 25,  r: 0 , labels : {coil1: "", com: "bus6"}});
 
 
-function process(relay){
+var set5 = new Relay();
+set5.setPos({x: 35,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable5 = new Relay();
+enable5.setPos({x: 35,  y: 25,  r: 0 , labels : {coil1: "", com: "bus5"}});
 
-  var startX = relay.x*factor;
-  var startY = relay.y*factor;
-  
+var set4 = new Relay();
+set4.setPos({x: 45,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable4 = new Relay();
+enable4.setPos({x: 45,  y: 25,  r: 0 , labels : {coil1: "", com: "bus4"}});
+
+var set3 = new Relay();
+set3.setPos({x: 55,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable3 = new Relay();
+enable3.setPos({x: 55,  y: 25,  r: 0 , labels : {coil1: "", com: "bus3"}});
+
+var set2 = new Relay();
+set2.setPos({x: 65,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable2 = new Relay();
+enable2.setPos({x: 65,  y: 25,  r: 0 , labels : {coil1: "", com: "bus2"}});
+
+var set1 = new Relay();
+set1.setPos({x: 75,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable1 = new Relay();
+enable1.setPos({x: 75,  y: 25,  r: 0 , labels : {coil1: "", com: "bus1"}});
+
+var set0 = new Relay();
+set0.setPos({x: 85,  y: 8,  r: 0 , labels : {coil1: ""}});
+var enable0 = new Relay();
+enable0.setPos({x: 85,  y: 25,  r: 0 , labels : {coil1: "", com: "bus0"}});
 
 
 
-  
-  var ps = points.map(function(p){
-    
-    var sin = 0;
-    var cos = 1;  
-    
-    switch(relay.r){
-      case 1:
-        var sin = 1;
-        var cos = 0;  
-        break;
-        case 2:
-          var sin = 0;
-          var cos = -1;  
-          break;
-          
-          case 3:
-            var sin = -1;
-            var cos = 0;  
-            break;                
-          }
-          
-          
-          var _x = (p[0])*factor;
-          var _y = (p[1])*factor;
-          
-          
-          
-          
-          return [
-            (_x* cos   - _y * sin ) + relay.x *factor,
-            ( _x* sin + _y * cos )  + relay.y *factor,
-            
-          ];
-        })
-        
-        
-        relay.points = ps;
-        
-}
-        
-        
-        
-        
+ 
 
 
 var _state = {
-    relays:  [
-      {
- 
-        id:0,
+    relays:  [ 
+      reset,
 
-        x: 12,
-        y: 40,
-        r: 0 , 
-    },      
-         {
- 
-            id:1,
+      set7,
+      enable7,
 
-            x: 35,
-            y: 15,
-            r:2, 
-        },
-        {
- 
-            id:2,
-            x: 2,
-            y: 14,
-            r:0, 
-        },
-         {
- 
-            id:3,
+      set6,
+      enable6,
 
-            x: 52,
-            y: 20,
-            r: 0, 
-        },
+      set5,
+      enable5,
+      set4,
+      enable4,
+      set3,
+      enable3,
+      set2,
+      enable2,
+      set1,
+      enable1,
+      set0,
+      enable0,
 
-      ],
+    ],
     edges: [
-      [0,4, 1, 6], // fromRelay; formRelayPoint; toRelay; toRelayPoint;
-      [2,9,3, 11],
+
+      [set7.no, set7.coil1],
+      [set7.com, reset.nc],
+      [enable7.no, set7.coil1],
+      
+      [set6.no, set6.coil1],
+      [set6.com, set7.com],
+      [enable6.no, set6.coil1],
+      [enable7.coil1, enable6.coil1],
+
+      [set5.no, set5.coil1],
+      [set5.com, set6.com],
+      [enable5.no, set5.coil1],
+      [enable6.coil1, enable5.coil1],
+
+
+
+      [set4.no, set4.coil1],
+      [set4.com, set5.com],
+      [enable4.no, set4.coil1],
+      [enable5.coil1, enable4.coil1],
+
+      [set3.no, set3.coil1],
+      [set3.com, set4.com],
+      [enable3.no, set3.coil1],
+      [enable4.coil1, enable3.coil1],
+
+      [set2.no, set2.coil1],
+      [set2.com, set3.com],
+      [enable2.no, set2.coil1],
+      [enable3.coil1, enable2.coil1],
+
+      [set1.no, set1.coil1],
+      [set1.com, set2.com],
+      [enable1.no, set1.coil1],
+      [enable2.coil1, enable1.coil1],
+
+      [set0.no, set0.coil1],
+      [set0.com, set1.com],
+      [enable0.no, set0.coil1],
+      [enable1.coil1, enable0.coil1],
+
     ]
 };
-
-for(var i in _state.relays)
-{
-  var relay = _state.relays[i];
-  process(relay);
-}
-
+ 
 
 
 const todos = (state = _state, action) => {
