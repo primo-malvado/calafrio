@@ -1,13 +1,50 @@
-//nor4  = o0=b0?!s0:!s1    o1=a0?0:o0 
-//nor5  = o0=b0?!s3:!s2    o1=a0?o0:1  
-//nand2 = o0=cn?m:1 
-//nor14 = o0=nor4?nand2:1    o1=nor5?o0:1    
-//nor14 = o0=nor5?nand2:1    o1=nor4?o0:1 
+/*
+nand2:
+    o0=cn?m:1 
+nor4:
+    o0=b?!s0:!s1    o1=a?0:o0 
+nor5 :
+    o0=b?!s3:!s2    o1=a?o0:1
 
-//nor18 = o0=nor22?nor14:1    o1=nor23?o0:1    
-//nor18 = o0=nor23?nor14:1    o1=nor22?o0:1 
+nor14:
+    o0=nor5?nand2:1    o1=nor4?m:o0    
+    o0=nor4?m:nand2    o1=nor5?o0:1  
 
-var relayCount = 3;
+
+xor1:
+
+
+
+    o0=nand2?0:1         o1=nor5?o0:nand2     o2=nor4?nand2:o1    
+    o0=nor5?0:1          o1=nand2?o0:nor5     o2=nor4?nand2:o1    
+
+
+    o0=nor4?0:nor5       o1=nor5?nor4:1       o2=nand2?o1:o0     
+    o0=nor5?nor4:1       o1=nor4?0:nor5       o2=nand2?o0:o1    
+    
+    
+
+    o0=nand2?0:1         o1=nor4?nand2:o0     o2=nor5?o1:nand2    
+    o0=nor4?0:1          o1=nand2?nor4:o0     o2=nor5?o1:nand2    
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+
+
+    
+
+*/
+
+var relayCount =3;
 
 function print(relays) {
     var text = "";
@@ -40,11 +77,18 @@ o0=a?b:c    o1=o0?b:c
 */
 
 var xxx = [
-    "a",
-    "b",
-    "c",
-    // "r1",
-    // "r2",
+    // "a",
+    // "b",
+    // //  "cn",
+    // //  "m",
+    // //  "!s0",
+    // //  "!s1",
+    //  "!s2",
+    //  "!s3",
+
+    "nand2",
+     "nor4",
+     "nor5",
   ];
 
  
@@ -55,38 +99,74 @@ var real = [];
 
 
 
-for(var i = 0; i< Math.pow(2,3); i++) {
+for(var i = 0; i< Math.pow(2,8); i++) {
 
     var a = ((i & 1)>0)?1:0;
-    var b = ((i & 2)>1)?1:0;
-    var c =( (i & 4)>2)?1:0;
+    var b = ((i & 2)>1)?1:0;    
+    var s2 = ((i & 4)>2)?1:0;
+    var s3 = ((i & 8)>3)?1:0;
 
-    var sum = a+b+c;
 
-    var b0 = (sum & 1) > 0 ? 1:0;
-    var b1 = (sum & 2) > 1 ? 1:0;
-/*
-    var r0 = a?b:c;
-    var r1 = r0?b:c;
-*/
+    var cn = ((i & 16)>4)?1:0;
+    var m = ((i & 32)>5)?1:0;
+
+    var s0 = ((i &64)>6)?1:0;
+    var s1 = ((i & 128)>7)?1:0;
 
  
 
+
+    var not11 = m?0:1;
+    var not12 = b?0:1;
+
+    var nand2 = (not11 & cn)?0:1;
+
+
+    var and6 = a?1:0;
+    var and7 = (s0 & b)?1:0;
+    var and8 = (not12 & s1)?1:0;
+
+    var and9 = (not12 & s2 & a)?1:0;
+    var and10 = (a & s3 & b)?1:0;
+
+
+    var nor4 = (and6 | and7 | and8 ) ? 0:1;
+    var nor5 = (and9 | and10 ) ? 0:1;
+
+
+    var and15 = (nor4 & not11)?1:0;
+    var and16 = (not11 & nor5 & cn)?1:0;
+
+    var nor14 = ( and15 | and16 )?0:1;
+
+    
+    var xor3 = nor4 ^nor5 ;
+    var xor1 = (nand2 ^ xor3)?1:0;
+
     real.push( {
         i: [
-            a,
-            b,
-            c, 
+            // a,
+            // b,
+            //  cn,
+            //  m,
+            //  !s0,
+            //  !s1,
+            //  !s2,
+            //  !s3,
+             nand2,
+             nor4,
+             nor5,
         ],
         o: [
-            
-            b1
+            // nand2, 
+            //nor14
+             xor1
         ]
     });
 }
   
  
-inCount =3 
+inCount = 3
  
 
 
