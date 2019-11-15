@@ -1,37 +1,32 @@
 /*
-nand2:
-    o0=cn?m:1 
-nor4:
-    o0=b?!s0:!s1    o1=a?0:o0 
-nor5 :
-    o0=b?!s3:!s2    o1=a?o0:1
 
-nor14:
-    o0=nor5?nand2:1    o1=nor4?m:o0    
-    o0=nor4?m:nand2    o1=nor5?o0:1  
+c0:
+    o0=m?ci:0
 
 
-xor1:
+g:
+    o0=b?s3:s2   o1=a?o0:0
+p:
+    o0=b?s1:s0   o1=a?1:o0
+
+c1:
+    o0=p?c0:0    o1=g?m:o0    
 
 
-
-    o0=nand2?0:1         o1=nor5?o0:nand2     o2=nor4?nand2:o1    
-    o0=nor5?0:1          o1=nand2?o0:nor5     o2=nor4?nand2:o1    
-
-
-    o0=nor4?0:nor5       o1=nor5?nor4:1       o2=nand2?o1:o0     
-    o0=nor5?nor4:1       o1=nor4?0:nor5       o2=nand2?o0:o1    
+f:
+    o0=c0?0:1    o1=p?o0:c0    o2=g?c0:o1    
+    o0=c0?0:1    o1=g?c0:o0    o2=p?o1:c0   
     
-    
+    o0=g?0:1     o1=c0?g:o0    o2=p?o1:c0    
 
-    o0=nand2?0:1         o1=nor4?nand2:o0     o2=nor5?o1:nand2    
-    o0=nor4?0:1          o1=nand2?nor4:o0     o2=nor5?o1:nand2    
+    o0=p?0:1     o1=c0?o0:p    o2=g?c0:o1    
 
-
-
+    o0=p?g:1     o1=g?0:p      o2=c0?o0:o1    
+    o0=g?0:p     o1=p?g:1      o2=c0?o1:o0    
+ 
 */
 
-var relayCount =3;
+
 
 function print(relays) {
     var text = "";
@@ -53,29 +48,19 @@ function printX(pin) {
     }
 }
   
-/*
-o0=c?b:a    o1=o0?b:a    
-o0=b?c:a    o1=o0?c:a    
-o0=c?a:b    o1=o0?a:b   
-o0=a?c:b    o1=o0?c:b    
-
-o0=b?a:c    o1=o0?a:c    
-o0=a?b:c    o1=o0?b:c 
-*/
+ 
 
 var xxx = [
     // "a",
     // "b",
-    // //  "cn",
-    // //  "m",
-    // //  "!s0",
-    // //  "!s1",
-    //  "!s2",
-    //  "!s3",
-
-    "nand2",
-     "nor4",
-     "nor5",
+    // "s0",
+    // "s1",
+    // "s2",
+    // "s3",
+    // "m",
+    "g",
+    "p",
+    "c0",
   ];
 
  
@@ -87,76 +72,61 @@ var real = [];
 
 
 for(var i = 0; i< Math.pow(2,8); i++) {
+    var a  = ((i & 1)>0)?1:0;
+    var b  = ((i & 2)>1)?1:0;
+    var s0 = ((i & 4)>2)?1:0;
+    var s1 = ((i & 8)>3)?1:0;
+    var s2 = ((i & 16)>4)?1:0;
+    var s3 = ((i & 32)>5)?1:0;
+    var m  = ((i & 64)>6)?1:0;
+    var c0 = ((i & 128)>7) & m;
 
 
 
-    //(G&m)|(p&c0)
-
-    var a = ((i & 1)>0)?1:0;
-    var b = ((i & 2)>1)?1:0;    
-    var s2 = ((i & 4)>2)?1:0;
-    var s3 = ((i & 8)>3)?1:0;
-
-
-    var cn = ((i & 16)>4)?1:0;
-    var m = ((i & 32)>5)?1:0;
-
-    var s0 = ((i &64)>6)?1:0;
-    var s1 = ((i & 128)>7)?1:0;
-
- 
+    //g:
+    var g0=b?s3:s2   ;
+    var g =a?g0:0;
+//p:
+    var p0=b?s1:s0;
+    var p=a?1:p0;
 
 
-    var not11 = m?0:1;
-    var not12 = b?0:1;
-
-    var nand2 = (not11 & cn)?0:1;
-
-
-    var and6 = a?1:0;
-    var and7 = (s0 & b)?1:0;
-    var and8 = (not12 & s1)?1:0;
-
-    var and9 = (not12 & s2 & a)?1:0;
-    var and10 = (a & s3 & b)?1:0;
-
-
-    var nor4 = (and6 | and7 | and8 ) ? 0:1;
-    var nor5 = (and9 | and10 ) ? 0:1;
-
-
-    var and15 = (nor4 & not11)?1:0;
-    var and16 = (not11 & nor5 & cn)?1:0;
-
-    var nor14 = ( and15 | and16 )?0:1;
 
     
-    var xor3 = nor4 ^nor5 ;
-    var xor1 = (nand2 ^ xor3)?1:0;
+    var f1 = (g ^ p ^ c0);
 
     real.push( {
         i: [
-            // a,
-            // b,
-            //  cn,
-            //  m,
-            //  !s0,
-            //  !s1,
-            //  !s2,
-            //  !s3,
-             nand2,
-             nor4,
-             nor5,
+            g, p, c0
         ],
         o: [
-            // nand2, 
-            //nor14
-             xor1
+            f1
         ]
     });
+
+
+
+
+    // console.log([
+    //     g, p, c0,
+    //     f1
+    // ])
 }
   
- 
+
+// real = [
+//     {i:[ 0, 0, 0 ], o:[ 0 ]},
+//     {i:[ 0, 0, 1 ], o:[ 1 ]},
+
+//     {i:[ 0, 1, 0 ], o:[ 1 ]},
+//     {i:[ 0, 1, 1 ], o:[ 0 ]},
+
+//     {i:[ 1, 1, 0 ], o:[ 0 ]},
+//     {i:[ 1, 1, 1 ], o:[ 1 ]},
+// ];
+
+
+var relayCount = real[0].i.length;
 inCount = 3
  
 
