@@ -1,0 +1,56 @@
+{
+    "type": "FeatureCollection",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "EPSG:4326"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+			-8.6188884,
+			40.3246824
+                ]
+
+ 
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+		-8.6251188,
+		40.0602918
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+			-8.7130484,
+			39.7536277
+                ]
+            }
+        },
+	{
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+			-8.5939821,
+			40.3497152
+                ]
+            }
+        }
+	
+ 
+	
+    ]
+}

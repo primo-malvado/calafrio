@@ -1,0 +1,36 @@
+---context:global   # following code refers to global config
+
+ 
+assign downhillcost 200
+assign uphillcost 90
+ 
+---context:way   
+ 
+ 
+
+assign costfactor
+  switch route=ferry 1000000
+  switch highway=motorway 1000000
+  switch highway=motorway_link 1000000
+  switch  highway=trunk 1000000
+  switch  highway=trunk_link   1000000
+  switch  highway=primary 15
+  switch  highway=primary_link 15
+  switch  highway=secondary 13
+  switch  highway=secondary_link 13
+  switch  highway=tertiary         1
+  switch  highway=tertiary_link       1
+  switch  highway=unclassified        1
+  switch  highway=residential|living_street 1
+  switch  highway=service                 1
+  switch  highway=cycleway                 1
+  switch  bicycle=designated                1
+  switch  highway=track                     1
+  switch  highway=bridleway|road|path|footway 1
+  switch  highway=steps                   1
+  switch  highway=pedestrian        1
+  1
+ 
+ 
+---context:node 
+assign initialcost 0
