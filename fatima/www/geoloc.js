@@ -50,7 +50,7 @@ var layers = [raster]
 layers.push(new ol.layer.Vector({
 
     source: new ol.source.Vector({
-        url: "rita.gpx",
+        url: "santarita22.6.gpx",
         //url: "120.gpx",
         format: new ol.format.GPX()
     }),
