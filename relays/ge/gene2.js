@@ -11,15 +11,26 @@ var data = [
     {i: [0,1, 1,1,1], o:[1,1],}
 ] 
 
-// var data = [
-//     {i: [0,1, 0,0], o:[0,0],},   
-//     {i: [0,1, 0,1], o:[0,1],},
-//     {i: [0,1, 1,0], o:[0,1],},
-//     {i: [0,1, 1,1], o:[1,1],},
-// ] 
+ 
+var data = [
+    {i: [0,1, 0,0], o:[0,0],},   
+    {i: [0,1, 0,1], o:[0,1],},
+    {i: [0,1, 1,0], o:[0,1],},
+    {i: [0,1, 1,1], o:[1,0],},
+] 
 
 
+var labels = [
+    "false",
+    "true",
+    "a",
+    "b"
+];
 
+var outLabels = [
+    "cout",
+    "sum",
+];
 
 
 
@@ -37,14 +48,14 @@ var test = [
 //     {i: [0,1, 1,1], o:[0],},
 // ] 
 
-
+var count = 0;
 
 function clone(a){
     return JSON.parse(JSON.stringify(a));
 }
  
 
-function generate1(_data, faltam, config, ouputPorEncontrar){
+function generate1(_data, faltam, config, ouputPorEncontrar, _labels){
  
     if(faltam == 0)return ;
 
@@ -56,11 +67,14 @@ function generate1(_data, faltam, config, ouputPorEncontrar){
                 //console.log( "1:[!"+_data.i[c]+"&"+_data.i[f]+" , "+_data.i[c]+"&"+_data.i[f]+"]");
                 
                 var _conf = clone(config);
+                var labels = clone(_labels);
                 var _ouputPorEncontrar = clone(ouputPorEncontrar);
                 
                 var dataClone = JSON.parse(JSON.stringify(_data));
 
                 _conf.push([1,c,f])
+                labels.push("nc"+(labels.length), "no"+(labels.length+1));
+
                 
                 dataClone.forEach(element => {
                     element.i.push( !element.i[c] & element.i[f],  element.i[c] & element.i[f]);
@@ -77,20 +91,20 @@ function generate1(_data, faltam, config, ouputPorEncontrar){
                         return item.i[inputLen+0];
                     }).join(",") == test[o]){
                          
-
+                        labels[labels.length-2] = outLabels[o];
 
                         _ouputPorEncontrar.splice(oIdx, 1);
                     }else if(dataClone.map(function(item){
                         return item.i[inputLen+1];
                     }).join(",") == test[o]){ 
-
+                        labels[labels.length-1] = outLabels[o];
                         _ouputPorEncontrar.splice(oIdx, 1);
                     }
 
 
                     if(_ouputPorEncontrar.length === 0){
-                        console.log( _conf );
-                        console.log(dataClone);
+                        printResult( _conf, labels );
+                        // console.log(dataClone);
                     }                    
 
 
@@ -104,9 +118,14 @@ function generate1(_data, faltam, config, ouputPorEncontrar){
 
 
 
+                if(faltam-1 > 0){
 
-                generate1(dataClone, faltam-1, _conf, _ouputPorEncontrar);
-                generate0(dataClone, faltam-1, _conf, _ouputPorEncontrar);
+                    generate1(dataClone, faltam-1, _conf, _ouputPorEncontrar, labels);
+                    generate0(dataClone, faltam-1, _conf, _ouputPorEncontrar, labels);
+                }else{
+                    count++;
+ 
+                }
 
 
 
@@ -122,8 +141,7 @@ function generate1(_data, faltam, config, ouputPorEncontrar){
 }
  
 
-function generate0(_data, faltam, config, ouputPorEncontrar){
- 
+function generate0(_data, faltam, config, ouputPorEncontrar, _labels){
     if(faltam == 0)return ;
     var inputLen = _data[0].i.length;
     
@@ -137,12 +155,15 @@ function generate0(_data, faltam, config, ouputPorEncontrar){
                     var _ouputPorEncontrar = clone(ouputPorEncontrar);
 
                     var _conf = clone(config);
+                    var labels = clone(_labels);
  
 
                     var dataClone = JSON.parse(JSON.stringify(_data));
                     //console.log( "0:["+_data.i[c] +"?"+ _data.i[no]+":"+ _data.i[nc] + "]");
 
                     _conf.push([0, c, no, nc]);
+                    labels.push("f"+(labels.length));
+
 
                     
                     dataClone.forEach(element => {
@@ -163,20 +184,18 @@ function generate0(_data, faltam, config, ouputPorEncontrar){
                             
 
     
-    
+                            labels[labels.length-1] = outLabels[o];
                             _ouputPorEncontrar.splice(oIdx, 1);
 
 
                             if(_ouputPorEncontrar.length === 0){
-                                console.log( _conf );
-                                console.log(dataClone);
+                                printResult( _conf, labels );
+                                //console.log(dataClone);
                             }
 
 
-
+                            oIdx=0;
                         } 
-    
-    
                     }
 
 
@@ -185,10 +204,14 @@ function generate0(_data, faltam, config, ouputPorEncontrar){
               
             
                     //console.log(dataClone);
+                    if(faltam-1 > 0){
                          
-                    generate1(dataClone, faltam-1, _conf, _ouputPorEncontrar)
-                    generate0(dataClone, faltam-1, _conf, _ouputPorEncontrar)
-
+                        generate1(dataClone, faltam-1, _conf, _ouputPorEncontrar, labels)
+                        generate0(dataClone, faltam-1, _conf, _ouputPorEncontrar, labels)
+                    }else{
+                        count++;
+                         
+                    }
                 }
             }
         }
@@ -196,6 +219,44 @@ function generate0(_data, faltam, config, ouputPorEncontrar){
 }
  
 
-var num = 4;
-generate1(data, num, [], [0,1] );
-generate0(data, num, [], [0,1]);
+function printResult( _conf, labels ){
+
+    console.log("" /*, _conf, labels*/);
+
+    var startLabel = data[0].i.length-0;
+
+    for(var i = 0; i< _conf.length; i++){
+        var r = _conf[i];
+        if(r[0] == 0){
+            console.log(  "c:"+labels[r[1]]+"  nc:"+labels[r[2]] +" no:"+labels[r[3]] +"  f:" + labels[startLabel]  );
+            startLabel+=1;
+        }
+
+        if(r[0] == 1){
+            console.log(    "c:"+labels[r[1]] ,    "f:"+labels[r[2]], " nc:"+labels[startLabel] +" no:"+ labels[startLabel+1]   );
+            startLabel+=2;
+        }
+    }
+
+}
+
+
+var num = 2;
+
+var missing = [];
+for (var i = 0; i< data[0].o.length ; i++){
+    missing.push(i);
+}
+
+
+
+generate1(data, num, [], missing , labels);
+generate0(data, num, [], missing, labels);
+
+
+console.log("count", count);
+
+
+
+
+
