@@ -20,34 +20,38 @@ var data = [
 ] 
 
 
+
+var data = [
+    {i: [0,1, 0,0], o:[0],},   
+    {i: [0,1, 0,1], o:[1],},
+    {i: [0,1, 1,0], o:[1],},
+    {i: [0,1, 1,1], o:[0],},
+] 
+
+
+
+
 var labels = [
     "false",
     "true",
     "a",
-    "b"
+    "b",
 ];
 
 var outLabels = [
-    "cout",
+     "cout",
     "sum",
 ];
 
 
 
-var test = [
-    data.map(function(item){return item.o[0];}).join(","),
-    data.map(function(item){return item.o[1];}).join(","),
-];
+var test = data[0].o.map(function(v, index){
+    return data.map(function(item){return item.o[index];}).join(",");
+})
 
-//var inputs = ["0", "1", "a", "b"];
-//   a,b,ci,co,r     
-// var data = [
-//     {i: [0,1, 0,0], o:[0],},   
-//     {i: [0,1, 0,1], o:[1],},
-//     {i: [0,1, 1,0], o:[1],},
-//     {i: [0,1, 1,1], o:[0],},
-// ] 
+ 
 
+ 
 var count = 0;
 
 function clone(a){
@@ -221,19 +225,38 @@ function generate0(_data, faltam, config, ouputPorEncontrar, _labels){
 
 function printResult( _conf, labels ){
 
-    console.log("" /*, _conf, labels*/);
+    console.log("\n ------\n" /*, _conf, labels*/);
 
     var startLabel = data[0].i.length-0;
 
     for(var i = 0; i< _conf.length; i++){
         var r = _conf[i];
         if(r[0] == 0){
-            console.log(  "c:"+labels[r[1]]+"  nc:"+labels[r[2]] +" no:"+labels[r[3]] +"  f:" + labels[startLabel]  );
+            //console.log(  "c:"+labels[r[1]]+"  no:"+labels[r[2]] +" nc:"+labels[r[3]] +"  f:" + labels[startLabel]  );
+
+
+            console.log(  ` ${(labels[r[3]]+"    ").substring(0,4)}____                    
+         \\____ ${labels[startLabel]}
+ ${(labels[r[2]]+"    ").substring(0,4)}____                     
+          ${labels[r[1]]}`  );
+            
+
+
+
             startLabel+=1;
         }
 
         if(r[0] == 1){
-            console.log(    "c:"+labels[r[1]] ,    "f:"+labels[r[2]], " nc:"+labels[startLabel] +" no:"+ labels[startLabel+1]   );
+           // console.log(    "c:"+labels[r[1]] ,    "f:"+labels[r[2]], " nc:"+labels[startLabel] +" no:"+ labels[startLabel+1]   );
+
+
+           console.log(  
+`          ____ ${labels[startLabel+1]}           
+ ${(labels[r[2]]+"    ").substring(0,4)}____                    
+         \\____ ${labels[startLabel]}                 
+          ${labels[r[1]]}`  );
+
+
             startLabel+=2;
         }
     }
